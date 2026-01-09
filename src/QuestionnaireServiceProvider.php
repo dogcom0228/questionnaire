@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -63,6 +64,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->registerRoutes();
         $this->registerViews();
+        $this->registerBladeDirectives();
         $this->registerMigrations();
         $this->registerPolicies();
         $this->registerCommands();
@@ -227,6 +229,16 @@ class QuestionnaireServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register Blade directives for the package.
+     */
+    protected function registerBladeDirectives(): void
+    {
+        Blade::directive('questionnaireScripts', function () {
+            return "<?php echo app(\\Liangjin0228\\Questionnaire\\AssetManager::class)->scripts(); ?>";
+        });
+    }
+
+    /**
      * Register the package migrations.
      */
     protected function registerMigrations(): void
@@ -286,7 +298,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
 
         // Frontend assets (built)
         $this->publishes([
-            __DIR__ . '/../public/vendor/questionnaire' => public_path('vendor/questionnaire'),
+            __DIR__ . '/../public/build' => public_path('vendor/questionnaire'),
         ], 'questionnaire-assets');
 
         // Frontend source (Vue components)

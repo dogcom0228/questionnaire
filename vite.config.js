@@ -5,11 +5,13 @@ import { defineConfig } from 'vite';
 import vuetify from 'vite-plugin-vuetify';
 
 export default defineConfig({
+    // Ensure built asset URLs point to the published path under the host app
+    base: '/vendor/questionnaire/',
     plugins: [
         laravel({
             input: [
                 'resources/js/app.js',
-                'resources/css/app.css',
+                // 'resources/css/app.css',
             ],
             refresh: true,
         }),

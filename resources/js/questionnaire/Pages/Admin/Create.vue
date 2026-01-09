@@ -164,7 +164,8 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '../Layouts/AdminLayout.vue';
+// Use shared admin layout located at resources/js/questionnaire/Layouts
+import AdminLayout from '../../Layouts/AdminLayout.vue';
 import QuestionEditor from '../../Components/QuestionEditor.vue';
 import draggable from 'vuedraggable';
 

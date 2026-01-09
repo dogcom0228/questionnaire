@@ -13,13 +13,12 @@ class AssetManager
         // We assume the user has published the assets to public/vendor/questionnaire
         // OR we are serving from the package's public directory?
         
-        // Strategy: Look for the manifest in public/vendor/questionnaire/manifest.json
-        
-        $manifestPath = public_path('vendor/questionnaire/manifest.json');
+        // Strategy: Look for the Vite manifest copied to public/vendor/questionnaire/.vite/manifest.json
+        $manifestPath = public_path('vendor/questionnaire/.vite/manifest.json');
         
         if (!File::exists($manifestPath)) {
             // Fallback or dev mode warning
-            return '<!-- Questionnaire Assets not found. Run php artisan vendor:publish --tag=questionnaire-assets -->';
+            return '<!-- Questionnaire assets not found. Run php artisan vendor:publish --tag=questionnaire-assets -->';
         }
         
         $manifest = json_decode(File::get($manifestPath), true);

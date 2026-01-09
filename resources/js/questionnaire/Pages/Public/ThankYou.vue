@@ -37,7 +37,8 @@
 
 <script setup>
 import { computed } from 'vue';
-import PublicLayout from '../Layouts/PublicLayout.vue';
+// Use public layout located at resources/js/questionnaire/Layouts
+import PublicLayout from '../../Layouts/PublicLayout.vue';
 
 const props = defineProps({
   questionnaire: {

@@ -63,6 +63,8 @@ export function initQuestionnaireApp(options = {}) {
   const vuetify = options.vuetify || createQuestionnaireVuetify(options.vuetifyOptions);
 
   createInertiaApp({
+    // Ensure we target the questionnaire-specific root element
+    id: options.id || 'questionnaire-app',
     title: (title) => title ? `${title} - Questionnaire` : 'Questionnaire',
     resolve: (name) => {
       // First try to resolve from custom pages (host app override)

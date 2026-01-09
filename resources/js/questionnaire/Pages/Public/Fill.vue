@@ -64,7 +64,8 @@
 <script setup>
 import { ref, computed, reactive } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import PublicLayout from '../Layouts/PublicLayout.vue';
+// Use public layout located at resources/js/questionnaire/Layouts
+import PublicLayout from '../../Layouts/PublicLayout.vue';
 import QuestionRenderer from '../../Components/QuestionRenderer.vue';
 
 const props = defineProps({

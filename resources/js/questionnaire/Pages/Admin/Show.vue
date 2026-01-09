@@ -156,7 +156,8 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
-import AdminLayout from '../Layouts/AdminLayout.vue';
+// Use shared admin layout located at resources/js/questionnaire/Layouts
+import AdminLayout from '../../Layouts/AdminLayout.vue';
 
 const props = defineProps({
   questionnaire: {

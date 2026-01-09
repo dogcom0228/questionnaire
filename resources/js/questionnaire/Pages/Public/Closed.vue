@@ -29,7 +29,8 @@
 </template>
 
 <script setup>
-import PublicLayout from '../Layouts/PublicLayout.vue';
+// Use public layout located at resources/js/questionnaire/Layouts
+import PublicLayout from '../../Layouts/PublicLayout.vue';
 
 defineProps({
   questionnaire: {

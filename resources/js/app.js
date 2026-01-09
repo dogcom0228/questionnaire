@@ -51,16 +51,20 @@ const appElement = document.getElementById('questionnaire-app') || document.getE
 
 if (appElement) {
     createInertiaApp({
+        id: appElement.id || 'app',
         title: (title) => title ? `${title} - Questionnaire` : 'Questionnaire',
         resolve: (name) => {
+            // Normalize Inertia page name, e.g. "Questionnaire/Admin/Index" -> "Admin/Index"
+            const normalizedName = name.replace(/^Questionnaire\//, '');
+
             // Try to find the page in the questionnaire package
-            const pagePath = `./questionnaire/Pages/${name}.vue`;
+            const pagePath = `./questionnaire/Pages/${normalizedName}.vue`;
             const page = pages[pagePath];
             
             if (!page) {
-                console.error(`Page not found: ${name}`);
+                console.error(`Page not found: ${normalizedName}`);
                 console.log('Available pages:', Object.keys(pages));
-                throw new Error(`Page ${name} not found in questionnaire package.`);
+                throw new Error(`Page ${normalizedName} not found in questionnaire package.`);
             }
             
             return page;
