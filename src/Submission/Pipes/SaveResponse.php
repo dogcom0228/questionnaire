@@ -56,7 +56,7 @@ class SaveResponse
 
         foreach ($questionnaire->questions as $question) {
             $key = "question_{$question->id}";
-            if (!isset($answers[$key])) {
+            if (! isset($answers[$key])) {
                 continue;
             }
 
@@ -76,6 +76,7 @@ class SaveResponse
         if ($request->user()) {
             return get_class($request->user());
         }
+
         return null;
     }
 

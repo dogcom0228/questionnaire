@@ -17,8 +17,8 @@ class CreateQuestionnaireAction
     /**
      * Create a new questionnaire.
      *
-     * @param array<string, mixed> $data
-     * @param int|null $userId The owner's user ID
+     * @param  array<string, mixed>  $data
+     * @param  int|null  $userId  The owner's user ID
      */
     public function execute(array $data, ?int $userId = null): Questionnaire
     {
@@ -27,7 +27,7 @@ class CreateQuestionnaireAction
         $questionnaire = $this->repository->create($questionnaireData);
 
         // Handle questions if provided
-        if (!empty($data['questions'])) {
+        if (! empty($data['questions'])) {
             $this->createQuestions($questionnaire, $data['questions']);
         }
 
@@ -39,7 +39,7 @@ class CreateQuestionnaireAction
     /**
      * Prepare the questionnaire data.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function prepareData(array $data, ?int $userId): array
@@ -72,7 +72,7 @@ class CreateQuestionnaireAction
         $counter = 1;
 
         while ($this->repository->findBySlug($slug) !== null) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 
@@ -82,7 +82,7 @@ class CreateQuestionnaireAction
     /**
      * Create questions for the questionnaire.
      *
-     * @param array<int, array<string, mixed>> $questions
+     * @param  array<int, array<string, mixed>>  $questions
      */
     protected function createQuestions(Questionnaire $questionnaire, array $questions): void
     {

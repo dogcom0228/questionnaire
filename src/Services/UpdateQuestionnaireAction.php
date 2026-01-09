@@ -17,8 +17,7 @@ class UpdateQuestionnaireAction
     /**
      * Update an existing questionnaire.
      *
-     * @param Questionnaire $questionnaire
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function execute(Questionnaire $questionnaire, array $data): Questionnaire
     {
@@ -41,7 +40,7 @@ class UpdateQuestionnaireAction
     /**
      * Prepare the update data.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function prepareData(array $data, Questionnaire $questionnaire): array
@@ -67,7 +66,7 @@ class UpdateQuestionnaireAction
         }
 
         // Regenerate slug if title changed and slug not explicitly provided
-        if (isset($data['title']) && !isset($data['slug'])) {
+        if (isset($data['title']) && ! isset($data['slug'])) {
             $newSlug = \Illuminate\Support\Str::slug($data['title']);
             if ($newSlug !== $questionnaire->slug) {
                 $updateData['slug'] = $this->generateUniqueSlug($newSlug, $questionnaire->id);
@@ -87,7 +86,7 @@ class UpdateQuestionnaireAction
 
         $existing = $this->repository->findBySlug($slug);
         while ($existing !== null && $existing->id !== $excludeId) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
             $existing = $this->repository->findBySlug($slug);
         }
@@ -98,7 +97,7 @@ class UpdateQuestionnaireAction
     /**
      * Sync questions for the questionnaire.
      *
-     * @param array<int, array<string, mixed>> $questions
+     * @param  array<int, array<string, mixed>>  $questions
      */
     protected function syncQuestions(Questionnaire $questionnaire, array $questions): void
     {
@@ -137,7 +136,7 @@ class UpdateQuestionnaireAction
 
         // Delete questions that are no longer in the list
         $toDelete = array_diff($existingIds, $providedIds);
-        if (!empty($toDelete)) {
+        if (! empty($toDelete)) {
             $questionnaire->questions()->whereIn('id', $toDelete)->delete();
         }
     }

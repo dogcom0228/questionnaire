@@ -6,7 +6,6 @@ namespace Liangjin0228\Questionnaire\Http\Responses;
 
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;

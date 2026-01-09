@@ -13,15 +13,14 @@ interface QuestionnaireRepositoryInterface
     /**
      * Get all questionnaires with optional filters.
      *
-     * @param array<string, mixed> $filters
+     * @param  array<string, mixed>  $filters
      */
     public function all(array $filters = []): Collection;
 
     /**
      * Get paginated questionnaires.
      *
-     * @param int $perPage
-     * @param array<string, mixed> $filters
+     * @param  array<string, mixed>  $filters
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -43,14 +42,14 @@ interface QuestionnaireRepositoryInterface
     /**
      * Create a new questionnaire.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Questionnaire;
 
     /**
      * Update an existing questionnaire.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function update(Questionnaire $questionnaire, array $data): bool;
 

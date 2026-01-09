@@ -108,7 +108,7 @@ class QuestionnaireTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid table name');
 
-        $questionnaire = new Questionnaire();
+        $questionnaire = new Questionnaire;
         $questionnaire->getTable();
     }
 }

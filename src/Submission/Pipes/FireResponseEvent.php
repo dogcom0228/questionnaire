@@ -19,7 +19,7 @@ class FireResponseEvent
                 'response_id' => $passable->response->id,
                 'questionnaire_id' => $passable->questionnaire->id,
             ]);
-            
+
             event(new ResponseSubmitted($passable->response));
         }
 

@@ -21,7 +21,7 @@ class QuestionTypeRegistry implements QuestionTypeRegistryInterface
     {
         $instance = app($questionTypeClass);
 
-        if (!$instance instanceof QuestionTypeInterface) {
+        if (! $instance instanceof QuestionTypeInterface) {
             throw new \InvalidArgumentException(
                 "Class {$questionTypeClass} must implement QuestionTypeInterface."
             );
@@ -76,7 +76,7 @@ class QuestionTypeRegistry implements QuestionTypeRegistryInterface
     public function toArray(): array
     {
         return array_values(
-            array_map(fn(QuestionTypeInterface $type) => $type->toArray(), $this->types)
+            array_map(fn (QuestionTypeInterface $type) => $type->toArray(), $this->types)
         );
     }
 

@@ -15,12 +15,12 @@ class UpdateQuestionnaireRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (!config('questionnaire.features.authorization', true)) {
+        if (! config('questionnaire.features.authorization', true)) {
             return true;
         }
 
         $questionnaire = $this->route('questionnaire');
-        
+
         if ($questionnaire instanceof Questionnaire) {
             return $this->user()?->can('update', $questionnaire) ?? false;
         }
@@ -58,7 +58,7 @@ class UpdateQuestionnaireRequest extends FormRequest
             // Questions - Enhanced validation
             'questions' => ['nullable', 'array', 'max:100'],
             'questions.*.id' => ['nullable', 'integer', 'exists:questions,id'],
-            'questions.*.type' => ['required_with:questions', 'string', 'in:' . implode(',', $allowedQuestionTypes)],
+            'questions.*.type' => ['required_with:questions', 'string', 'in:'.implode(',', $allowedQuestionTypes)],
             'questions.*.content' => ['required_with:questions', 'string', 'min:3', 'max:1000'],
             'questions.*.description' => ['nullable', 'string', 'max:2000'],
             'questions.*.options' => ['nullable', 'array', 'min:2', 'max:50'],

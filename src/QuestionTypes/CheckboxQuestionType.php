@@ -58,11 +58,11 @@ class CheckboxQuestionType extends AbstractQuestionType
         $settings = $question->settings ?? [];
 
         if (isset($settings['min_selections'])) {
-            $rules[] = 'min:' . $settings['min_selections'];
+            $rules[] = 'min:'.$settings['min_selections'];
         }
 
         if (isset($settings['max_selections'])) {
-            $rules[] = 'max:' . $settings['max_selections'];
+            $rules[] = 'max:'.$settings['max_selections'];
         }
 
         return $rules;

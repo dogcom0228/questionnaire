@@ -41,7 +41,7 @@ class QuestionnaireModelTest extends TestCase
 
     public function test_fillable_attributes(): void
     {
-        $fillable = (new Questionnaire())->getFillable();
+        $fillable = (new Questionnaire)->getFillable();
 
         $expectedAttributes = [
             'title',
@@ -66,7 +66,7 @@ class QuestionnaireModelTest extends TestCase
 
     public function test_casts_attributes_correctly(): void
     {
-        $questionnaire = new Questionnaire();
+        $questionnaire = new Questionnaire;
         $casts = $questionnaire->getCasts();
 
         $this->assertEquals('array', $casts['settings']);

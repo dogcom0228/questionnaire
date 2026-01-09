@@ -142,20 +142,20 @@ class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterfac
     /**
      * Apply filters to the query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array<string, mixed> $filters
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array<string, mixed>  $filters
      */
     protected function applyFilters($query, array $filters): void
     {
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['user_id'])) {
+        if (! empty($filters['user_id'])) {
             $query->where('user_id', $filters['user_id']);
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")

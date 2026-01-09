@@ -32,6 +32,7 @@ class ListQuestionTypesCommand extends Command
 
         if (empty($types)) {
             $this->warn('No question types registered.');
+
             return Command::SUCCESS;
         }
 

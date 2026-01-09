@@ -25,12 +25,12 @@ class OnePerUserGuard implements DuplicateSubmissionGuardInterface
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             // If user is not authenticated, fall back to allowing (or you could deny)
             return true;
         }
 
-        return !$this->responseRepository->hasRespondentSubmitted(
+        return ! $this->responseRepository->hasRespondentSubmitted(
             $questionnaire,
             get_class($user),
             $user->getKey()
@@ -42,7 +42,7 @@ class OnePerUserGuard implements DuplicateSubmissionGuardInterface
      */
     public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
     {
-        if (!$this->canSubmit($questionnaire, $request)) {
+        if (! $this->canSubmit($questionnaire, $request)) {
             return 'You have already submitted a response to this questionnaire.';
         }
 

@@ -22,7 +22,7 @@ class ResponsePolicy
         }
 
         // Respondent can view their own response
-        if ($response->respondent_id === $user->getKey() 
+        if ($response->respondent_id === $user->getKey()
             && $response->respondent_type === get_class($user)) {
             return true;
         }

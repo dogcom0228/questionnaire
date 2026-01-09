@@ -19,7 +19,7 @@ class CheckDuplicateSubmission
     {
         $duplicateGuard = $this->duplicateGuardFactory->resolve($passable->questionnaire);
 
-        if (!$duplicateGuard->canSubmit($passable->questionnaire, $passable->request)) {
+        if (! $duplicateGuard->canSubmit($passable->questionnaire, $passable->request)) {
             throw new DuplicateSubmissionException(
                 $duplicateGuard->getRejectionReason($passable->questionnaire, $passable->request)
                     ?? 'You have already submitted a response to this questionnaire.'

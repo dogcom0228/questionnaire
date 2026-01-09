@@ -164,7 +164,7 @@ class QuestionnaireApiController extends Controller
      */
     public function public(Questionnaire $questionnaire): JsonResponse
     {
-        if (!$questionnaire->is_accepting_responses) {
+        if (! $questionnaire->is_accepting_responses) {
             return response()->json([
                 'message' => 'This questionnaire is not accepting responses.',
             ], 403);
@@ -249,11 +249,11 @@ class QuestionnaireApiController extends Controller
      */
     protected function authorize(Request $request, string $ability, $model): void
     {
-        if (!config('questionnaire.features.authorization', true)) {
+        if (! config('questionnaire.features.authorization', true)) {
             return;
         }
 
-        if (!$request->user()?->can($ability, $model)) {
+        if (! $request->user()?->can($ability, $model)) {
             abort(403);
         }
     }

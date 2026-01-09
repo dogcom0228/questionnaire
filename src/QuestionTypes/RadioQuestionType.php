@@ -54,10 +54,10 @@ class RadioQuestionType extends AbstractQuestionType
     public function getValidationRules(Question $question): array
     {
         $options = $question->options ?? [];
-        $validValues = array_map(fn($opt) => $opt['value'] ?? $opt, $options);
+        $validValues = array_map(fn ($opt) => $opt['value'] ?? $opt, $options);
 
         return [
-            'in:' . implode(',', $validValues),
+            'in:'.implode(',', $validValues),
         ];
     }
 

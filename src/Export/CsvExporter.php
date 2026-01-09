@@ -56,7 +56,7 @@ class CsvExporter implements ExporterInterface
             $handle = fopen('php://output', 'w');
 
             // UTF-8 BOM for Excel compatibility
-            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+            fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
 
             // Headers
             if ($includeHeaders) {
@@ -72,8 +72,8 @@ class CsvExporter implements ExporterInterface
 
             fclose($handle);
         }, 200, [
-            'Content-Type' => $this->getMimeType() . '; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type' => $this->getMimeType().'; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
             'Cache-Control' => 'no-cache, no-store, must-revalidate',
             'Pragma' => 'no-cache',
             'Expires' => '0',

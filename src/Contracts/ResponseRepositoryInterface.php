@@ -34,7 +34,7 @@ interface ResponseRepositoryInterface
     /**
      * Create a new response.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Response;
 
@@ -45,17 +45,11 @@ interface ResponseRepositoryInterface
 
     /**
      * Get responses by respondent.
-     *
-     * @param string $respondentType
-     * @param int|string $respondentId
      */
     public function getByRespondent(string $respondentType, int|string $respondentId): Collection;
 
     /**
      * Check if respondent has submitted response for questionnaire.
-     *
-     * @param string $respondentType
-     * @param int|string $respondentId
      */
     public function hasRespondentSubmitted(
         Questionnaire $questionnaire,

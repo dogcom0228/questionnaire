@@ -19,12 +19,12 @@ class SubmitResponseRequest extends FormRequest
     {
         $questionnaire = $this->getQuestionnaire();
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return false;
         }
 
         // Check if questionnaire requires authentication
-        if ($questionnaire->requires_auth && !$this->user()) {
+        if ($questionnaire->requires_auth && ! $this->user()) {
             return false;
         }
 
@@ -40,7 +40,7 @@ class SubmitResponseRequest extends FormRequest
     {
         $questionnaire = $this->getQuestionnaire();
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return [];
         }
 
@@ -59,7 +59,7 @@ class SubmitResponseRequest extends FormRequest
     {
         $questionnaire = $this->getQuestionnaire();
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return [];
         }
 
@@ -77,7 +77,7 @@ class SubmitResponseRequest extends FormRequest
     {
         $questionnaire = $this->getQuestionnaire();
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return [];
         }
 
@@ -99,6 +99,7 @@ class SubmitResponseRequest extends FormRequest
 
         if ($questionnaire instanceof Questionnaire) {
             $this->questionnaire = $questionnaire->load('questions');
+
             return $this->questionnaire;
         }
 

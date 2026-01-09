@@ -18,12 +18,12 @@ class Answer extends Model
     public function getTable(): string
     {
         $tableName = config('questionnaire.table_names.answers', 'questionnaire_answers');
-        
+
         // Validate table name to prevent SQL injection
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
-            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        if (! preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: '.$tableName);
         }
-        
+
         return $tableName;
     }
 
@@ -44,6 +44,7 @@ class Answer extends Model
     public function response(): BelongsTo
     {
         $responseModel = config('questionnaire.models.response', Response::class);
+
         return $this->belongsTo($responseModel, 'questionnaire_response_id');
     }
 
@@ -53,6 +54,7 @@ class Answer extends Model
     public function question(): BelongsTo
     {
         $questionModel = config('questionnaire.models.question', Question::class);
+
         return $this->belongsTo($questionModel);
     }
 
@@ -62,12 +64,12 @@ class Answer extends Model
     public function getFormattedValueAttribute(): string
     {
         $question = $this->question;
-        if (!$question) {
+        if (! $question) {
             return (string) $this->value;
         }
 
         $handler = $question->getTypeHandler();
-        if (!$handler) {
+        if (! $handler) {
             return (string) $this->value;
         }
 
@@ -76,8 +78,6 @@ class Answer extends Model
 
     /**
      * Get the parsed value (for array values stored as JSON).
-     *
-     * @return mixed
      */
     public function getParsedValueAttribute(): mixed
     {

@@ -64,7 +64,7 @@ class QuestionnairePolicy
      */
     public function publish($user, Questionnaire $questionnaire): bool
     {
-        if (!$this->isOwner($user, $questionnaire)) {
+        if (! $this->isOwner($user, $questionnaire)) {
             return false;
         }
 
@@ -76,7 +76,7 @@ class QuestionnairePolicy
      */
     public function close($user, Questionnaire $questionnaire): bool
     {
-        if (!$this->isOwner($user, $questionnaire)) {
+        if (! $this->isOwner($user, $questionnaire)) {
             return false;
         }
 

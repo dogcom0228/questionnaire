@@ -40,23 +40,20 @@ class QuestionTypeManager extends Manager implements QuestionTypeRegistryInterfa
     /**
      * Register a new question type.
      * Note: In the Manager pattern, we usually use 'extend', but this adapter supports the interface.
-     *
-     * @param string $questionTypeClass
-     * @return void
      */
     public function register(string $questionTypeClass): void
     {
         // For backward compatibility with the interface which expects a class name.
         // We resolve an instance to get the identifier.
         $instance = app($questionTypeClass);
-        
-        if (!$instance instanceof QuestionTypeInterface) {
+
+        if (! $instance instanceof QuestionTypeInterface) {
             throw new \InvalidArgumentException("Class {$questionTypeClass} must implement QuestionTypeInterface.");
         }
 
         $id = $instance->getIdentifier();
-        
-        if (!in_array($id, $this->registeredIdentifiers)) {
+
+        if (! in_array($id, $this->registeredIdentifiers)) {
             $this->registeredIdentifiers[] = $id;
         }
 
@@ -111,10 +108,10 @@ class QuestionTypeManager extends Manager implements QuestionTypeRegistryInterfa
     public function unregister(string $identifier): void
     {
         $this->registeredIdentifiers = array_filter(
-            $this->registeredIdentifiers, 
-            fn($id) => $id !== $identifier
+            $this->registeredIdentifiers,
+            fn ($id) => $id !== $identifier
         );
-        
+
         // Remove from resolved instances
         unset($this->drivers[$identifier]);
         // Remove from custom creators
@@ -130,36 +127,36 @@ class QuestionTypeManager extends Manager implements QuestionTypeRegistryInterfa
 
     public function createTextDriver(): QuestionTypeInterface
     {
-        return new TextQuestionType();
+        return new TextQuestionType;
     }
 
     public function createTextareaDriver(): QuestionTypeInterface
     {
-        return new TextareaQuestionType();
+        return new TextareaQuestionType;
     }
 
     public function createNumberDriver(): QuestionTypeInterface
     {
-        return new NumberQuestionType();
+        return new NumberQuestionType;
     }
 
     public function createDateDriver(): QuestionTypeInterface
     {
-        return new DateQuestionType();
+        return new DateQuestionType;
     }
 
     public function createRadioDriver(): QuestionTypeInterface
     {
-        return new RadioQuestionType();
+        return new RadioQuestionType;
     }
 
     public function createCheckboxDriver(): QuestionTypeInterface
     {
-        return new CheckboxQuestionType();
+        return new CheckboxQuestionType;
     }
 
     public function createSelectDriver(): QuestionTypeInterface
     {
-        return new SelectQuestionType();
+        return new SelectQuestionType;
     }
 }

@@ -20,12 +20,14 @@ class SubmissionPassable
     public function setResponse(Response $response): self
     {
         $this->response = $response;
+
         return $this;
     }
-    
+
     public function setAnswers(array $answers): self
     {
         $this->answers = $answers;
+
         return $this;
     }
 }

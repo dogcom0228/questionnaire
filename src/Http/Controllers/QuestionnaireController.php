@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
-use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
+use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Services\CloseQuestionnaireAction;
 use Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction;
@@ -160,6 +160,7 @@ class QuestionnaireController extends BaseController
 
         try {
             $this->publishAction->execute($questionnaire);
+
             return redirect()
                 ->back()
                 ->with('success', 'Questionnaire published successfully.');
@@ -179,6 +180,7 @@ class QuestionnaireController extends BaseController
 
         try {
             $this->closeAction->execute($questionnaire);
+
             return redirect()
                 ->back()
                 ->with('success', 'Questionnaire closed successfully.');
@@ -197,14 +199,14 @@ class QuestionnaireController extends BaseController
         $this->setRootView();
 
         // Check if questionnaire is active
-        if (!$questionnaire->is_accepting_responses) {
+        if (! $questionnaire->is_accepting_responses) {
             return redirect()
                 ->route('questionnaire.public.closed', $questionnaire)
                 ->with('error', 'This questionnaire is not accepting responses.');
         }
 
         // Check authentication requirement
-        if ($questionnaire->requires_auth && !$request->user()) {
+        if ($questionnaire->requires_auth && ! $request->user()) {
             return redirect()
                 ->route('login')
                 ->with('error', 'Please login to fill this questionnaire.');
@@ -300,7 +302,8 @@ class QuestionnaireController extends BaseController
     protected function resolveComponent(string $component): string
     {
         $prefix = config('questionnaire.ui.component_prefix', 'Questionnaire/');
-        return $prefix . $component;
+
+        return $prefix.$component;
     }
 
     /**
@@ -325,11 +328,11 @@ class QuestionnaireController extends BaseController
      */
     protected function authorize(string $ability, $model): void
     {
-        if (!config('questionnaire.features.authorization', true)) {
+        if (! config('questionnaire.features.authorization', true)) {
             return;
         }
 
-        if (!request()->user()?->can($ability, $model)) {
+        if (! request()->user()?->can($ability, $model)) {
             abort(403);
         }
     }

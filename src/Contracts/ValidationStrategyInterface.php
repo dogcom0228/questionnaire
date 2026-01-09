@@ -12,16 +12,13 @@ interface ValidationStrategyInterface
     /**
      * Validate the submission data for a questionnaire.
      *
-     * @param Questionnaire $questionnaire
-     * @param array<string, mixed> $data
-     * @return Validator
+     * @param  array<string, mixed>  $data
      */
     public function validate(Questionnaire $questionnaire, array $data): Validator;
 
     /**
      * Get validation rules for a questionnaire.
      *
-     * @param Questionnaire $questionnaire
      * @return array<string, mixed>
      */
     public function getRules(Questionnaire $questionnaire): array;
@@ -29,7 +26,6 @@ interface ValidationStrategyInterface
     /**
      * Get validation messages for a questionnaire.
      *
-     * @param Questionnaire $questionnaire
      * @return array<string, string>
      */
     public function getMessages(Questionnaire $questionnaire): array;
@@ -37,7 +33,6 @@ interface ValidationStrategyInterface
     /**
      * Get validation attributes for a questionnaire.
      *
-     * @param Questionnaire $questionnaire
      * @return array<string, string>
      */
     public function getAttributes(Questionnaire $questionnaire): array;

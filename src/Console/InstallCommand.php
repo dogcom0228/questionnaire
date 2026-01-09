@@ -49,7 +49,7 @@ class InstallCommand extends Command
         $this->newLine();
 
         $force = $this->option('force');
-        $this->publishAll = $this->option('all') || (!$this->option('config') && !$this->option('migrations') && !$this->option('views') && !$this->option('frontend'));
+        $this->publishAll = $this->option('all') || (! $this->option('config') && ! $this->option('migrations') && ! $this->option('views') && ! $this->option('frontend'));
 
         // 1. Publish Configuration
         if ($this->shouldPublish('config') && ($force || $this->confirm('Do you want to publish the configuration file?', true))) {
@@ -138,13 +138,14 @@ class InstallCommand extends Command
         $this->info('Publishing frontend assets...');
 
         // Publish Vue components to resources/js/vendor/questionnaire
-        $sourcePath = dirname(__DIR__, 2) . '/resources/js/questionnaire';
+        $sourcePath = dirname(__DIR__, 2).'/resources/js/questionnaire';
         $targetPath = resource_path('js/vendor/questionnaire');
 
         if ($this->files->isDirectory($sourcePath)) {
-            if (!$force && $this->files->isDirectory($targetPath)) {
-                if (!$this->confirm("Frontend assets already exist at {$targetPath}. Overwrite?")) {
+            if (! $force && $this->files->isDirectory($targetPath)) {
+                if (! $this->confirm("Frontend assets already exist at {$targetPath}. Overwrite?")) {
                     $this->warn('Frontend assets not published.');
+
                     return;
                 }
             }
@@ -170,11 +171,11 @@ class InstallCommand extends Command
      */
     protected function publishVuetifyConfig(bool $force): void
     {
-        $sourceFile = dirname(__DIR__, 2) . '/stubs/vuetify.config.js';
+        $sourceFile = dirname(__DIR__, 2).'/stubs/vuetify.config.js';
         $targetFile = resource_path('js/vendor/questionnaire/vuetify.config.js');
 
         if ($this->files->exists($sourceFile)) {
-            if (!$force && $this->files->exists($targetFile)) {
+            if (! $force && $this->files->exists($targetFile)) {
                 return;
             }
 
@@ -202,9 +203,9 @@ class InstallCommand extends Command
         $this->newLine();
         $this->line('     <fg=cyan>// vite.config.js</>');
         $this->line('     resolve: {');
-        $this->line("       alias: {");
+        $this->line('       alias: {');
         $this->line("         '@questionnaire': path.resolve(__dirname, 'resources/js/vendor/questionnaire'),");
-        $this->line("       },");
+        $this->line('       },');
         $this->line('     },');
         $this->newLine();
 
@@ -212,13 +213,13 @@ class InstallCommand extends Command
         $this->newLine();
         $this->line('     <fg=cyan>// resources/js/app.js</>');
         $this->line('     resolve: name => {');
-        $this->line("       // Check questionnaire pages first");
+        $this->line('       // Check questionnaire pages first');
         $this->line("       if (name.startsWith('Questionnaire/')) {");
         $this->line("         const questionnairePage = name.replace('Questionnaire/', '');");
-        $this->line("         return import(`@questionnaire/Pages/\${questionnairePage}.vue`);");
-        $this->line("       }");
-        $this->line("       // Fall back to your app pages");
-        $this->line("       return import(`./Pages/\${name}.vue`);");
+        $this->line('         return import(`@questionnaire/Pages/${questionnairePage}.vue`);');
+        $this->line('       }');
+        $this->line('       // Fall back to your app pages');
+        $this->line('       return import(`./Pages/${name}.vue`);');
         $this->line('     },');
         $this->newLine();
 
@@ -227,7 +228,7 @@ class InstallCommand extends Command
 
         $this->components->bulletList([
             'Documentation: https://github.com/liangjin0228/questionnaire',
-            'Admin URL: ' . url(config('questionnaire.routes.prefix', 'questionnaire') . '/admin'),
+            'Admin URL: '.url(config('questionnaire.routes.prefix', 'questionnaire').'/admin'),
         ]);
     }
 }

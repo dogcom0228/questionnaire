@@ -9,7 +9,7 @@ interface QuestionTypeRegistryInterface
     /**
      * Register a question type.
      *
-     * @param class-string<QuestionTypeInterface> $questionTypeClass
+     * @param  class-string<QuestionTypeInterface>  $questionTypeClass
      */
     public function register(string $questionTypeClass): void;
 

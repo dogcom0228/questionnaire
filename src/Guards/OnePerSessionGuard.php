@@ -22,7 +22,7 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
     {
         $sessionKey = $this->getSessionKey($questionnaire);
 
-        return !$request->session()->has($sessionKey);
+        return ! $request->session()->has($sessionKey);
     }
 
     /**
@@ -30,7 +30,7 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
      */
     public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
     {
-        if (!$this->canSubmit($questionnaire, $request)) {
+        if (! $this->canSubmit($questionnaire, $request)) {
             return 'You have already submitted a response to this questionnaire in this session.';
         }
 
@@ -59,6 +59,6 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
      */
     protected function getSessionKey(Questionnaire $questionnaire): string
     {
-        return self::SESSION_KEY_PREFIX . $questionnaire->id;
+        return self::SESSION_KEY_PREFIX.$questionnaire->id;
     }
 }

@@ -27,9 +27,7 @@ interface ExporterInterface
     /**
      * Export responses for a questionnaire.
      *
-     * @param Questionnaire $questionnaire
-     * @param array<string, mixed> $options
-     * @return StreamedResponse
+     * @param  array<string, mixed>  $options
      */
     public function export(Questionnaire $questionnaire, array $options = []): StreamedResponse;
 

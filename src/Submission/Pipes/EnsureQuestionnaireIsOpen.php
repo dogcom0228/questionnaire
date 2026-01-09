@@ -14,7 +14,7 @@ class EnsureQuestionnaireIsOpen
     public function handle(SubmissionPassable $passable, Closure $next)
     {
         $this->validateStatus($passable->questionnaire);
-        
+
         return $next($passable);
     }
 

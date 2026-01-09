@@ -12,21 +12,21 @@ class AssetManager
         // Usually packages are consumed as built artifacts.
         // We assume the user has published the assets to public/vendor/questionnaire
         // OR we are serving from the package's public directory?
-        
+
         // Strategy: Look for the Vite manifest copied to public/vendor/questionnaire/.vite/manifest.json
         $manifestPath = public_path('vendor/questionnaire/.vite/manifest.json');
-        
-        if (!File::exists($manifestPath)) {
+
+        if (! File::exists($manifestPath)) {
             // Fallback or dev mode warning
             return '<!-- Questionnaire assets not found. Run php artisan vendor:publish --tag=questionnaire-assets -->';
         }
-        
+
         $manifest = json_decode(File::get($manifestPath), true);
-        
+
         // Assuming the entry point is 'resources/js/app.js'
         $entry = $manifest['resources/js/app.js'] ?? null;
-        
-        if (!$entry) {
+
+        if (! $entry) {
             return '<!-- Questionnaire entry point not found in manifest -->';
         }
 
@@ -38,7 +38,7 @@ class AssetManager
             $url = asset("vendor/questionnaire/{$css}");
             $html .= "<link rel=\"stylesheet\" href=\"{$url}\">";
         }
-        
+
         if ($js) {
             $url = asset("vendor/questionnaire/{$js}");
             $html .= "<script type=\"module\" src=\"{$url}\"></script>";

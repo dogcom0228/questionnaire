@@ -50,16 +50,11 @@ interface QuestionTypeInterface
 
     /**
      * Transform the raw answer value before storing.
-     *
-     * @param mixed $value
-     * @return mixed
      */
     public function transformValue(mixed $value): mixed;
 
     /**
      * Format the answer value for display.
-     *
-     * @param mixed $value
      */
     public function formatValue(mixed $value, Question $question): string;
 

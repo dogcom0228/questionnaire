@@ -50,11 +50,11 @@ class DateQuestionType extends AbstractQuestionType
         $settings = $question->settings ?? [];
 
         if (isset($settings['min_date'])) {
-            $rules[] = 'after_or_equal:' . $settings['min_date'];
+            $rules[] = 'after_or_equal:'.$settings['min_date'];
         }
 
         if (isset($settings['max_date'])) {
-            $rules[] = 'before_or_equal:' . $settings['max_date'];
+            $rules[] = 'before_or_equal:'.$settings['max_date'];
         }
 
         return $rules;
@@ -83,6 +83,7 @@ class DateQuestionType extends AbstractQuestionType
 
         try {
             $date = \Carbon\Carbon::parse($value);
+
             return $date->format('Y-m-d');
         } catch (\Exception $e) {
             return (string) $value;

@@ -18,10 +18,9 @@ use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
 use Liangjin0228\Questionnaire\Export\CsvExporter;
 use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
+use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
-use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
-use Liangjin0228\Questionnaire\QuestionTypes\QuestionTypeRegistry;
 use Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository;
 use Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository;
 use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
@@ -48,7 +47,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/questionnaire.php',
+            __DIR__.'/../config/questionnaire.php',
             'questionnaire'
         );
 
@@ -169,7 +168,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerRoutes(): void
     {
-        if (!config('questionnaire.routes.enabled', true)) {
+        if (! config('questionnaire.routes.enabled', true)) {
             return;
         }
 
@@ -182,7 +181,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerWebRoutes(): void
     {
-        if (!config('questionnaire.features.frontend', true)) {
+        if (! config('questionnaire.features.frontend', true)) {
             return;
         }
 
@@ -196,7 +195,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
         }
 
         Route::group($routeConfig, function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
     }
 
@@ -205,7 +204,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerApiRoutes(): void
     {
-        if (!config('questionnaire.features.api', true)) {
+        if (! config('questionnaire.features.api', true)) {
             return;
         }
 
@@ -220,7 +219,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
         }
 
         Route::group($routeConfig, function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         });
     }
 
@@ -229,7 +228,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerViews(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'questionnaire');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'questionnaire');
     }
 
     /**
@@ -238,7 +237,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
     protected function registerBladeDirectives(): void
     {
         Blade::directive('questionnaireScripts', function () {
-            return "<?php echo app(\\Liangjin0228\\Questionnaire\\AssetManager::class)->scripts(); ?>";
+            return '<?php echo app(\\Liangjin0228\\Questionnaire\\AssetManager::class)->scripts(); ?>';
         });
     }
 
@@ -247,7 +246,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerMigrations(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
@@ -255,7 +254,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerPolicies(): void
     {
-        if (!config('questionnaire.features.authorization', true)) {
+        if (! config('questionnaire.features.authorization', true)) {
             return;
         }
 
@@ -281,38 +280,38 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerPublishing(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 
         // Config
         $this->publishes([
-            __DIR__ . '/../config/questionnaire.php' => config_path('questionnaire.php'),
+            __DIR__.'/../config/questionnaire.php' => config_path('questionnaire.php'),
         ], 'questionnaire-config');
 
         // Migrations
         $this->publishes([
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'questionnaire-migrations');
 
         // Views
         $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('views/vendor/questionnaire'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/questionnaire'),
         ], 'questionnaire-views');
 
         // Frontend assets (built)
         $this->publishes([
-            __DIR__ . '/../public/build' => public_path('vendor/questionnaire'),
+            __DIR__.'/../public/build' => public_path('vendor/questionnaire'),
         ], 'questionnaire-assets');
 
         // Frontend source (Vue components)
         $this->publishes([
-            __DIR__ . '/../resources/js/questionnaire' => resource_path('js/vendor/questionnaire'),
+            __DIR__.'/../resources/js/questionnaire' => resource_path('js/vendor/questionnaire'),
         ], 'questionnaire-frontend');
 
         // Stubs
         $this->publishes([
-            __DIR__ . '/../stubs' => base_path('stubs/questionnaire'),
+            __DIR__.'/../stubs' => base_path('stubs/questionnaire'),
         ], 'questionnaire-stubs');
     }
 
@@ -321,7 +320,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 

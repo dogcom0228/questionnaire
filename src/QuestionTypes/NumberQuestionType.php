@@ -50,11 +50,11 @@ class NumberQuestionType extends AbstractQuestionType
         $settings = $question->settings ?? [];
 
         if (isset($settings['min'])) {
-            $rules[] = 'min:' . $settings['min'];
+            $rules[] = 'min:'.$settings['min'];
         }
 
         if (isset($settings['max'])) {
-            $rules[] = 'max:' . $settings['max'];
+            $rules[] = 'max:'.$settings['max'];
         }
 
         if (isset($settings['integer']) && $settings['integer']) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Guards;
 
-use Illuminate\Http\Request;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
@@ -26,8 +25,7 @@ class DuplicateSubmissionGuardFactory
     /**
      * Register a guard.
      *
-     * @param string $identifier
-     * @param class-string<DuplicateSubmissionGuardInterface> $guardClass
+     * @param  class-string<DuplicateSubmissionGuardInterface>  $guardClass
      */
     public function register(string $identifier, string $guardClass): void
     {
@@ -41,7 +39,7 @@ class DuplicateSubmissionGuardFactory
     {
         $strategy = $questionnaire->duplicate_submission_strategy ?? 'allow_multiple';
 
-        if (!isset($this->guards[$strategy])) {
+        if (! isset($this->guards[$strategy])) {
             $strategy = 'allow_multiple';
         }
 

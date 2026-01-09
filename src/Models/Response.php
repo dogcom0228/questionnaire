@@ -20,12 +20,12 @@ class Response extends Model
     public function getTable(): string
     {
         $tableName = config('questionnaire.table_names.responses', 'questionnaire_responses');
-        
+
         // Validate table name to prevent SQL injection
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
-            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        if (! preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: '.$tableName);
         }
-        
+
         return $tableName;
     }
 
@@ -58,6 +58,7 @@ class Response extends Model
     public function questionnaire(): BelongsTo
     {
         $questionnaireModel = config('questionnaire.models.questionnaire', Questionnaire::class);
+
         return $this->belongsTo($questionnaireModel);
     }
 
@@ -75,6 +76,7 @@ class Response extends Model
     public function answers(): HasMany
     {
         $answerModel = config('questionnaire.models.answer', Answer::class);
+
         return $this->hasMany($answerModel, 'questionnaire_response_id');
     }
 

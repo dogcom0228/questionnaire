@@ -24,7 +24,9 @@ class Questionnaire extends Model
     }
 
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_CLOSED = 'closed';
 
     /**
@@ -33,12 +35,12 @@ class Questionnaire extends Model
     public function getTable(): string
     {
         $tableName = config('questionnaire.table_names.questionnaires', 'questionnaires');
-        
+
         // Validate table name to prevent SQL injection
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
-            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        if (! preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: '.$tableName);
         }
-        
+
         return $tableName;
     }
 
@@ -94,6 +96,7 @@ class Questionnaire extends Model
     public function questions(): HasMany
     {
         $questionModel = config('questionnaire.models.question', Question::class);
+
         return $this->hasMany($questionModel)->orderBy('order');
     }
 
@@ -103,6 +106,7 @@ class Questionnaire extends Model
     public function responses(): HasMany
     {
         $responseModel = config('questionnaire.models.response', Response::class);
+
         return $this->hasMany($responseModel);
     }
 
@@ -112,6 +116,7 @@ class Questionnaire extends Model
     public function user(): BelongsTo
     {
         $userModel = config('questionnaire.models.user', config('auth.providers.users.model', 'App\\Models\\User'));
+
         return $this->belongsTo($userModel);
     }
 
@@ -142,7 +147,7 @@ class Questionnaire extends Model
      */
     public function getIsAcceptingResponsesAttribute(): bool
     {
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return false;
         }
 

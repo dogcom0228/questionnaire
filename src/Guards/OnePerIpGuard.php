@@ -21,13 +21,13 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
     {
         $ip = $request->ip();
 
-        if (!$ip) {
+        if (! $ip) {
             return true;
         }
 
         $responseModel = config('questionnaire.models.response', Response::class);
 
-        return !app($responseModel)
+        return ! app($responseModel)
             ->where('questionnaire_id', $questionnaire->id)
             ->where('ip_address', $ip)
             ->exists();
@@ -38,7 +38,7 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
      */
     public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
     {
-        if (!$this->canSubmit($questionnaire, $request)) {
+        if (! $this->canSubmit($questionnaire, $request)) {
             return 'A response has already been submitted from this IP address.';
         }
 

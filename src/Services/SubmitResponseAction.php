@@ -24,10 +24,7 @@ class SubmitResponseAction
     /**
      * Submit a response to a questionnaire.
      *
-     * @param Questionnaire $questionnaire
-     * @param array<string, mixed> $answers
-     * @param Request $request
-     * @return Response
+     * @param  array<string, mixed>  $answers
      */
     public function execute(Questionnaire $questionnaire, array $answers, Request $request): Response
     {

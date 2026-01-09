@@ -14,7 +14,7 @@ class LogResponseSubmission
      */
     public function handle(ResponseSubmitted $event): void
     {
-        if (!config('questionnaire.features.log_submissions', false)) {
+        if (! config('questionnaire.features.log_submissions', false)) {
             return;
         }
 

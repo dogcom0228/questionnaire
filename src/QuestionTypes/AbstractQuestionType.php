@@ -84,7 +84,7 @@ abstract class AbstractQuestionType implements QuestionTypeInterface
      */
     public function getVueComponent(): string
     {
-        return 'QuestionType' . ucfirst($this->getIdentifier());
+        return 'QuestionType'.ucfirst($this->getIdentifier());
     }
 
     /**

@@ -50,11 +50,11 @@ class TextareaQuestionType extends AbstractQuestionType
         $settings = $question->settings ?? [];
 
         if (isset($settings['min_length'])) {
-            $rules[] = 'min:' . $settings['min_length'];
+            $rules[] = 'min:'.$settings['min_length'];
         }
 
         if (isset($settings['max_length'])) {
-            $rules[] = 'max:' . $settings['max_length'];
+            $rules[] = 'max:'.$settings['max_length'];
         } else {
             $rules[] = 'max:65535';
         }

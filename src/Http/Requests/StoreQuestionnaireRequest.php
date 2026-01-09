@@ -14,7 +14,7 @@ class StoreQuestionnaireRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (!config('questionnaire.features.authorization', true)) {
+        if (! config('questionnaire.features.authorization', true)) {
             return true;
         }
 
@@ -29,7 +29,7 @@ class StoreQuestionnaireRequest extends FormRequest
     public function rules(): array
     {
         $allowedQuestionTypes = ['text', 'textarea', 'radio', 'checkbox', 'select', 'number', 'date'];
-        
+
         return [
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['nullable', 'string', 'max:65535'],
@@ -44,7 +44,7 @@ class StoreQuestionnaireRequest extends FormRequest
 
             // Questions (optional during creation) - Enhanced validation
             'questions' => ['nullable', 'array', 'max:100'],
-            'questions.*.type' => ['required_with:questions', 'string', 'in:' . implode(',', $allowedQuestionTypes)],
+            'questions.*.type' => ['required_with:questions', 'string', 'in:'.implode(',', $allowedQuestionTypes)],
             'questions.*.content' => ['required_with:questions', 'string', 'min:3', 'max:1000'],
             'questions.*.description' => ['nullable', 'string', 'max:2000'],
             'questions.*.options' => ['nullable', 'array', 'min:2', 'max:50'],

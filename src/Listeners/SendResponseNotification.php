@@ -19,7 +19,7 @@ class SendResponseNotification
      */
     public function handle(ResponseSubmitted $event): void
     {
-        if (!config('questionnaire.features.email_notifications', false)) {
+        if (! config('questionnaire.features.email_notifications', false)) {
             return;
         }
 
@@ -55,7 +55,7 @@ class SendResponseNotification
         }
 
         // Add any additional recipients from settings
-        if (!empty($questionnaire->settings['notification_emails'])) {
+        if (! empty($questionnaire->settings['notification_emails'])) {
             $recipients = array_merge(
                 $recipients,
                 (array) $questionnaire->settings['notification_emails']
