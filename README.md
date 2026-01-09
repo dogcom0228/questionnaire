@@ -1,124 +1,108 @@
 # Laravel Questionnaire Package
 
-一個功能完整、高度可客製化的 Laravel 問卷/調查系統 Composer Package，支援 Vue 3 + Vuetify 3 + Inertia.js 前端。
+A full-featured, highly customizable Laravel questionnaire/survey package with a Vue 3 + Vuetify 3 + Inertia.js frontend.
 
-## 特性
+## Highlights
+- Auto-discovery with minimal setup
+- Extensible question types (7 built-in, easy to add more)
+- Duplicate submission guards (per user, session, IP, etc.)
+- Policy-based authorization for every operation
+- Event-driven lifecycle hooks
+- CSV export with UTF-8 BOM support
+- Optional RESTful API endpoints
 
-- ✅ **Auto-Discovery**: 安裝後自動註冊，最小配置即可運作
-- ✅ **高度可客製化**: Controller、Service、Repository、Policy 皆可覆寫
-- ✅ **現代化前端**: Vue 3 + Vuetify 3 + Inertia.js
-- ✅ **可擴充題型**: 內建 7 種題型，支援自訂題型
-- ✅ **重複提交防護**: 支援多種策略（每人一次、每 Session 一次、每 IP 一次等）
-- ✅ **完整授權**: Policy-based 授權機制
-- ✅ **事件驅動**: 關鍵操作皆觸發事件
-- ✅ **匯出功能**: CSV 匯出（支援 UTF-8 BOM）
-- ✅ **RESTful API**: 可選的 API 端點
-
-## 系統需求
-
+## Requirements
 - PHP 8.2+
-- Laravel 11/12
+- Laravel 11 or 12
 - Node.js 18+
 - Vue 3.4+
 - Vuetify 3.5+
 
-## 安裝
+## Quick Start
+1) Install the package: `composer require liangjin0228/questionnaire`  
+2) Publish config/migrations/views/frontend as needed (see below).  
+3) Run `php artisan migrate`.  
+4) Install frontend deps and add the Vite config.  
+5) Visit `/questionnaire/admin`.
 
-### 1. 安裝 Package
-
+## Installation
+### 1) Install via Composer
 ```bash
 composer require liangjin0228/questionnaire
 ```
 
-### 2. 發布配置和資源
-
+### 2) Publish assets (pick what you need)
 ```bash
-# 發布配置文件
+# Config
 php artisan vendor:publish --tag=questionnaire-config
 
-# 發布遷移文件
+# Migrations
 php artisan vendor:publish --tag=questionnaire-migrations
 
-# 發布視圖文件（可選，用於自訂模板）
+# Views (Inertia pages for customization)
 php artisan vendor:publish --tag=questionnaire-views
 
-# 發布前端資源（可選，用於自訂前端）
+# Frontend source (Vue components)
 php artisan vendor:publish --tag=questionnaire-frontend
 
-# 發布所有資源
+# Everything
 php artisan vendor:publish --provider="Liangjin0228\Questionnaire\QuestionnaireServiceProvider"
 ```
 
-### 3. 運行遷移
-
+### 3) Run migrations
 ```bash
 php artisan migrate
 ```
 
-### 4. 安裝前端依賴
-
+### 4) Frontend dependencies
 ```bash
 npm install @inertiajs/vue3 vue vuetify @mdi/font vuedraggable
 npm install -D vite-plugin-vuetify
 ```
 
-### 5. 配置 Vite
-
-在你的 `vite.config.js` 中加入：
-
-```javascript
+### 5) Vite configuration
+Add Vuetify and the alias to your `vite.config.js`:
+```js
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 
 export default defineConfig({
-    plugins: [
-        vue(),
-        vuetify({ autoImport: true }),
-    ],
-    resolve: {
-        alias: {
-            '@questionnaire': 'vendor/liangjin0228/questionnaire/resources/js/questionnaire',
-        },
+  plugins: [vue(), vuetify({ autoImport: true })],
+  resolve: {
+    alias: {
+      '@questionnaire': 'vendor/liangjin0228/questionnaire/resources/js/questionnaire',
     },
+  },
 });
 ```
 
-### 6. 完成
-
-訪問 `/questionnaire/admin` 開始使用！
-
-## 快速開始
-
-### 使用 Artisan 命令
-
+## Usage
 ```bash
-# 查看安裝說明
+# Guided installation steps
 php artisan questionnaire:install
 
-# 列出所有可用的題型
+# List available question types
 php artisan questionnaire:question-types
 ```
 
-## 配置
+## Configuration
+Publish the config to edit it at [config/questionnaire.php](config/questionnaire.php).
 
-### 功能開關
-
+### Feature toggles
 ```php
-// config/questionnaire.php
 'features' => [
-    'admin' => true,            // 管理後台
-    'public_fill' => true,      // 公開填答頁面
-    'results' => true,          // 結果查看
-    'api' => false,             // RESTful API
-    'frontend' => true,         // Inertia 前端
-    'authorization' => true,    // 授權檢查
-    'export_csv' => true,       // CSV 匯出
+    'admin' => true,
+    'public_fill' => true,
+    'results' => true,
+    'api' => false,
+    'frontend' => true,
+    'authorization' => true,
+    'export_csv' => true,
 ],
 ```
 
-### 路由配置
-
+### Route prefixes and middleware
 ```php
 'routes' => [
     'prefix' => 'questionnaire',
@@ -129,8 +113,7 @@ php artisan questionnaire:question-types
 ],
 ```
 
-### 自訂 Controller
-
+### Override controllers
 ```php
 'controllers' => [
     'web' => \App\Http\Controllers\CustomQuestionnaireController::class,
@@ -138,8 +121,7 @@ php artisan questionnaire:question-types
 ],
 ```
 
-### 覆寫 Service
-
+### Swap services/repositories
 ```php
 'services' => [
     'questionnaire_repository' => \App\Repositories\CustomQuestionnaireRepository::class,
@@ -148,10 +130,15 @@ php artisan questionnaire:question-types
 ],
 ```
 
-## 自訂題型
+### Register custom question types
+```php
+'question_types' => [
+    // built-ins ...
+    'rating' => \App\QuestionTypes\RatingQuestionType::class,
+],
+```
 
-### 1. 創建題型類別
-
+## Custom Question Type (example)
 ```php
 <?php
 
@@ -161,106 +148,40 @@ use Liangjin0228\Questionnaire\QuestionTypes\AbstractQuestionType;
 
 class RatingQuestionType extends AbstractQuestionType
 {
-    public function getIdentifier(): string
-    {
-        return 'rating';
-    }
-
-    public function getName(): string
-    {
-        return 'Rating';
-    }
-
-    public function getDescription(): string
-    {
-        return 'A star rating question';
-    }
-
-    public function getIcon(): string
-    {
-        return 'mdi-star';
-    }
+    public function getIdentifier(): string { return 'rating'; }
+    public function getName(): string { return 'Rating'; }
+    public function getDescription(): string { return 'A star rating question'; }
+    public function getIcon(): string { return 'mdi-star'; }
 
     public function getValidationRules(array $question): array
     {
-        $rules = [];
-        
-        if ($question['required'] ?? false) {
-            $rules[] = 'required';
-        } else {
-            $rules[] = 'nullable';
-        }
-        
+        $rules = $question['required'] ?? false ? ['required'] : ['nullable'];
         $rules[] = 'integer';
         $rules[] = 'min:1';
         $rules[] = 'max:' . ($question['settings']['max'] ?? 5);
-        
         return $rules;
     }
 
     public function getDefaultSettings(): array
     {
-        return [
-            'min' => 1,
-            'max' => 5,
-        ];
+        return ['min' => 1, 'max' => 5];
     }
 }
 ```
 
-### 2. 註冊題型
+## Events
+| Event | When it fires |
+| --- | --- |
+| QuestionnaireCreated | After a questionnaire is created |
+| QuestionnaireUpdated | After a questionnaire is updated |
+| QuestionnairePublished | After publication |
+| QuestionnaireClosed | After closing |
+| QuestionnaireDeleted | After deletion |
+| ResponseSubmitted | After a response is submitted |
+| ResponseDeleted | After a response is deleted |
 
+Register listeners in your EventServiceProvider:
 ```php
-// config/questionnaire.php
-'question_types' => [
-    // ... 內建題型
-    'rating' => \App\QuestionTypes\RatingQuestionType::class,
-],
-```
-
-### 3. 創建前端組件
-
-```vue
-<!-- resources/js/Components/QuestionTypes/RatingInput.vue -->
-<template>
-  <v-rating
-    v-model="modelValue"
-    :length="question.settings?.max ?? 5"
-    hover
-  />
-</template>
-
-<script setup>
-import { computed } from 'vue';
-
-const props = defineProps(['modelValue', 'question', 'error']);
-const emit = defineEmits(['update:modelValue']);
-
-const modelValue = computed({
-  get: () => props.modelValue,
-  set: (v) => emit('update:modelValue', v),
-});
-</script>
-```
-
-## 事件
-
-Package 在關鍵操作時會觸發事件：
-
-| 事件 | 說明 |
-|------|------|
-| `QuestionnaireCreated` | 問卷創建後 |
-| `QuestionnaireUpdated` | 問卷更新後 |
-| `QuestionnairePublished` | 問卷發布後 |
-| `QuestionnaireClosed` | 問卷關閉後 |
-| `QuestionnaireDeleted` | 問卷刪除後 |
-| `ResponseSubmitted` | 回覆提交後 |
-| `ResponseDeleted` | 回覆刪除後 |
-
-### 監聽事件
-
-```php
-// app/Providers/EventServiceProvider.php
 protected $listen = [
     \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class => [
         \App\Listeners\SendResponseNotification::class,
@@ -269,19 +190,14 @@ protected $listen = [
 ];
 ```
 
-## 重複提交防護
+## Duplicate Submission Guards
+Built-ins:
+- allow_multiple
+- one_per_user
+- one_per_session
+- one_per_ip
 
-### 內建策略
-
-| 策略 | 說明 |
-|------|------|
-| `allow_multiple` | 允許多次提交 |
-| `one_per_user` | 每用戶只能提交一次 |
-| `one_per_session` | 每 Session 只能提交一次 |
-| `one_per_ip` | 每 IP 只能提交一次 |
-
-### 自訂策略
-
+Custom example:
 ```php
 <?php
 
@@ -295,7 +211,6 @@ class OnePerDeviceGuard implements DuplicateSubmissionGuardInterface
     public function check(Questionnaire $questionnaire): bool
     {
         $deviceId = request()->fingerprint();
-        
         return !$questionnaire->responses()
             ->where('metadata->device_id', $deviceId)
             ->exists();
@@ -307,138 +222,66 @@ class OnePerDeviceGuard implements DuplicateSubmissionGuardInterface
     }
 }
 ```
+Register it under `duplicate_guards` in [config/questionnaire.php](config/questionnaire.php).
 
-註冊：
+## Authorization
+- Override policies via the `policies` config entry.
+- Disable authorization by setting `'authorization' => false` under `features`.
 
-```php
-// config/questionnaire.php
-'duplicate_guards' => [
-    // ... 內建策略
-    'one_per_device' => \App\Guards\OnePerDeviceGuard::class,
-],
-```
+## API
+Enable by setting `'api' => true` under `features`.
 
-## 授權
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | /api/questionnaire | List questionnaires |
+| POST | /api/questionnaire | Create questionnaire |
+| GET | /api/questionnaire/{id} | Get questionnaire |
+| PUT | /api/questionnaire/{id} | Update questionnaire |
+| DELETE | /api/questionnaire/{id} | Delete questionnaire |
+| POST | /api/questionnaire/{id}/publish | Publish questionnaire |
+| POST | /api/questionnaire/{id}/responses | Submit response |
+| GET | /api/questionnaire/{id}/responses | Fetch responses |
 
-### 自訂 Policy
+## Frontend Customization
+1) Publish frontend assets: `php artisan vendor:publish --tag=questionnaire-frontend`.
+2) Edit the Vue components as needed.
+3) Update your Vite alias to point to your customized components.
 
-```php
-// 發布 Policy stub
-php artisan vendor:publish --tag=questionnaire-stubs
-
-// 修改 config/questionnaire.php
-'policies' => [
-    'questionnaire' => \App\Policies\CustomQuestionnairePolicy::class,
-],
-```
-
-### 停用授權
-
-```php
-'features' => [
-    'authorization' => false,
-],
-```
-
-## API 使用
-
-### 啟用 API
-
-```php
-'features' => [
-    'api' => true,
-],
-```
-
-### 端點
-
-| 方法 | 端點 | 說明 |
-|------|------|------|
-| GET | `/api/questionnaire` | 列出問卷 |
-| POST | `/api/questionnaire` | 創建問卷 |
-| GET | `/api/questionnaire/{id}` | 取得問卷 |
-| PUT | `/api/questionnaire/{id}` | 更新問卷 |
-| DELETE | `/api/questionnaire/{id}` | 刪除問卷 |
-| POST | `/api/questionnaire/{id}/publish` | 發布問卷 |
-| POST | `/api/questionnaire/{id}/responses` | 提交回覆 |
-| GET | `/api/questionnaire/{id}/responses` | 取得回覆 |
-
-## 前端客製化
-
-### 覆寫頁面組件
-
-1. 發布前端資源：
-
+## Testing
 ```bash
-php artisan vendor:publish --tag=questionnaire-frontend
-```
-
-2. 修改發布的 Vue 組件
-
-3. 更新 Vite alias 指向你的組件目錄
-
-### 覆寫佈局
-
-創建自訂 Layout 並在頁面中使用：
-
-```vue
-<!-- resources/js/Layouts/CustomAdminLayout.vue -->
-<template>
-  <v-app>
-    <!-- 你的自訂佈局 -->
-    <slot />
-  </v-app>
-</template>
-```
-
-## 測試
-
-```bash
-# 運行測試
 php artisan test --filter=Questionnaire
-
-# 或使用 PHPUnit
 ./vendor/bin/phpunit packages/questionnaire
 ```
 
-## 目錄結構
-
+## Directory Layout
 ```
 src/
-├── Console/              # Artisan 命令
-├── Contracts/            # 介面定義
-├── Events/               # 事件
-├── Exceptions/           # 例外
-├── Export/               # 匯出功能
-├── Guards/               # 重複提交防護
+├── Console/              # Artisan commands
+├── Contracts/            # Interfaces
+├── Events/               # Domain events
+├── Exceptions/           # Custom exceptions
+├── Export/               # CSV exporter
+├── Guards/               # Duplicate submission guards
 ├── Http/
-│   ├── Controllers/      # 控制器
-│   └── Requests/         # 表單請求
-├── Listeners/            # 事件監聽器
-├── Models/               # Eloquent 模型
-├── Policies/             # 授權策略
-├── QuestionTypes/        # 題型
-├── Repositories/         # 資料庫存取
-├── Services/             # 業務邏輯
+│   ├── Controllers/      # Controllers
+│   └── Requests/         # Form requests
+├── Listeners/            # Event listeners
+├── Models/               # Eloquent models
+├── Policies/             # Authorization policies
+├── QuestionTypes/        # Question type classes
+├── Repositories/         # Data access
+├── Services/             # Business logic
 └── QuestionnaireServiceProvider.php
 ```
 
 ## Changelog
-
-請參閱 [CHANGELOG.md](CHANGELOG.md)。
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
+MIT License. See [LICENSE](LICENSE).
 
-MIT License. 請參閱 [LICENSE](LICENSE)。
+## Contributing
+PRs are welcome. Please follow PSR-12, include tests, and update docs.
 
-## 貢獻
-
-歡迎提交 Pull Request！請確保：
-
-1. 遵循 PSR-12 代碼風格
-2. 包含相關測試
-3. 更新文檔
-
-## 支援
-
-如有問題，請在 GitHub Issues 提交。
+## Support
+Open a GitHub Issue if you have questions or run into problems.
