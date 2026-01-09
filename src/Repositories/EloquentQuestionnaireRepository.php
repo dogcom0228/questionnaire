@@ -34,7 +34,9 @@ class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterfac
      */
     public function all(array $filters = []): Collection
     {
-        $query = $this->newQuery();
+        $query = $this->newQuery()
+            ->with(['user:id,name,email'])
+            ->withCount('responses');
 
         $this->applyFilters($query, $filters);
 
@@ -46,7 +48,9 @@ class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterfac
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->newQuery();
+        $query = $this->newQuery()
+            ->with(['user:id,name,email'])
+            ->withCount('responses');
 
         $this->applyFilters($query, $filters);
 

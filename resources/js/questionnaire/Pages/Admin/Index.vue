@@ -120,8 +120,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
+import { debounce, formatDate as utilFormatDate } from '../../Utils/helpers';
 // Use shared admin layout located at resources/js/questionnaire/Layouts
 import AdminLayout from '../../Layouts/AdminLayout.vue';
 
@@ -176,17 +177,13 @@ const getStatusColor = (status) => {
 };
 
 const formatDate = (date) => {
-  if (!date) return '-';
-  return new Date(date).toLocaleDateString();
+  return utilFormatDate(date);
 };
 
-let searchTimeout = null;
-const debounceSearch = () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    applyFilters();
-  }, 300);
-};
+// Use debounce helper for search
+const debounceSearch = debounce(() => {
+  applyFilters();
+}, 500);
 
 const applyFilters = () => {
   router.get('/questionnaire/admin', localFilters.value, {
@@ -209,6 +206,10 @@ const deleteItem = () => {
       deleting.value = false;
       deleteDialog.value = false;
       itemToDelete.value = null;
+    },
+    onError: (errors) => {
+      console.error('Failed to delete questionnaire:', errors);
+      deleting.value = false;
     },
   });
 };

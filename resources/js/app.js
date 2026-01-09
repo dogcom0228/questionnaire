@@ -73,12 +73,25 @@ if (appElement) {
             const app = createApp({ render: () => h(App, props) })
                 .use(plugin)
                 .use(vuetify);
-            
+
             // Global error handler
-            app.config.errorHandler = (err, vm, info) => {
-                console.error('Vue Error:', err, info);
+            app.config.errorHandler = (err, instance, info) => {
+                console.error('Vue Error:', err);
+                console.error('Component:', instance);
+                console.error('Error Info:', info);
+                
+                // You can send to error tracking service (e.g., Sentry) here
+                // if (window.Sentry) {
+                //     window.Sentry.captureException(err, { extra: { info } });
+                // }
             };
-            
+
+            // Global warning handler
+            app.config.warnHandler = (msg, instance, trace) => {
+                console.warn('Vue Warning:', msg);
+                console.warn('Trace:', trace);
+            };
+
             app.mount(el);
             
             return app;
@@ -87,6 +100,8 @@ if (appElement) {
             color: '#1976D2',
             showSpinner: true,
         },
+    }).catch((error) => {
+        console.error('Failed to mount Inertia app:', error);
     });
 }
 

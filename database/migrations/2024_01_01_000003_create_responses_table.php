@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('questionnaire_id');
-            $table->index(['respondent_type', 'respondent_id']);
+
             $table->index('ip_address');
             $table->index('created_at');
         });

@@ -29,6 +29,11 @@ class InstallCommand extends Command
      */
     protected $description = 'Install the Questionnaire package';
 
+    /**
+     * Whether to publish all assets.
+     */
+    protected bool $publishAll = false;
+
     public function __construct(
         protected Filesystem $files
     ) {
@@ -44,32 +49,46 @@ class InstallCommand extends Command
         $this->newLine();
 
         $force = $this->option('force');
-        $publishAll = $this->option('all') || (!$this->option('config') && !$this->option('migrations') && !$this->option('views') && !$this->option('frontend'));
+        $this->publishAll = $this->option('all') || (!$this->option('config') && !$this->option('migrations') && !$this->option('views') && !$this->option('frontend'));
 
-        // Publish config
-        if ($publishAll || $this->option('config')) {
+        // 1. Publish Configuration
+        if ($this->shouldPublish('config') && ($force || $this->confirm('Do you want to publish the configuration file?', true))) {
             $this->publishConfig($force);
         }
 
-        // Publish migrations
-        if ($publishAll || $this->option('migrations')) {
+        // 2. Publish Migrations
+        if ($this->shouldPublish('migrations') && ($force || $this->confirm('Do you want to publish the migrations?', true))) {
             $this->publishMigrations($force);
         }
 
-        // Publish views
-        if ($publishAll || $this->option('views')) {
+        // 3. Run Migrations
+        if ($this->shouldPublish('migrations') && $this->confirm('Do you want to run the migrations now?', true)) {
+            $this->call('migrate');
+        }
+
+        // 4. Publish Views
+        if ($this->shouldPublish('views') && ($force || $this->confirm('Do you want to publish the views?', true))) {
             $this->publishViews($force);
         }
 
-        // Publish frontend assets
-        if ($publishAll || $this->option('frontend')) {
+        // 5. Publish Frontend Assets
+        if ($this->shouldPublish('frontend') && ($force || $this->confirm('Do you want to publish the frontend assets?', true))) {
             $this->publishFrontend($force);
         }
 
         $this->newLine();
+        $this->info('Questionnaire Package installed successfully!');
         $this->displayNextSteps();
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Check if a specific asset type should be published.
+     */
+    protected function shouldPublish(string $type): bool
+    {
+        return $this->publishAll || $this->option($type);
     }
 
     /**

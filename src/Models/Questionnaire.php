@@ -14,6 +14,15 @@ class Questionnaire extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected static function booted(): void
+    {
+        static::creating(function (Questionnaire $questionnaire) {
+            if (empty($questionnaire->slug)) {
+                $questionnaire->slug = \Illuminate\Support\Str::slug($questionnaire->title ?? '') ?: \Illuminate\Support\Str::random(10);
+            }
+        });
+    }
+
     public const STATUS_DRAFT = 'draft';
     public const STATUS_PUBLISHED = 'published';
     public const STATUS_CLOSED = 'closed';
@@ -23,7 +32,14 @@ class Questionnaire extends Model
      */
     public function getTable(): string
     {
-        return config('questionnaire.table_names.questionnaires', 'questionnaires');
+        $tableName = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        
+        // Validate table name to prevent SQL injection
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        }
+        
+        return $tableName;
     }
 
     /**

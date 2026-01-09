@@ -20,6 +20,7 @@ use Liangjin0228\Questionnaire\Export\CsvExporter;
 use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
 use Liangjin0228\Questionnaire\QuestionTypes\QuestionTypeRegistry;
 use Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository;
 use Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository;
@@ -99,11 +100,14 @@ class QuestionnaireServiceProvider extends ServiceProvider
             )
         );
 
+        // Action bindings
+        $this->registerActionBindings();
+
         // Question type registry (singleton)
         $this->app->singleton(
             QuestionTypeRegistryInterface::class,
             fn () => $this->app->make(
-                config('questionnaire.bindings.question_type_registry', QuestionTypeRegistry::class)
+                config('questionnaire.bindings.question_type_registry', QuestionTypeManager::class)
             )
         );
 
@@ -346,6 +350,29 @@ class QuestionnaireServiceProvider extends ServiceProvider
             $events->listen(
                 \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
                 \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
+            );
+        }
+    }
+
+    /**
+     * Register action bindings.
+     */
+    protected function registerActionBindings(): void
+    {
+        $actions = [
+            'create_questionnaire' => Services\CreateQuestionnaireAction::class,
+            'update_questionnaire' => Services\UpdateQuestionnaireAction::class,
+            'publish_questionnaire' => Services\PublishQuestionnaireAction::class,
+            'close_questionnaire' => Services\CloseQuestionnaireAction::class,
+            'submit_response' => Services\SubmitResponseAction::class,
+        ];
+
+        foreach ($actions as $key => $class) {
+            $this->app->bind(
+                $class,
+                fn () => $this->app->make(
+                    config("questionnaire.actions.{$key}", $class)
+                )
             );
         }
     }

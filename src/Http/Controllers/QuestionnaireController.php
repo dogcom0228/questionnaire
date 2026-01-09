@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Http\Controllers;
 
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
+use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
@@ -91,18 +93,19 @@ class QuestionnaireController extends BaseController
     /**
      * Display the specified questionnaire (admin view).
      */
-    public function show(Questionnaire $questionnaire): InertiaResponse
+    public function show(Questionnaire $questionnaire): Responsable
     {
         $this->setRootView();
         $this->authorize('view', $questionnaire);
 
         $questionnaire->load('questions');
 
-        return Inertia::render($this->resolveComponent('Admin/Show'), [
-            'questionnaire' => $questionnaire,
-            'statistics' => $this->responseRepository->getStatistics($questionnaire),
-            'questionTypes' => $this->questionTypeRegistry->toArray(),
-        ]);
+        return new ShowQuestionnaireResponse(
+            $questionnaire,
+            $this->responseRepository->getStatistics($questionnaire),
+            $this->questionTypeRegistry->toArray(),
+            $this->resolveComponent('Admin/Show')
+        );
     }
 
     /**

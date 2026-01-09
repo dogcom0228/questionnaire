@@ -17,7 +17,14 @@ class Answer extends Model
      */
     public function getTable(): string
     {
-        return config('questionnaire.table_names.answers', 'questionnaire_answers');
+        $tableName = config('questionnaire.table_names.answers', 'questionnaire_answers');
+        
+        // Validate table name to prevent SQL injection
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        }
+        
+        return $tableName;
     }
 
     /**

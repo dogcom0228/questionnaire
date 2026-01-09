@@ -40,10 +40,10 @@ if (config('questionnaire.features.admin', true)) {
 if (config('questionnaire.features.public_fill', true)) {
     Route::prefix(config('questionnaire.routes.public_prefix', 'survey'))
         ->name('public.')
-        ->middleware(config('questionnaire.routes.public_middleware', ['web']))
+        ->middleware(config('questionnaire.routes.public_middleware', ['web', 'throttle:10,1']))
         ->group(function () use ($controller) {
             Route::get('/{questionnaire}', [$controller, 'fill'])->name('fill');
-            Route::post('/{questionnaire}', [$controller, 'submit'])->name('submit');
+            Route::post('/{questionnaire}', [$controller, 'submit'])->name('submit')->middleware('throttle:5,1');
             Route::get('/{questionnaire}/thank-you', [$controller, 'thankyou'])->name('thankyou');
             Route::get('/{questionnaire}/closed', [$controller, 'closed'])->name('closed');
         });

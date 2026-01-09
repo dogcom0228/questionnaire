@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="componentMap[question.type] || 'TextInput'"
+    :is="componentLoader"
     v-model="modelValue"
     :question="question"
     :error="error"
@@ -8,16 +8,7 @@
 </template>
 
 <script setup>
-import { computed, markRaw } from 'vue';
-
-// Import all question type components
-import TextInput from './QuestionTypes/TextInput.vue';
-import TextareaInput from './QuestionTypes/TextareaInput.vue';
-import RadioInput from './QuestionTypes/RadioInput.vue';
-import CheckboxInput from './QuestionTypes/CheckboxInput.vue';
-import SelectInput from './QuestionTypes/SelectInput.vue';
-import NumberInput from './QuestionTypes/NumberInput.vue';
-import DateInput from './QuestionTypes/DateInput.vue';
+import { computed, defineAsyncComponent, h } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -41,14 +32,48 @@ const modelValue = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-// Map question types to components
-const componentMap = {
-  text: markRaw(TextInput),
-  textarea: markRaw(TextareaInput),
-  radio: markRaw(RadioInput),
-  checkbox: markRaw(CheckboxInput),
-  select: markRaw(SelectInput),
-  number: markRaw(NumberInput),
-  date: markRaw(DateInput),
+// Internal registry of default components
+const internalRegistry = {
+  text: () => import('./QuestionTypes/TextInput.vue'),
+  textarea: () => import('./QuestionTypes/TextareaInput.vue'),
+  radio: () => import('./QuestionTypes/RadioInput.vue'),
+  checkbox: () => import('./QuestionTypes/CheckboxInput.vue'),
+  select: () => import('./QuestionTypes/SelectInput.vue'),
+  number: () => import('./QuestionTypes/NumberInput.vue'),
+  date: () => import('./QuestionTypes/DateInput.vue'),
 };
+
+/**
+ * Dynamic Component Loader
+ * 
+ * Priority:
+ * 1. Global Registry (window.Questionnaire.registry) - Allows host app overrides (Shadowing)
+ * 2. Internal Registry - Package defaults
+ */
+const componentLoader = computed(() => {
+  const type = props.question.type;
+
+  return defineAsyncComponent({
+    loader: () => {
+      // Check for host app override
+      if (typeof window !== 'undefined' && window.Questionnaire && window.Questionnaire.registry && window.Questionnaire.registry[type]) {
+        return window.Questionnaire.registry[type]();
+      }
+
+      // Fallback to internal registry
+      if (internalRegistry[type]) {
+        return internalRegistry[type]();
+      }
+
+      return Promise.reject(new Error(`Unknown question type: ${type}`));
+    },
+    loadingComponent: {
+      render() { return h('div', { class: 'p-4 text-gray-500 animate-pulse' }, 'Loading question...') }
+    },
+    errorComponent: {
+      render() { return h('div', { class: 'p-4 text-red-500' }, `Error: Unsupported question type '${type}'`) }
+    },
+    delay: 200, // Delay before showing loading component
+  });
+});
 </script>

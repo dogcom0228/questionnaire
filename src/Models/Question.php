@@ -18,7 +18,14 @@ class Question extends Model
      */
     public function getTable(): string
     {
-        return config('questionnaire.table_names.questions', 'questions');
+        $tableName = config('questionnaire.table_names.questions', 'questions');
+        
+        // Validate table name to prevent SQL injection
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
+            throw new \InvalidArgumentException('Invalid table name: ' . $tableName);
+        }
+        
+        return $tableName;
     }
 
     /**

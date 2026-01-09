@@ -16,6 +16,7 @@
                 <div
                   v-for="(question, index) in questionnaire.questions"
                   :key="question.id"
+                  :data-question-id="question.id"
                   class="mb-6"
                 >
                   <div class="text-subtitle-1 font-weight-bold mb-2">
@@ -29,7 +30,7 @@
                   <QuestionRenderer
                     v-model="form.answers[question.id]"
                     :question="question"
-                    :error="form.errors[`answers.${question.id}`]"
+                    :error="getErrorMessage(question.id)"
                   />
                 </div>
               </v-card-text>
@@ -62,11 +63,12 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
+import { validateForm } from '../../Utils/validation';
 // Use public layout located at resources/js/questionnaire/Layouts
-import PublicLayout from '../../Layouts/PublicLayout.vue';
 import QuestionRenderer from '../../Components/QuestionRenderer.vue';
+import PublicLayout from '../../Layouts/PublicLayout.vue';
 
 const props = defineProps({
   questionnaire: {
@@ -80,6 +82,7 @@ const props = defineProps({
 });
 
 const formRef = ref(null);
+const validationErrors = ref({});
 
 // Initialize answers object with empty values
 const initialAnswers = {};
@@ -110,8 +113,36 @@ const canSubmit = computed(() => {
 });
 
 const submit = () => {
-  form.post(`/survey/${props.questionnaire.id}/submit`, {
+  // Client-side validation
+  const validation = validateForm(props.questionnaire.questions, form.answers);
+  
+  if (!validation.isValid) {
+    validationErrors.value = validation.errors;
+    
+    // Scroll to first error
+    const firstErrorField = Object.keys(validation.errors)[0];
+    const errorElement = document.querySelector(`[data-question-id="${firstErrorField}"]`);
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    return;
+  }
+
+  // Clear validation errors
+  validationErrors.value = {};
+
+  // Submit form
+  form.post(`/survey/${props.questionnaire.id}`, {
     preserveScroll: true,
+    onError: (errors) => {
+      console.error('Submission errors:', errors);
+    },
   });
+};
+
+// Get error message for a question
+const getErrorMessage = (questionId) => {
+  return validationErrors.value[questionId] || form.errors[`answers.${questionId}`];
 };
 </script>

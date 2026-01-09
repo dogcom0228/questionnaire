@@ -44,11 +44,14 @@ class CreateQuestionnaireAction
      */
     protected function prepareData(array $data, ?int $userId): array
     {
+        $modelClass = config('questionnaire.models.questionnaire', Questionnaire::class);
+        $status = defined("{$modelClass}::STATUS_DRAFT") ? $modelClass::STATUS_DRAFT : 'draft';
+
         return [
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
             'slug' => $data['slug'] ?? $this->generateSlug($data['title']),
-            'status' => $data['status'] ?? Questionnaire::STATUS_DRAFT,
+            'status' => $data['status'] ?? $status,
             'settings' => $data['settings'] ?? [],
             'starts_at' => $data['starts_at'] ?? null,
             'ends_at' => $data['ends_at'] ?? null,

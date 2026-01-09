@@ -69,11 +69,11 @@ return [
         // Middleware for admin routes
         'middleware' => ['web', 'auth'],
 
-        // Middleware for public routes
-        'public_middleware' => ['web'],
+        // Middleware for public routes (includes rate limiting)
+        'public_middleware' => ['web', 'throttle:10,1'],
 
         // Middleware for API routes
-        'api_middleware' => ['api'],
+        'api_middleware' => ['api', 'throttle:60,1'],
 
         // Use slug instead of ID in URLs
         'use_slug' => false,
@@ -144,7 +144,7 @@ return [
         'questionnaire_repository' => \Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository::class,
         'response_repository' => \Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository::class,
         'validation_strategy' => \Liangjin0228\Questionnaire\Services\DefaultValidationStrategy::class,
-        'question_type_registry' => \Liangjin0228\Questionnaire\QuestionTypes\QuestionTypeRegistry::class,
+        'question_type_registry' => \Liangjin0228\Questionnaire\Managers\QuestionTypeManager::class,
     ],
 
     /*
@@ -192,6 +192,20 @@ return [
     'policies' => [
         'questionnaire' => \Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::class,
         'response' => \Liangjin0228\Questionnaire\Policies\ResponsePolicy::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Action Classes
+    |--------------------------------------------------------------------------
+    |
+    | You can replace the default action classes with your own implementations.
+    | Valid keys: create_questionnaire, update_questionnaire, publish_questionnaire,
+    | close_questionnaire, submit_response.
+    |
+    */
+    'actions' => [
+        // 'create_questionnaire' => \Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction::class,
     ],
 
     /*

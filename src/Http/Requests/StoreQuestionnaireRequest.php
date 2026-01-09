@@ -28,27 +28,34 @@ class StoreQuestionnaireRequest extends FormRequest
      */
     public function rules(): array
     {
+        $allowedQuestionTypes = ['text', 'textarea', 'radio', 'checkbox', 'select', 'number', 'date'];
+        
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['nullable', 'string', 'max:65535'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:questionnaires,slug'],
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9-]+$/', 'unique:questionnaires,slug'],
             'status' => ['nullable', 'string', 'in:draft,published,closed'],
-            'settings' => ['nullable', 'array'],
-            'starts_at' => ['nullable', 'date'],
+            'settings' => ['nullable', 'array', 'max:50'],
+            'starts_at' => ['nullable', 'date', 'after_or_equal:today'],
             'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
             'requires_auth' => ['nullable', 'boolean'],
-            'submission_limit' => ['nullable', 'integer', 'min:1'],
+            'submission_limit' => ['nullable', 'integer', 'min:1', 'max:1000000'],
             'duplicate_submission_strategy' => ['nullable', 'string', 'in:allow_multiple,one_per_user,one_per_session,one_per_ip'],
 
-            // Questions (optional during creation)
-            'questions' => ['nullable', 'array'],
-            'questions.*.type' => ['required_with:questions', 'string'],
-            'questions.*.content' => ['required_with:questions', 'string'],
-            'questions.*.description' => ['nullable', 'string'],
-            'questions.*.options' => ['nullable', 'array'],
+            // Questions (optional during creation) - Enhanced validation
+            'questions' => ['nullable', 'array', 'max:100'],
+            'questions.*.type' => ['required_with:questions', 'string', 'in:' . implode(',', $allowedQuestionTypes)],
+            'questions.*.content' => ['required_with:questions', 'string', 'min:3', 'max:1000'],
+            'questions.*.description' => ['nullable', 'string', 'max:2000'],
+            'questions.*.options' => ['nullable', 'array', 'min:2', 'max:50'],
+            'questions.*.options.*' => ['string', 'max:500', 'distinct'],
             'questions.*.required' => ['nullable', 'boolean'],
-            'questions.*.order' => ['nullable', 'integer', 'min:0'],
-            'questions.*.settings' => ['nullable', 'array'],
+            'questions.*.order' => ['nullable', 'integer', 'min:0', 'max:1000'],
+            'questions.*.settings' => ['nullable', 'array', 'max:20'],
+            'questions.*.settings.min' => ['nullable', 'numeric'],
+            'questions.*.settings.max' => ['nullable', 'numeric', 'gte:questions.*.settings.min'],
+            'questions.*.settings.max_length' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'questions.*.settings.placeholder' => ['nullable', 'string', 'max:255'],
         ];
     }
 
