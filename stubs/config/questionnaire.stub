@@ -1,0 +1,191 @@
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Feature Toggles
+    |--------------------------------------------------------------------------
+    |
+    | Enable or disable specific features of the questionnaire package.
+    |
+    */
+    'features' => [
+        'admin' => true,            // Admin CRUD interface
+        'public_fill' => true,      // Public questionnaire filling
+        'results' => true,          // View results and responses
+        'api' => false,             // RESTful API endpoints
+        'frontend' => true,         // Inertia/Vue frontend
+        'authorization' => true,    // Policy-based authorization
+        'export_csv' => true,       // CSV export functionality
+        'log_submissions' => true,  // Log response submissions
+        'email_notifications' => false, // Email on submission
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes Configuration
+    |--------------------------------------------------------------------------
+    */
+    'routes' => [
+        'prefix' => 'questionnaire',
+        'admin_prefix' => 'admin',
+        'public_prefix' => 'survey',
+        'api_prefix' => 'api/questionnaire',
+        'middleware' => ['web'],
+        'admin_middleware' => ['web', 'auth'],
+        'api_middleware' => ['api', 'auth:sanctum'],
+        'domain' => null,
+        'use_slug' => false, // Use slug instead of ID in URLs
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model and Table Configuration
+    |--------------------------------------------------------------------------
+    */
+    'models' => [
+        'questionnaire' => \YourNamespace\Models\Questionnaire::class,
+        'question' => \YourNamespace\Models\Question::class,
+        'response' => \YourNamespace\Models\Response::class,
+        'answer' => \YourNamespace\Models\Answer::class,
+        'user' => \App\Models\User::class,
+    ],
+
+    'tables' => [
+        'questionnaires' => 'questionnaires',
+        'questions' => 'questions',
+        'responses' => 'responses',
+        'answers' => 'answers',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Controller Override
+    |--------------------------------------------------------------------------
+    |
+    | Replace the default controllers with your own implementations.
+    |
+    */
+    'controllers' => [
+        'web' => null, // \App\Http\Controllers\CustomQuestionnaireController::class
+        'api' => null, // \App\Http\Controllers\Api\CustomQuestionnaireApiController::class
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Service Bindings
+    |--------------------------------------------------------------------------
+    |
+    | Override default service implementations with your own.
+    |
+    */
+    'services' => [
+        'questionnaire_repository' => null,
+        'response_repository' => null,
+        'validation_strategy' => null,
+        'question_type_registry' => null,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Question Types
+    |--------------------------------------------------------------------------
+    |
+    | Register available question types. Add custom types here.
+    |
+    */
+    'question_types' => [
+        'text' => \Liangjin0228\Questionnaire\QuestionTypes\TextQuestionType::class,
+        'textarea' => \Liangjin0228\Questionnaire\QuestionTypes\TextareaQuestionType::class,
+        'radio' => \Liangjin0228\Questionnaire\QuestionTypes\RadioQuestionType::class,
+        'checkbox' => \Liangjin0228\Questionnaire\QuestionTypes\CheckboxQuestionType::class,
+        'select' => \Liangjin0228\Questionnaire\QuestionTypes\SelectQuestionType::class,
+        'number' => \Liangjin0228\Questionnaire\QuestionTypes\NumberQuestionType::class,
+        'date' => \Liangjin0228\Questionnaire\QuestionTypes\DateQuestionType::class,
+        // Add custom types:
+        // 'rating' => \App\QuestionTypes\RatingQuestionType::class,
+        // 'file' => \App\QuestionTypes\FileUploadQuestionType::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Duplicate Submission Guards
+    |--------------------------------------------------------------------------
+    |
+    | Configure how to prevent duplicate submissions.
+    |
+    */
+    'duplicate_guards' => [
+        'allow_multiple' => \Liangjin0228\Questionnaire\Guards\AllowMultipleGuard::class,
+        'one_per_user' => \Liangjin0228\Questionnaire\Guards\OnePerUserGuard::class,
+        'one_per_session' => \Liangjin0228\Questionnaire\Guards\OnePerSessionGuard::class,
+        'one_per_ip' => \Liangjin0228\Questionnaire\Guards\OnePerIpGuard::class,
+    ],
+
+    'default_duplicate_guard' => 'allow_multiple',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Policies Configuration
+    |--------------------------------------------------------------------------
+    */
+    'policies' => [
+        'questionnaire' => \Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::class,
+        'response' => \Liangjin0228\Questionnaire\Policies\ResponsePolicy::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | UI Configuration
+    |--------------------------------------------------------------------------
+    */
+    'ui' => [
+        'root_view' => 'questionnaire::app',
+        'component_prefix' => 'Questionnaire',
+        'theme' => [
+            'primary' => '#1976D2',
+            'secondary' => '#424242',
+            'accent' => '#82B1FF',
+            'success' => '#4CAF50',
+            'error' => '#FF5252',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination
+    |--------------------------------------------------------------------------
+    */
+    'pagination' => [
+        'per_page' => 15,
+        'max_per_page' => 100,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Export Configuration
+    |--------------------------------------------------------------------------
+    */
+    'export' => [
+        'csv' => [
+            'delimiter' => ',',
+            'enclosure' => '"',
+            'include_bom' => true, // UTF-8 BOM for Excel compatibility
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Notifications
+    |--------------------------------------------------------------------------
+    */
+    'notifications' => [
+        'email' => [
+            'enabled' => false,
+            'recipients' => [
+                // 'admin@example.com',
+            ],
+            'on_submission' => true,
+        ],
+    ],
+];

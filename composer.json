@@ -1,11 +1,17 @@
 {
     "name": "liangjin0228/questionnaire",
     "description": "A Laravel package for creating and managing questionnaires.",
-    "keywords": ["laravel", "questionnaire", "survey", "form", "package"],
+    "keywords": [
+        "laravel",
+        "questionnaire",
+        "survey",
+        "form",
+        "package"
+    ],
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
-        "authors": [
+    "authors": [
         {
             "name": "LiangJin Tan",
             "email": "dogcom0228@gmail.com"

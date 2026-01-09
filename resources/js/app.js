@@ -1,0 +1,91 @@
+/**
+ * Questionnaire Package - Main App Entry Point
+ * 
+ * This file initializes the Inertia + Vue 3 + Vuetify application
+ * for the questionnaire package.
+ */
+
+import { createInertiaApp } from '@inertiajs/vue3';
+import '@mdi/font/css/materialdesignicons.css';
+import 'roboto-fontface/css/roboto/roboto-fontface.css';
+import { createApp, h } from 'vue';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import 'vuetify/styles';
+
+// Import questionnaire pages
+const pages = import.meta.glob('./questionnaire/Pages/**/*.vue', { eager: true });
+
+// Create Vuetify instance with customizable theme
+const vuetify = createVuetify({
+    components,
+    directives,
+    icons: {
+        defaultSet: 'mdi',
+        aliases,
+        sets: { mdi },
+    },
+    theme: {
+        defaultTheme: 'light',
+        themes: {
+            light: {
+                dark: false,
+                colors: {
+                    primary: '#1976D2',
+                    secondary: '#424242',
+                    accent: '#82B1FF',
+                    error: '#FF5252',
+                    info: '#2196F3',
+                    success: '#4CAF50',
+                    warning: '#FFC107',
+                },
+            },
+        },
+    },
+});
+
+// Mount the app on the appropriate element
+const appElement = document.getElementById('questionnaire-app') || document.getElementById('app');
+
+if (appElement) {
+    createInertiaApp({
+        title: (title) => title ? `${title} - Questionnaire` : 'Questionnaire',
+        resolve: (name) => {
+            // Try to find the page in the questionnaire package
+            const pagePath = `./questionnaire/Pages/${name}.vue`;
+            const page = pages[pagePath];
+            
+            if (!page) {
+                console.error(`Page not found: ${name}`);
+                console.log('Available pages:', Object.keys(pages));
+                throw new Error(`Page ${name} not found in questionnaire package.`);
+            }
+            
+            return page;
+        },
+        setup({ el, App, props, plugin }) {
+            const app = createApp({ render: () => h(App, props) })
+                .use(plugin)
+                .use(vuetify);
+            
+            // Global error handler
+            app.config.errorHandler = (err, vm, info) => {
+                console.error('Vue Error:', err, info);
+            };
+            
+            app.mount(el);
+            
+            return app;
+        },
+        progress: {
+            color: '#1976D2',
+            showSpinner: true,
+        },
+    });
+}
+
+// Export for potential custom usage
+export { vuetify };
+

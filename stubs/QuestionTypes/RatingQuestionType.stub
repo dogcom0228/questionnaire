@@ -1,0 +1,124 @@
+<?php
+
+namespace App\QuestionTypes;
+
+use Liangjin0228\Questionnaire\QuestionTypes\AbstractQuestionType;
+
+class RatingQuestionType extends AbstractQuestionType
+{
+    /**
+     * Get the unique identifier for this question type.
+     */
+    public function getIdentifier(): string
+    {
+        return 'rating';
+    }
+
+    /**
+     * Get the display name for this question type.
+     */
+    public function getName(): string
+    {
+        return 'Rating';
+    }
+
+    /**
+     * Get the description for this question type.
+     */
+    public function getDescription(): string
+    {
+        return 'A star or numeric rating question';
+    }
+
+    /**
+     * Get the icon for the admin UI.
+     */
+    public function getIcon(): string
+    {
+        return 'mdi-star';
+    }
+
+    /**
+     * Get the validation rules for this question type.
+     */
+    public function getValidationRules(array $question): array
+    {
+        $rules = [];
+
+        if ($question['required'] ?? false) {
+            $rules[] = 'required';
+        } else {
+            $rules[] = 'nullable';
+        }
+
+        $rules[] = 'integer';
+
+        $min = $question['settings']['min'] ?? 1;
+        $max = $question['settings']['max'] ?? 5;
+        $rules[] = "min:{$min}";
+        $rules[] = "max:{$max}";
+
+        return $rules;
+    }
+
+    /**
+     * Get the default settings for this question type.
+     */
+    public function getDefaultSettings(): array
+    {
+        return [
+            'min' => 1,
+            'max' => 5,
+            'show_labels' => true,
+            'icon' => 'star',
+        ];
+    }
+
+    /**
+     * Format the answer value for display.
+     */
+    public function formatValue(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * Get available options for the question editor.
+     */
+    public function getEditorSchema(): array
+    {
+        return [
+            'settings' => [
+                [
+                    'key' => 'min',
+                    'type' => 'number',
+                    'label' => 'Minimum Value',
+                    'default' => 1,
+                ],
+                [
+                    'key' => 'max',
+                    'type' => 'number',
+                    'label' => 'Maximum Value',
+                    'default' => 5,
+                ],
+                [
+                    'key' => 'show_labels',
+                    'type' => 'boolean',
+                    'label' => 'Show Labels',
+                    'default' => true,
+                ],
+                [
+                    'key' => 'icon',
+                    'type' => 'select',
+                    'label' => 'Icon',
+                    'options' => ['star', 'heart', 'thumb'],
+                    'default' => 'star',
+                ],
+            ],
+        ];
+    }
+}

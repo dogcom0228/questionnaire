@@ -1,0 +1,359 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Liangjin0228\Questionnaire;
+
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Liangjin0228\Questionnaire\Console\InstallCommand;
+use Liangjin0228\Questionnaire\Console\ListQuestionTypesCommand;
+use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
+use Liangjin0228\Questionnaire\Contracts\ExporterInterface;
+use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
+use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
+use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
+use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
+use Liangjin0228\Questionnaire\Export\CsvExporter;
+use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
+use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\QuestionTypes\QuestionTypeRegistry;
+use Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository;
+use Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository;
+use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
+
+class QuestionnaireServiceProvider extends ServiceProvider
+{
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array<string, string>
+     */
+    public array $bindings = [];
+
+    /**
+     * All of the container singletons that should be registered.
+     *
+     * @var array<string, string>
+     */
+    public array $singletons = [];
+
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/questionnaire.php',
+            'questionnaire'
+        );
+
+        $this->registerBindings();
+        $this->registerQuestionTypes();
+        $this->registerGuards();
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        $this->registerPublishing();
+        $this->registerRoutes();
+        $this->registerViews();
+        $this->registerMigrations();
+        $this->registerPolicies();
+        $this->registerCommands();
+        $this->registerEventListeners();
+    }
+
+    /**
+     * Register the package bindings.
+     */
+    protected function registerBindings(): void
+    {
+        // Repository bindings
+        $this->app->bind(
+            QuestionnaireRepositoryInterface::class,
+            fn () => $this->app->make(
+                config('questionnaire.bindings.questionnaire_repository', EloquentQuestionnaireRepository::class)
+            )
+        );
+
+        $this->app->bind(
+            ResponseRepositoryInterface::class,
+            fn () => $this->app->make(
+                config('questionnaire.bindings.response_repository', EloquentResponseRepository::class)
+            )
+        );
+
+        // Validation strategy
+        $this->app->bind(
+            ValidationStrategyInterface::class,
+            fn () => $this->app->make(
+                config('questionnaire.bindings.validation_strategy', DefaultValidationStrategy::class)
+            )
+        );
+
+        // Question type registry (singleton)
+        $this->app->singleton(
+            QuestionTypeRegistryInterface::class,
+            fn () => $this->app->make(
+                config('questionnaire.bindings.question_type_registry', QuestionTypeRegistry::class)
+            )
+        );
+
+        // Guard factory (singleton)
+        $this->app->singleton(DuplicateSubmissionGuardFactory::class);
+
+        // Dynamic guard binding (resolves based on questionnaire settings)
+        $this->app->bind(DuplicateSubmissionGuardInterface::class, function ($app, $params) {
+            $factory = $app->make(DuplicateSubmissionGuardFactory::class);
+
+            // If a questionnaire is provided in params, resolve the appropriate guard
+            if (isset($params['questionnaire']) && $params['questionnaire'] instanceof Questionnaire) {
+                return $factory->resolve($params['questionnaire']);
+            }
+
+            // Default to allow multiple
+            return $app->make(\Liangjin0228\Questionnaire\Guards\AllowMultipleGuard::class);
+        });
+
+        // Exporter
+        if (config('questionnaire.features.export_csv', true)) {
+            $this->app->bind(ExporterInterface::class, CsvExporter::class);
+        }
+
+        // Asset Manager
+        $this->app->singleton(AssetManager::class);
+    }
+
+    /**
+     * Register question types from config.
+     */
+    protected function registerQuestionTypes(): void
+    {
+        $this->app->afterResolving(QuestionTypeRegistryInterface::class, function ($registry) {
+            $types = config('questionnaire.question_types', []);
+
+            foreach ($types as $typeClass) {
+                $registry->register($typeClass);
+            }
+        });
+    }
+
+    /**
+     * Register duplicate submission guards from config.
+     */
+    protected function registerGuards(): void
+    {
+        $this->app->afterResolving(DuplicateSubmissionGuardFactory::class, function ($factory) {
+            $guards = config('questionnaire.duplicate_guards', []);
+
+            foreach ($guards as $identifier => $guardClass) {
+                $factory->register($identifier, $guardClass);
+            }
+        });
+    }
+
+    /**
+     * Register the package routes.
+     */
+    protected function registerRoutes(): void
+    {
+        if (!config('questionnaire.routes.enabled', true)) {
+            return;
+        }
+
+        $this->registerWebRoutes();
+        $this->registerApiRoutes();
+    }
+
+    /**
+     * Register web routes.
+     */
+    protected function registerWebRoutes(): void
+    {
+        if (!config('questionnaire.features.frontend', true)) {
+            return;
+        }
+
+        $routeConfig = [
+            'prefix' => config('questionnaire.routes.prefix', 'questionnaire'),
+            'as' => config('questionnaire.routes.name_prefix', 'questionnaire.'),
+        ];
+
+        if ($domain = config('questionnaire.routes.domain')) {
+            $routeConfig['domain'] = $domain;
+        }
+
+        Route::group($routeConfig, function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        });
+    }
+
+    /**
+     * Register API routes.
+     */
+    protected function registerApiRoutes(): void
+    {
+        if (!config('questionnaire.features.api', true)) {
+            return;
+        }
+
+        $routeConfig = [
+            'prefix' => config('questionnaire.routes.api_prefix', 'api/questionnaire'),
+            'as' => config('questionnaire.routes.name_prefix', 'questionnaire.'),
+            'middleware' => config('questionnaire.routes.api_middleware', ['api']),
+        ];
+
+        if ($domain = config('questionnaire.routes.domain')) {
+            $routeConfig['domain'] = $domain;
+        }
+
+        Route::group($routeConfig, function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        });
+    }
+
+    /**
+     * Register the package views.
+     */
+    protected function registerViews(): void
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'questionnaire');
+    }
+
+    /**
+     * Register the package migrations.
+     */
+    protected function registerMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
+
+    /**
+     * Register the package policies.
+     */
+    protected function registerPolicies(): void
+    {
+        if (!config('questionnaire.features.authorization', true)) {
+            return;
+        }
+
+        $policies = config('questionnaire.policies', []);
+
+        if (isset($policies['questionnaire'])) {
+            Gate::policy(
+                config('questionnaire.models.questionnaire', Questionnaire::class),
+                $policies['questionnaire']
+            );
+        }
+
+        if (isset($policies['response'])) {
+            Gate::policy(
+                config('questionnaire.models.response', Response::class),
+                $policies['response']
+            );
+        }
+    }
+
+    /**
+     * Register the package's publishable resources.
+     */
+    protected function registerPublishing(): void
+    {
+        if (!$this->app->runningInConsole()) {
+            return;
+        }
+
+        // Config
+        $this->publishes([
+            __DIR__ . '/../config/questionnaire.php' => config_path('questionnaire.php'),
+        ], 'questionnaire-config');
+
+        // Migrations
+        $this->publishes([
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
+        ], 'questionnaire-migrations');
+
+        // Views
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/questionnaire'),
+        ], 'questionnaire-views');
+
+        // Frontend assets (built)
+        $this->publishes([
+            __DIR__ . '/../public/vendor/questionnaire' => public_path('vendor/questionnaire'),
+        ], 'questionnaire-assets');
+
+        // Frontend source (Vue components)
+        $this->publishes([
+            __DIR__ . '/../resources/js/questionnaire' => resource_path('js/vendor/questionnaire'),
+        ], 'questionnaire-frontend');
+
+        // Stubs
+        $this->publishes([
+            __DIR__ . '/../stubs' => base_path('stubs/questionnaire'),
+        ], 'questionnaire-stubs');
+    }
+
+    /**
+     * Register the package's commands.
+     */
+    protected function registerCommands(): void
+    {
+        if (!$this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->commands([
+            InstallCommand::class,
+            ListQuestionTypesCommand::class,
+        ]);
+    }
+
+    /**
+     * Register event listeners.
+     */
+    protected function registerEventListeners(): void
+    {
+        $events = $this->app['events'];
+
+        // Register default listeners
+        if (config('questionnaire.features.log_submissions', false)) {
+            $events->listen(
+                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
+            );
+        }
+
+        if (config('questionnaire.features.email_notifications', false)) {
+            $events->listen(
+                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
+            );
+        }
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array<string>
+     */
+    public function provides(): array
+    {
+        return [
+            QuestionnaireRepositoryInterface::class,
+            ResponseRepositoryInterface::class,
+            QuestionTypeRegistryInterface::class,
+            ValidationStrategyInterface::class,
+            DuplicateSubmissionGuardInterface::class,
+            DuplicateSubmissionGuardFactory::class,
+            ExporterInterface::class,
+            AssetManager::class,
+        ];
+    }
+}

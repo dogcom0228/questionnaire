@@ -1,0 +1,137 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Liangjin0228\Questionnaire\Models\Questionnaire;
+
+/**
+ * Custom Questionnaire Policy
+ * 
+ * Extend this policy to customize authorization rules.
+ */
+class CustomQuestionnairePolicy
+{
+    use HandlesAuthorization;
+
+    /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user, string $ability): ?bool
+    {
+        // Super admins can do anything
+        if ($user->hasRole('super-admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
+    /**
+     * Determine whether the user can view any questionnaires.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->hasPermissionTo('questionnaire.view');
+    }
+
+    /**
+     * Determine whether the user can view the questionnaire.
+     */
+    public function view(User $user, Questionnaire $questionnaire): bool
+    {
+        // Owner can always view
+        if ($questionnaire->user_id === $user->id) {
+            return true;
+        }
+
+        // Check permission
+        return $user->hasPermissionTo('questionnaire.view');
+    }
+
+    /**
+     * Determine whether the user can create questionnaires.
+     */
+    public function create(User $user): bool
+    {
+        return $user->hasPermissionTo('questionnaire.create');
+    }
+
+    /**
+     * Determine whether the user can update the questionnaire.
+     */
+    public function update(User $user, Questionnaire $questionnaire): bool
+    {
+        // Owner can update
+        if ($questionnaire->user_id === $user->id) {
+            return true;
+        }
+
+        // Check permission
+        return $user->hasPermissionTo('questionnaire.update');
+    }
+
+    /**
+     * Determine whether the user can delete the questionnaire.
+     */
+    public function delete(User $user, Questionnaire $questionnaire): bool
+    {
+        // Only owner or admin can delete
+        if ($questionnaire->user_id === $user->id) {
+            return true;
+        }
+
+        return $user->hasPermissionTo('questionnaire.delete');
+    }
+
+    /**
+     * Determine whether the user can restore the questionnaire.
+     */
+    public function restore(User $user, Questionnaire $questionnaire): bool
+    {
+        return $user->hasPermissionTo('questionnaire.restore');
+    }
+
+    /**
+     * Determine whether the user can permanently delete the questionnaire.
+     */
+    public function forceDelete(User $user, Questionnaire $questionnaire): bool
+    {
+        return $user->hasPermissionTo('questionnaire.force-delete');
+    }
+
+    /**
+     * Determine whether the user can publish the questionnaire.
+     */
+    public function publish(User $user, Questionnaire $questionnaire): bool
+    {
+        // Only owner can publish
+        if ($questionnaire->user_id === $user->id) {
+            return true;
+        }
+
+        return $user->hasPermissionTo('questionnaire.publish');
+    }
+
+    /**
+     * Determine whether the user can view responses.
+     */
+    public function viewResponses(User $user, Questionnaire $questionnaire): bool
+    {
+        // Owner can view responses
+        if ($questionnaire->user_id === $user->id) {
+            return true;
+        }
+
+        return $user->hasPermissionTo('questionnaire.view-responses');
+    }
+
+    /**
+     * Determine whether the user can export responses.
+     */
+    public function export(User $user, Questionnaire $questionnaire): bool
+    {
+        return $this->viewResponses($user, $questionnaire);
+    }
+}
