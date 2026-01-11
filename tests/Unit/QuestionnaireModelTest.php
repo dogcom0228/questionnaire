@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Tests\Unit;
 
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Tests\TestCase;
 
@@ -23,7 +24,7 @@ class QuestionnaireModelTest extends TestCase
     {
         $questionnaire = new Questionnaire([
             'title' => 'Test',
-            'status' => Questionnaire::STATUS_PUBLISHED,
+            'status' => QuestionnaireStatus::PUBLISHED->value,
         ]);
 
         $this->assertArrayHasKey('is_active', $questionnaire->toArray());
@@ -33,7 +34,7 @@ class QuestionnaireModelTest extends TestCase
     {
         $questionnaire = new Questionnaire([
             'title' => 'Test',
-            'status' => Questionnaire::STATUS_PUBLISHED,
+            'status' => QuestionnaireStatus::PUBLISHED->value,
         ]);
 
         $this->assertArrayHasKey('is_accepting_responses', $questionnaire->toArray());

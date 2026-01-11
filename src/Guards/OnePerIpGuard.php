@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Guards;
 
-use Illuminate\Http\Request;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
 
@@ -17,9 +17,9 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function canSubmit(Questionnaire $questionnaire, Request $request): bool
+    public function canSubmit(Questionnaire $questionnaire, SubmitResponseData $data): bool
     {
-        $ip = $request->ip();
+        $ip = $data->ipAddress;
 
         if (! $ip) {
             return true;
@@ -36,9 +36,9 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
+    public function getRejectionReason(Questionnaire $questionnaire, SubmitResponseData $data): ?string
     {
-        if (! $this->canSubmit($questionnaire, $request)) {
+        if (! $this->canSubmit($questionnaire, $data)) {
             return 'A response has already been submitted from this IP address.';
         }
 
@@ -48,7 +48,7 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsSubmitted(Questionnaire $questionnaire, Request $request): void
+    public function markAsSubmitted(Questionnaire $questionnaire, SubmitResponseData $data): void
     {
         // The IP is already recorded in the response
     }
@@ -61,3 +61,4 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
         return 'one_per_ip';
     }
 }
+

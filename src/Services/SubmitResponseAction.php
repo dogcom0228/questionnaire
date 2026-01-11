@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Services;
 
-use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
 use Liangjin0228\Questionnaire\Submission\Pipes\CheckDuplicateSubmission;
@@ -24,12 +24,10 @@ class SubmitResponseAction implements SubmitResponseActionInterface
 
     /**
      * Submit a response to a questionnaire.
-     *
-     * @param  array<string, mixed>  $answers
      */
-    public function execute(Questionnaire $questionnaire, array $answers, Request $request): Response
+    public function execute(Questionnaire $questionnaire, SubmitResponseData $data): Response
     {
-        $passable = new SubmissionPassable($questionnaire, $request, $answers);
+        $passable = new SubmissionPassable($questionnaire, $data);
 
         $pipes = config('questionnaire.submission.pipes', [
             EnsureQuestionnaireIsOpen::class,
@@ -47,3 +45,4 @@ class SubmitResponseAction implements SubmitResponseActionInterface
         return $passable->response;
     }
 }
+

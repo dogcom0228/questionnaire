@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Submission;
 
-use Illuminate\Http\Request;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
 
@@ -12,8 +12,7 @@ class SubmissionPassable
 {
     public function __construct(
         public readonly Questionnaire $questionnaire,
-        public readonly Request $request,
-        public array $answers,
+        public readonly SubmitResponseData $data,
         public ?Response $response = null
     ) {}
 
@@ -24,10 +23,38 @@ class SubmissionPassable
         return $this;
     }
 
-    public function setAnswers(array $answers): self
+    /**
+     * Get answers from the DTO.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function getAnswers(): array
     {
-        $this->answers = $answers;
+        return $this->data->answers;
+    }
 
-        return $this;
+    /**
+     * Get the user ID from the DTO.
+     */
+    public function getUserId(): int|string|null
+    {
+        return $this->data->userId;
+    }
+
+    /**
+     * Get the session ID from the DTO.
+     */
+    public function getSessionId(): ?string
+    {
+        return $this->data->sessionId;
+    }
+
+    /**
+     * Get the IP address from the DTO.
+     */
+    public function getIpAddress(): ?string
+    {
+        return $this->data->ipAddress;
     }
 }
+

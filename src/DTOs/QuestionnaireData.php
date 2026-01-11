@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\DTOs;
 
+use Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy;
 use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -28,7 +29,7 @@ class QuestionnaireData extends Data
      * @param  string|null  $ends_at  When the questionnaire stops accepting responses
      * @param  bool  $requires_auth  Whether authentication is required to respond
      * @param  int|null  $submission_limit  Maximum number of submissions allowed
-     * @param  string  $duplicate_submission_strategy  Strategy for handling duplicate submissions
+     * @param  DuplicateSubmissionStrategy  $duplicate_submission_strategy  Strategy for handling duplicate submissions
      * @param  array<int, QuestionData>  $questions  Array of questions
      */
     public function __construct(
@@ -42,7 +43,8 @@ class QuestionnaireData extends Data
         public ?string $ends_at = null,
         public bool $requires_auth = false,
         public ?int $submission_limit = null,
-        public string $duplicate_submission_strategy = 'allow_multiple',
+        #[WithCast(EnumCast::class)]
+        public DuplicateSubmissionStrategy $duplicate_submission_strategy = DuplicateSubmissionStrategy::ALLOW_MULTIPLE,
         #[DataCollectionOf(QuestionData::class)]
         public ?array $questions = [],
     ) {}

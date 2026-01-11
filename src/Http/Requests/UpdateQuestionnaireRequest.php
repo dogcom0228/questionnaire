@@ -140,7 +140,9 @@ class UpdateQuestionnaireRequest extends FormRequest
             ends_at: $validated['ends_at'] ?? $questionnaire->ends_at?->toDateTimeString(),
             requires_auth: $validated['requires_auth'] ?? $questionnaire->requires_auth,
             submission_limit: $validated['submission_limit'] ?? $questionnaire->submission_limit,
-            duplicate_submission_strategy: $validated['duplicate_submission_strategy'] ?? $questionnaire->duplicate_submission_strategy ?? 'allow_multiple',
+            duplicate_submission_strategy: \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::tryFrom(
+                $validated['duplicate_submission_strategy'] ?? $questionnaire->duplicate_submission_strategy ?? 'allow_multiple'
+            ) ?? \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::ALLOW_MULTIPLE,
             questions: $questions,
         );
     }

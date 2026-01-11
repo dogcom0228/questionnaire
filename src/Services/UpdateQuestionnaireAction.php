@@ -57,7 +57,7 @@ class UpdateQuestionnaireAction implements UpdateQuestionnaireActionInterface
             'ends_at' => $data->ends_at,
             'requires_auth' => $data->requires_auth,
             'submission_limit' => $data->submission_limit,
-            'duplicate_submission_strategy' => $data->duplicate_submission_strategy,
+            'duplicate_submission_strategy' => $data->duplicate_submission_strategy->value,
         ];
 
         // Handle slug: regenerate if title changed and slug not explicitly provided

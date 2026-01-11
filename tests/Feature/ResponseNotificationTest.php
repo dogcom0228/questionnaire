@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Support\Facades\Mail;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Mail\ResponseSubmittedNotification;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Services\SubmitResponseAction;
@@ -20,7 +22,7 @@ class ResponseNotificationTest extends TestCase
 
         $questionnaire = Questionnaire::create([
             'title' => 'Notify Me',
-            'status' => Questionnaire::STATUS_PUBLISHED,
+            'status' => QuestionnaireStatus::PUBLISHED->value,
             'settings' => [
                 'notification_emails' => ['admin@example.com'],
             ],
@@ -33,13 +35,19 @@ class ResponseNotificationTest extends TestCase
         ]);
 
         $action = app(SubmitResponseAction::class);
-        $request = request();
 
         $answers = [
             "question_{$question->id}" => 'Answer',
         ];
 
-        $action->execute($questionnaire, $answers, $request);
+        $data = new SubmitResponseData(
+            answers: $answers,
+            userId: null,
+            sessionId: session()->getId(),
+            ipAddress: request()->ip(),
+        );
+
+        $action->execute($questionnaire, $data);
 
         Mail::assertSent(ResponseSubmittedNotification::class);
     }

@@ -25,21 +25,6 @@ class Questionnaire extends Model
     }
 
     /**
-     * @deprecated Use QuestionnaireStatus::DRAFT instead
-     */
-    public const STATUS_DRAFT = 'draft';
-
-    /**
-     * @deprecated Use QuestionnaireStatus::PUBLISHED instead
-     */
-    public const STATUS_PUBLISHED = 'published';
-
-    /**
-     * @deprecated Use QuestionnaireStatus::CLOSED instead
-     */
-    public const STATUS_CLOSED = 'closed';
-
-    /**
      * The table associated with the model.
      */
     public function getTable(): string

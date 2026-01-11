@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Guards;
 
-use Illuminate\Http\Request;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 /**
@@ -16,7 +16,7 @@ class AllowMultipleGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function canSubmit(Questionnaire $questionnaire, Request $request): bool
+    public function canSubmit(Questionnaire $questionnaire, SubmitResponseData $data): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class AllowMultipleGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
+    public function getRejectionReason(Questionnaire $questionnaire, SubmitResponseData $data): ?string
     {
         return null;
     }
@@ -32,7 +32,7 @@ class AllowMultipleGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsSubmitted(Questionnaire $questionnaire, Request $request): void
+    public function markAsSubmitted(Questionnaire $questionnaire, SubmitResponseData $data): void
     {
         // No-op for allow multiple
     }
@@ -45,3 +45,4 @@ class AllowMultipleGuard implements DuplicateSubmissionGuardInterface
         return 'allow_multiple';
     }
 }
+

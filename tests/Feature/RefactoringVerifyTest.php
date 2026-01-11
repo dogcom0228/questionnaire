@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Events\ResponseSubmitted;
 use Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController;
 use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
@@ -65,13 +66,19 @@ class RefactoringVerifyTest extends TestCase
         ]);
 
         $action = app(SubmitResponseAction::class);
-        $request = request();
 
         $answers = [
             "question_{$question->id}" => 'Answer 1',
         ];
 
-        $response = $action->execute($questionnaire, $answers, $request);
+        $data = new SubmitResponseData(
+            answers: $answers,
+            userId: null,
+            sessionId: session()->getId(),
+            ipAddress: request()->ip(),
+        );
+
+        $response = $action->execute($questionnaire, $data);
 
         $this->assertDatabaseHas('questionnaire_responses', [
             'questionnaire_id' => $questionnaire->id,

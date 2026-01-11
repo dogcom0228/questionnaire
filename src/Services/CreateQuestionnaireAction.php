@@ -56,7 +56,7 @@ class CreateQuestionnaireAction implements CreateQuestionnaireActionInterface
             'user_id' => $userId,
             'requires_auth' => $data->requires_auth,
             'submission_limit' => $data->submission_limit,
-            'duplicate_submission_strategy' => $data->duplicate_submission_strategy,
+            'duplicate_submission_strategy' => $data->duplicate_submission_strategy->value,
         ];
     }
 

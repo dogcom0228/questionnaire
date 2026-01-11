@@ -6,7 +6,7 @@
          failOnRisky="true"
          failOnWarning="false"
          stopOnFailure="false"
-         cacheDirectory=".phpunit.cache">
+         cacheDirectory=".phpunit.result.cache">
     <testsuites>
         <testsuite name="Questionnaire Test Suite">
             <directory>tests</directory>

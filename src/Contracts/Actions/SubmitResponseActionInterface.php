@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Contracts\Actions;
 
-use Illuminate\Http\Request;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
 
@@ -17,8 +17,8 @@ interface SubmitResponseActionInterface
      * Submit a response to a questionnaire.
      *
      * @param  Questionnaire  $questionnaire  The questionnaire to submit to
-     * @param  array<string, mixed>  $answers  The submitted answers
-     * @param  Request  $request  The HTTP request
+     * @param  SubmitResponseData  $data  The submission data containing answers and metadata
      */
-    public function execute(Questionnaire $questionnaire, array $answers, Request $request): Response;
+    public function execute(Questionnaire $questionnaire, SubmitResponseData $data): Response;
 }
+

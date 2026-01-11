@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Tests\TestCase;
 
@@ -17,7 +18,7 @@ class QuestionnaireTest extends TestCase
         $data = [
             'title' => 'Test Questionnaire',
             'description' => 'This is a test questionnaire',
-            'status' => 'draft',
+            'status' => QuestionnaireStatus::DRAFT->value,
         ];
 
         $questionnaire = Questionnaire::create($data);
@@ -30,18 +31,19 @@ class QuestionnaireTest extends TestCase
         $this->assertEquals('Test Questionnaire', $questionnaire->title);
     }
 
-    public function test_questionnaire_has_correct_status_constants(): void
+    public function test_questionnaire_status_enum_has_correct_values(): void
     {
-        $this->assertEquals('draft', Questionnaire::STATUS_DRAFT);
-        $this->assertEquals('published', Questionnaire::STATUS_PUBLISHED);
-        $this->assertEquals('closed', Questionnaire::STATUS_CLOSED);
+        $this->assertEquals('draft', QuestionnaireStatus::DRAFT->value);
+        $this->assertEquals('published', QuestionnaireStatus::PUBLISHED->value);
+        $this->assertEquals('closed', QuestionnaireStatus::CLOSED->value);
+        $this->assertEquals('archived', QuestionnaireStatus::ARCHIVED->value);
     }
 
     public function test_questionnaire_is_active_when_published(): void
     {
         $questionnaire = Questionnaire::create([
             'title' => 'Active Questionnaire',
-            'status' => Questionnaire::STATUS_PUBLISHED,
+            'status' => QuestionnaireStatus::PUBLISHED->value,
             'published_at' => now(),
         ]);
 
@@ -52,7 +54,7 @@ class QuestionnaireTest extends TestCase
     {
         $questionnaire = Questionnaire::create([
             'title' => 'Draft Questionnaire',
-            'status' => Questionnaire::STATUS_DRAFT,
+            'status' => QuestionnaireStatus::DRAFT->value,
         ]);
 
         $this->assertFalse($questionnaire->is_active);
@@ -62,7 +64,7 @@ class QuestionnaireTest extends TestCase
     {
         $questionnaire = Questionnaire::create([
             'title' => 'Closed Questionnaire',
-            'status' => Questionnaire::STATUS_CLOSED,
+            'status' => QuestionnaireStatus::CLOSED->value,
             'closed_at' => now(),
         ]);
 

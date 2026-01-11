@@ -17,7 +17,7 @@ class ValidateSubmission
 
     public function handle(SubmissionPassable $passable, Closure $next)
     {
-        $validator = $this->validationStrategy->validate($passable->questionnaire, $passable->answers);
+        $validator = $this->validationStrategy->validate($passable->questionnaire, $passable->getAnswers());
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -26,3 +26,4 @@ class ValidateSubmission
         return $next($passable);
     }
 }
+

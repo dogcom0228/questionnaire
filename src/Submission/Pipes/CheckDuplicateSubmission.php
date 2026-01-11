@@ -19,9 +19,9 @@ class CheckDuplicateSubmission
     {
         $duplicateGuard = $this->duplicateGuardFactory->resolve($passable->questionnaire);
 
-        if (! $duplicateGuard->canSubmit($passable->questionnaire, $passable->request)) {
+        if (! $duplicateGuard->canSubmit($passable->questionnaire, $passable->data)) {
             throw new DuplicateSubmissionException(
-                $duplicateGuard->getRejectionReason($passable->questionnaire, $passable->request)
+                $duplicateGuard->getRejectionReason($passable->questionnaire, $passable->data)
                     ?? 'You have already submitted a response to this questionnaire.'
             );
         }
@@ -32,9 +32,10 @@ class CheckDuplicateSubmission
         // NOTE: This happens AFTER the response is successfully saved (because $next returns the result of the chain)
         // Check if response was created
         if ($passable->response) {
-            $duplicateGuard->markAsSubmitted($passable->questionnaire, $passable->request);
+            $duplicateGuard->markAsSubmitted($passable->questionnaire, $passable->data);
         }
 
         return $response;
     }
 }
+

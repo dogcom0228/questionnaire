@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Guards;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
+use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 /**
@@ -18,19 +19,19 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function canSubmit(Questionnaire $questionnaire, Request $request): bool
+    public function canSubmit(Questionnaire $questionnaire, SubmitResponseData $data): bool
     {
         $sessionKey = $this->getSessionKey($questionnaire);
 
-        return ! $request->session()->has($sessionKey);
+        return ! Session::has($sessionKey);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRejectionReason(Questionnaire $questionnaire, Request $request): ?string
+    public function getRejectionReason(Questionnaire $questionnaire, SubmitResponseData $data): ?string
     {
-        if (! $this->canSubmit($questionnaire, $request)) {
+        if (! $this->canSubmit($questionnaire, $data)) {
             return 'You have already submitted a response to this questionnaire in this session.';
         }
 
@@ -40,10 +41,10 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsSubmitted(Questionnaire $questionnaire, Request $request): void
+    public function markAsSubmitted(Questionnaire $questionnaire, SubmitResponseData $data): void
     {
         $sessionKey = $this->getSessionKey($questionnaire);
-        $request->session()->put($sessionKey, now()->toIso8601String());
+        Session::put($sessionKey, now()->toIso8601String());
     }
 
     /**
@@ -62,3 +63,4 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
         return self::SESSION_KEY_PREFIX.$questionnaire->id;
     }
 }
+

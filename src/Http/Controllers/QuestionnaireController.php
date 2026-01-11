@@ -229,8 +229,7 @@ class QuestionnaireController extends BaseController
         try {
             $this->submitAction->execute(
                 $questionnaire,
-                $request->validated(),
-                $request
+                $request->toDto()
             );
 
             return redirect()
@@ -314,12 +313,7 @@ class QuestionnaireController extends BaseController
      */
     protected function getDuplicateStrategies(): array
     {
-        return [
-            'allow_multiple' => 'Allow Multiple Submissions',
-            'one_per_user' => 'One Per User',
-            'one_per_session' => 'One Per Session',
-            'one_per_ip' => 'One Per IP Address',
-        ];
+        return \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::toArray();
     }
 
     /**
