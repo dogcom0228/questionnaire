@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Services;
 
+use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Events\QuestionnaireUpdated;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
@@ -21,20 +22,22 @@ class UpdateQuestionnaireAction
      */
     public function execute(Questionnaire $questionnaire, array $data): Questionnaire
     {
-        $updateData = $this->prepareData($data, $questionnaire);
+        return DB::transaction(function () use ($questionnaire, $data) {
+            $updateData = $this->prepareData($data, $questionnaire);
 
-        $this->repository->update($questionnaire, $updateData);
+            $this->repository->update($questionnaire, $updateData);
 
-        // Handle questions if provided
-        if (isset($data['questions'])) {
-            $this->syncQuestions($questionnaire, $data['questions']);
-        }
+            // Handle questions if provided
+            if (isset($data['questions'])) {
+                $this->syncQuestions($questionnaire, $data['questions']);
+            }
 
-        $questionnaire->refresh();
+            $questionnaire->refresh();
 
-        event(new QuestionnaireUpdated($questionnaire));
+            event(new QuestionnaireUpdated($questionnaire));
 
-        return $questionnaire;
+            return $questionnaire;
+        });
     }
 
     /**

@@ -130,6 +130,7 @@ class QuestionnaireController extends BaseController
      */
     public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): RedirectResponse
     {
+        $this->authorize('update', $questionnaire);
         $this->updateAction->execute($questionnaire, $request->validated());
 
         return redirect()

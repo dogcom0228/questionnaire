@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Listeners;
 
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Liangjin0228\Questionnaire\Events\ResponseSubmitted;
 use Liangjin0228\Questionnaire\Mail\ResponseSubmittedNotification;
 
-class SendResponseNotification
+class SendResponseNotification implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     public function __construct(
         protected Mailer $mailer
     ) {}

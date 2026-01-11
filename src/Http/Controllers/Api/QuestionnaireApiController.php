@@ -95,6 +95,7 @@ class QuestionnaireApiController extends Controller
      */
     public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): JsonResponse
     {
+        $this->authorize($request, 'update', $questionnaire);
         $questionnaire = $this->updateAction->execute($questionnaire, $request->validated());
 
         return response()->json([

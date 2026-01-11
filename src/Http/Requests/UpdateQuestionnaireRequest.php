@@ -38,6 +38,9 @@ class UpdateQuestionnaireRequest extends FormRequest
         $questionnaireId = $this->route('questionnaire')?->id;
         $allowedQuestionTypes = ['text', 'textarea', 'radio', 'checkbox', 'select', 'number', 'date'];
 
+        $questionnairesTable = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        $questionsTable = config('questionnaire.table_names.questions', 'questions');
+
         return [
             'title' => ['sometimes', 'required', 'string', 'min:3', 'max:255'],
             'description' => ['nullable', 'string', 'max:65535'],
@@ -46,7 +49,7 @@ class UpdateQuestionnaireRequest extends FormRequest
                 'string',
                 'max:255',
                 'regex:/^[a-z0-9-]+$/',
-                Rule::unique('questionnaires', 'slug')->ignore($questionnaireId),
+                Rule::unique($questionnairesTable, 'slug')->ignore($questionnaireId),
             ],
             'settings' => ['nullable', 'array', 'max:50'],
             'starts_at' => ['nullable', 'date'],
@@ -57,7 +60,7 @@ class UpdateQuestionnaireRequest extends FormRequest
 
             // Questions - Enhanced validation
             'questions' => ['nullable', 'array', 'max:100'],
-            'questions.*.id' => ['nullable', 'integer', 'exists:questions,id'],
+            'questions.*.id' => ['nullable', 'integer', Rule::exists($questionsTable, 'id')],
             'questions.*.type' => ['required_with:questions', 'string', 'in:'.implode(',', $allowedQuestionTypes)],
             'questions.*.content' => ['required_with:questions', 'string', 'min:3', 'max:1000'],
             'questions.*.description' => ['nullable', 'string', 'max:2000'],

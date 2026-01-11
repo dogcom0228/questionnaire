@@ -30,10 +30,19 @@ class StoreQuestionnaireRequest extends FormRequest
     {
         $allowedQuestionTypes = ['text', 'textarea', 'radio', 'checkbox', 'select', 'number', 'date'];
 
+        $questionnairesTable = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        $questionsTable = config('questionnaire.table_names.questions', 'questions');
+
         return [
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['nullable', 'string', 'max:65535'],
-            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9-]+$/', 'unique:questionnaires,slug'],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/^[a-z0-9-]+$/',
+                \Illuminate\Validation\Rule::unique($questionnairesTable, 'slug'),
+            ],
             'status' => ['nullable', 'string', 'in:draft,published,closed'],
             'settings' => ['nullable', 'array', 'max:50'],
             'starts_at' => ['nullable', 'date', 'after_or_equal:today'],

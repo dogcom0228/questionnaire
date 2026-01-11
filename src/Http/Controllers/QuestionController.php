@@ -22,9 +22,15 @@ class QuestionController extends BaseController
     {
         $questionnaire = $this->getQuestionnaireModel()->findOrFail($questionnaireId);
 
+        if (config('questionnaire.features.authorization', true)) {
+            if (! $request->user()?->can('update', $questionnaire)) {
+                abort(403);
+            }
+        }
+
         $data = $request->validate([
             'content' => 'required|string',
-            'type' => 'required|string|in:text,radio,checkbox,textarea',
+            'type' => 'required|string|in:text,radio,checkbox,textarea,select,number,date',
             'options' => 'nullable|array',
             'required' => 'boolean',
             'order' => 'integer',
@@ -41,6 +47,14 @@ class QuestionController extends BaseController
 
     public function destroy($questionnaireId, $questionId)
     {
+        $questionnaire = $this->getQuestionnaireModel()->findOrFail($questionnaireId);
+
+        if (config('questionnaire.features.authorization', true)) {
+            if (! request()->user()?->can('update', $questionnaire)) {
+                abort(403);
+            }
+        }
+
         $question = $this->getQuestionModel()->where('questionnaire_id', $questionnaireId)->findOrFail($questionId);
         $question->delete();
 

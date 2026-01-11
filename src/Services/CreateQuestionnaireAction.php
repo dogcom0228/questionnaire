@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Services;
 
+use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Events\QuestionnaireCreated;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
@@ -22,18 +23,20 @@ class CreateQuestionnaireAction
      */
     public function execute(array $data, ?int $userId = null): Questionnaire
     {
-        $questionnaireData = $this->prepareData($data, $userId);
+        return DB::transaction(function () use ($data, $userId) {
+            $questionnaireData = $this->prepareData($data, $userId);
 
-        $questionnaire = $this->repository->create($questionnaireData);
+            $questionnaire = $this->repository->create($questionnaireData);
 
-        // Handle questions if provided
-        if (! empty($data['questions'])) {
-            $this->createQuestions($questionnaire, $data['questions']);
-        }
+            // Handle questions if provided
+            if (! empty($data['questions'])) {
+                $this->createQuestions($questionnaire, $data['questions']);
+            }
 
-        event(new QuestionnaireCreated($questionnaire));
+            event(new QuestionnaireCreated($questionnaire));
 
-        return $questionnaire;
+            return $questionnaire;
+        });
     }
 
     /**

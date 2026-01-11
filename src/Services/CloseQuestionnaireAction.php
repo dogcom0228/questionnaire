@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Services;
 
+use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Events\QuestionnaireClosed;
 use Liangjin0228\Questionnaire\Exceptions\QuestionnaireException;
@@ -26,15 +27,17 @@ class CloseQuestionnaireAction
             throw QuestionnaireException::alreadyClosed();
         }
 
-        $this->repository->update($questionnaire, [
-            'status' => Questionnaire::STATUS_CLOSED,
-            'closed_at' => now(),
-        ]);
+        return DB::transaction(function () use ($questionnaire) {
+            $this->repository->update($questionnaire, [
+                'status' => Questionnaire::STATUS_CLOSED,
+                'closed_at' => now(),
+            ]);
 
-        $questionnaire->refresh();
+            $questionnaire->refresh();
 
-        event(new QuestionnaireClosed($questionnaire));
+            event(new QuestionnaireClosed($questionnaire));
 
-        return $questionnaire;
+            return $questionnaire;
+        });
     }
 }

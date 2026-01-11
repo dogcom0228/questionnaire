@@ -20,9 +20,10 @@ return new class extends Migration
             $table->json('metadata')->nullable(); // Additional metadata
             $table->timestamps();
 
-            $table->index('questionnaire_id');
-
-            $table->index('ip_address');
+            // Composite indexes for duplicate submission checks
+            $table->index(['questionnaire_id', 'ip_address'], 'q_ip_index');
+            $table->index(['questionnaire_id', 'respondent_type', 'respondent_id'], 'q_resp_index');
+            
             $table->index('created_at');
         });
     }
