@@ -1,8 +1,8 @@
-import vue from '@vitejs/plugin-vue';
-import laravel from 'laravel-vite-plugin';
-import { resolve } from 'path';
-import { defineConfig } from 'vite';
-import vuetify from 'vite-plugin-vuetify';
+import vue from '@vitejs/plugin-vue'
+import laravel from 'laravel-vite-plugin'
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import vuetify from 'vite-plugin-vuetify'
 
 export default defineConfig({
     // Ensure built asset URLs point to the published path under the host app
@@ -30,7 +30,10 @@ export default defineConfig({
     resolve: {
         alias: {
             // Alias for questionnaire package components
-            '@questionnaire': resolve(__dirname, './resources/js/questionnaire'),
+            '@questionnaire': resolve(
+                __dirname,
+                './resources/js/questionnaire'
+            ),
         },
     },
     build: {
@@ -51,4 +54,4 @@ export default defineConfig({
             host: 'localhost',
         },
     },
-});
+})

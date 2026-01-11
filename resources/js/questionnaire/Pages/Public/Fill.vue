@@ -136,7 +136,10 @@ const submit = () => {
   form.post(`/survey/${props.questionnaire.id}`, {
     preserveScroll: true,
     onError: (errors) => {
-      console.error('Submission errors:', errors);
+      if (import.meta.env?.DEV) {
+        // eslint-disable-next-line no-console
+        console.error('Submission errors:', errors);
+      }
     },
   });
 };

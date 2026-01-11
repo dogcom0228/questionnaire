@@ -1,0 +1,7 @@
+node_modules
+vendor
+public
+public/build
+storage
+bootstrap
+coverage
