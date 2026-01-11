@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Liangjin0228\Questionnaire\Console\InstallCommand;
 use Liangjin0228\Questionnaire\Console\ListQuestionTypesCommand;
+use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
 use Liangjin0228\Questionnaire\Contracts\ExporterInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
@@ -338,40 +343,66 @@ class QuestionnaireServiceProvider extends ServiceProvider
         $events = $this->app['events'];
 
         // Register default listeners
-        if (config('questionnaire.features.log_submissions', false)) {
-            $events->listen(
-                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
-                \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
-            );
-        }
+        $events->listen(
+            \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+            \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
+        );
 
-        if (config('questionnaire.features.email_notifications', false)) {
-            $events->listen(
-                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
-                \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
-            );
-        }
+        $events->listen(
+            \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+            \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
+        );
     }
 
     /**
      * Register action bindings.
+     *
+     * Actions are bound to their interfaces, allowing for easy replacement
+     * through configuration while maintaining type safety.
      */
     protected function registerActionBindings(): void
     {
-        $actions = [
-            'create_questionnaire' => Services\CreateQuestionnaireAction::class,
-            'update_questionnaire' => Services\UpdateQuestionnaireAction::class,
-            'publish_questionnaire' => Services\PublishQuestionnaireAction::class,
-            'close_questionnaire' => Services\CloseQuestionnaireAction::class,
-            'submit_response' => Services\SubmitResponseAction::class,
+        $actionBindings = [
+            'create_questionnaire' => [
+                'interface' => CreateQuestionnaireActionInterface::class,
+                'default' => Services\CreateQuestionnaireAction::class,
+            ],
+            'update_questionnaire' => [
+                'interface' => UpdateQuestionnaireActionInterface::class,
+                'default' => Services\UpdateQuestionnaireAction::class,
+            ],
+            'publish_questionnaire' => [
+                'interface' => PublishQuestionnaireActionInterface::class,
+                'default' => Services\PublishQuestionnaireAction::class,
+            ],
+            'close_questionnaire' => [
+                'interface' => CloseQuestionnaireActionInterface::class,
+                'default' => Services\CloseQuestionnaireAction::class,
+            ],
+            'submit_response' => [
+                'interface' => SubmitResponseActionInterface::class,
+                'default' => Services\SubmitResponseAction::class,
+            ],
         ];
 
-        foreach ($actions as $key => $class) {
+        foreach ($actionBindings as $key => $binding) {
             $this->app->bind(
-                $class,
-                fn () => $this->app->make(
-                    config("questionnaire.actions.{$key}", $class)
-                )
+                $binding['interface'],
+                function ($app) use ($key, $binding) {
+                    $concrete = config("questionnaire.actions.{$key}", $binding['default']);
+
+                    if ($concrete === $binding['default']) {
+                        return $app->build($binding['default']);
+                    }
+
+                    return $app->make($concrete);
+                }
+            );
+
+            // Also bind concrete class for backward compatibility
+            $this->app->bind(
+                $binding['default'],
+                fn ($app) => $app->make($binding['interface'])
             );
         }
     }
@@ -392,6 +423,11 @@ class QuestionnaireServiceProvider extends ServiceProvider
             DuplicateSubmissionGuardFactory::class,
             ExporterInterface::class,
             AssetManager::class,
+            CreateQuestionnaireActionInterface::class,
+            UpdateQuestionnaireActionInterface::class,
+            PublishQuestionnaireActionInterface::class,
+            CloseQuestionnaireActionInterface::class,
+            SubmitResponseActionInterface::class,
         ];
     }
 }

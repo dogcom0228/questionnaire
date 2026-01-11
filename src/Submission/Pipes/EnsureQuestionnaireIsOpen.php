@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Submission\Pipes;
 
 use Closure;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Exceptions\QuestionnaireClosedException;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Submission\SubmissionPassable;
@@ -20,7 +21,7 @@ class EnsureQuestionnaireIsOpen
 
     protected function validateStatus(Questionnaire $questionnaire): void
     {
-        if ($questionnaire->status !== Questionnaire::STATUS_PUBLISHED) {
+        if ($questionnaire->status !== QuestionnaireStatus::PUBLISHED->value) {
             throw new QuestionnaireClosedException(
                 'This questionnaire is not currently accepting responses.'
             );

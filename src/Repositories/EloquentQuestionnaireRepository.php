@@ -119,7 +119,7 @@ class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterfac
     public function getPublished(): Collection
     {
         return $this->newQuery()
-            ->where('status', Questionnaire::STATUS_PUBLISHED)
+            ->where('status', \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::PUBLISHED->value)
             ->where(function ($query) {
                 $query->whereNull('starts_at')
                     ->orWhere('starts_at', '<=', now());

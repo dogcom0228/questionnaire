@@ -59,6 +59,10 @@ class TextQuestionType extends AbstractQuestionType
             $rules[] = 'max:255';
         }
 
+        if (isset($settings['regex'])) {
+            $rules[] = 'regex:'.$settings['regex'];
+        }
+
         return $rules;
     }
 

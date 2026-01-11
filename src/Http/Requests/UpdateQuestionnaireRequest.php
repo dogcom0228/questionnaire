@@ -100,4 +100,48 @@ class UpdateQuestionnaireRequest extends FormRequest
             ]);
         }
     }
+
+    /**
+     * Convert validated data to QuestionnaireData DTO.
+     */
+    public function toDto(): \Liangjin0228\Questionnaire\DTOs\QuestionnaireData
+    {
+        $validated = $this->validated();
+        $questionnaire = $this->route('questionnaire');
+
+        // Convert questions to QuestionData DTOs
+        $questions = [];
+        if (! empty($validated['questions'])) {
+            foreach ($validated['questions'] as $question) {
+                $questions[] = \Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType(
+                    type: $question['type'],
+                    content: $question['content'],
+                    description: $question['description'] ?? null,
+                    options: $question['options'] ?? null,
+                    required: $question['required'] ?? false,
+                    order: $question['order'] ?? 0,
+                    settings: $question['settings'] ?? [],
+                    id: $question['id'] ?? null,
+                );
+            }
+        }
+
+        return new \Liangjin0228\Questionnaire\DTOs\QuestionnaireData(
+            title: $validated['title'] ?? $questionnaire->title,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $questionnaire->description,
+            slug: $validated['slug'] ?? null,
+            status: isset($validated['status']) 
+                ? (\Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status']) 
+                    ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT)
+                : \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($questionnaire->status) 
+                    ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
+            settings: $validated['settings'] ?? $questionnaire->settings,
+            starts_at: $validated['starts_at'] ?? $questionnaire->starts_at?->toDateTimeString(),
+            ends_at: $validated['ends_at'] ?? $questionnaire->ends_at?->toDateTimeString(),
+            requires_auth: $validated['requires_auth'] ?? $questionnaire->requires_auth,
+            submission_limit: $validated['submission_limit'] ?? $questionnaire->submission_limit,
+            duplicate_submission_strategy: $validated['duplicate_submission_strategy'] ?? $questionnaire->duplicate_submission_strategy ?? 'allow_multiple',
+            questions: $questions,
+        );
+    }
 }

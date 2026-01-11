@@ -1,0 +1,418 @@
+# Laravel Questionnaire Package - AI Coding Guidelines
+
+You are an expert Laravel + Vue developer working on the `liangjin0228/questionnaire` package. This package is designed for **extreme extensibility**, **config-driven architecture**, and follows **SOLID principles** with **high cohesion and low coupling**.
+
+---
+
+## 1. Core Architecture Principles
+
+### 1.1 SOLID Principles
+
+| Principle | Application |
+|-----------|-------------|
+| **Single Responsibility (SRP)** | Each class has ONE reason to change. Actions do one thing. Controllers delegate to Actions. |
+| **Open/Closed (OCP)** | Extend behavior via config, not code modification. Use interfaces for all extension points. |
+| **Liskov Substitution (LSP)** | Custom implementations must honor interface contracts completely. |
+| **Interface Segregation (ISP)** | Prefer small, focused interfaces over large ones. Split if >5 methods. |
+| **Dependency Inversion (DIP)** | Depend on abstractions (Contracts), not concrete classes. |
+
+### 1.2 Additional Principles
+
+- **KISS (Keep It Simple, Stupid)**: Prefer simple, readable solutions over clever ones.
+- **High Cohesion**: Related functionality stays together (e.g., all questionnaire logic in one module).
+- **Low Coupling**: Modules communicate through interfaces, not direct dependencies.
+- **Config-Driven**: Almost every class can be swapped via `config/questionnaire.php`.
+
+---
+
+## 2. Project Overview
+
+- **Type**: Modular Laravel Package
+- **PHP Version**: 8.2+
+- **Strictness**: All PHP files MUST declare `declare(strict_types=1);`
+- **Testing**: `./vendor/bin/phpunit`
+
+---
+
+## 3. Directory Structure
+
+```text
+src/
+├── Console/                    # Artisan commands
+├── Contracts/                  # ALL interfaces
+│   └── Actions/               # Action interfaces (DIP compliance)
+├── DTOs/                       # Data Transfer Objects - REQUIRED for Actions
+├── Enums/                      # PHP Enums - NO MAGIC STRINGS
+├── Events/                     # Domain events (*Creating, *Created, etc.)
+├── Exceptions/                 # Custom exceptions
+├── Export/                     # Export logic (CSV, Excel, etc.)
+├── Guards/                     # Duplicate submission guards
+├── Http/
+│   ├── Controllers/           # Thin controllers - delegate to Actions
+│   ├── Requests/              # Form requests with toDto() method
+│   ├── Resources/             # API resources
+│   └── Responses/             # Custom responsables
+├── Listeners/                  # Event listeners
+├── Mail/                       # Mailables
+├── Managers/                   # Laravel Manager pattern implementations
+├── Models/                     # Eloquent models (swappable via config)
+├── Policies/                   # Authorization policies
+├── QuestionTypes/              # Question type implementations
+├── Repositories/               # Data access layer
+├── Services/                   # Business logic Actions
+└── Submission/                 # Response submission pipeline
+    └── Pipes/                 # Pipeline processing steps
+
+resources/js/questionnaire/     # Vue.js frontend
+├── Components/                # Reusable UI components
+│   └── QuestionTypes/        # Question type input components
+├── Composables/               # Vue composables
+├── Layouts/                   # Inertia layouts
+├── Pages/                     # Inertia pages
+├── Utils/                     # Helper utilities
+├── index.js                   # Entry point
+└── vuetify.js                 # Vuetify configuration
+```
+
+---
+
+## 4. Backend Development Rules
+
+### 4.1 Contracts (Interfaces)
+
+**Rule**: Every swappable component MUST have an interface in `src/Contracts/`.
+
+```php
+// ✅ CORRECT: Interface for Action
+namespace Liangjin0228\Questionnaire\Contracts\Actions;
+
+interface CreateQuestionnaireActionInterface
+{
+    public function execute(QuestionnaireData $data, int|string|null $userId = null): Questionnaire;
+}
+
+// ✅ CORRECT: Implementation
+class CreateQuestionnaireAction implements CreateQuestionnaireActionInterface
+{
+    public function __construct(
+        protected QuestionnaireRepositoryInterface $repository  // Depend on interface
+    ) {}
+}
+```
+
+**Action Interfaces** (in `Contracts/Actions/`):
+- `CreateQuestionnaireActionInterface`
+- `UpdateQuestionnaireActionInterface`
+- `PublishQuestionnaireActionInterface`
+- `CloseQuestionnaireActionInterface`
+- `SubmitResponseActionInterface`
+
+### 4.2 DTOs (Data Transfer Objects)
+
+**Rule**: NEVER pass raw arrays to Actions. ALWAYS use DTOs from `src/DTOs/`.
+
+```php
+// ❌ WRONG
+$action->execute($request->validated(), $userId);
+
+// ✅ CORRECT
+$action->execute($request->toDto(), $userId);
+```
+
+**DTO Guidelines**:
+- Use `spatie/laravel-data` as base
+- Use strict Enum types, not strings
+- Provide factory methods for backward compatibility (e.g., `fromStringType()`)
+- Document all properties with PHPDoc
+
+```php
+class QuestionData extends Data
+{
+    public function __construct(
+        #[WithCast(EnumCast::class)]
+        public QuestionType $type,  // ✅ Enum, not string
+        public string $content,
+        public ?int $id = null,     // For update operations
+    ) {}
+
+    // Factory for backward compatibility
+    public static function fromStringType(string $type, ...): self
+    {
+        return new self(type: QuestionType::from($type), ...);
+    }
+}
+```
+
+### 4.3 Enums
+
+**Rule**: NEVER use magic strings. Use Enums from `src/Enums/`.
+
+```php
+// ❌ WRONG
+if ($questionnaire->status === 'published') { ... }
+
+// ✅ CORRECT
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
+
+if ($questionnaire->status === QuestionnaireStatus::PUBLISHED->value) { ... }
+```
+
+**Available Enums**:
+- `QuestionnaireStatus`: DRAFT, PUBLISHED, CLOSED, ARCHIVED
+- `QuestionType`: TEXT, TEXTAREA, RADIO, CHECKBOX, SELECT, NUMBER, DATE
+
+### 4.4 Models
+
+**Rule**: NEVER hardcode model classes. Resolve from config.
+
+```php
+// ❌ WRONG
+$questionnaire = new Questionnaire();
+
+// ✅ CORRECT
+$modelClass = config('questionnaire.models.questionnaire');
+$questionnaire = new $modelClass();
+
+// ✅ ALSO CORRECT (via Repository)
+$questionnaire = $this->repository->create($data);
+```
+
+### 4.5 Dependency Injection
+
+**Rule**: Inject interfaces, not concrete classes.
+
+```php
+// ❌ WRONG
+public function __construct(
+    protected CreateQuestionnaireAction $action  // Concrete class
+) {}
+
+// ✅ CORRECT
+public function __construct(
+    protected CreateQuestionnaireActionInterface $action  // Interface
+) {}
+```
+
+**Infinite Recursion Fix**: When binding a class to itself via config:
+```php
+$this->app->bind(SomeInterface::class, function ($app) use ($binding) {
+    $concrete = config('questionnaire.actions.some_key', $binding['default']);
+    
+    if ($concrete === $binding['default']) {
+        return $app->build($binding['default']);  // ✅ Use build(), not make()
+    }
+    
+    return $app->make($concrete);
+});
+```
+
+### 4.6 Controllers
+
+**Rule**: Controllers are THIN. They only:
+1. Validate input (via FormRequest)
+2. Convert to DTO
+3. Delegate to Action
+4. Return response
+
+```php
+public function store(StoreQuestionnaireRequest $request): RedirectResponse
+{
+    $questionnaire = $this->createAction->execute(
+        $request->toDto(),              // DTO, not array
+        $request->user()?->getKey()
+    );
+
+    return redirect()->route('questionnaire.admin.edit', $questionnaire);
+}
+```
+
+### 4.7 Actions (Service Layer)
+
+**Rule**: Actions encapsulate ONE business operation.
+
+**Standard Action Pattern**:
+```php
+class CreateQuestionnaireAction implements CreateQuestionnaireActionInterface
+{
+    public function __construct(
+        protected QuestionnaireRepositoryInterface $repository
+    ) {}
+
+    public function execute(QuestionnaireData $data, int|string|null $userId = null): Questionnaire
+    {
+        // 1. Fire "before" event
+        event(new QuestionnaireCreating($data, $userId));
+
+        // 2. Execute in transaction
+        return DB::transaction(function () use ($data, $userId) {
+            $questionnaire = $this->repository->create($this->prepareData($data, $userId));
+
+            // 3. Handle related entities
+            if ($data->hasQuestions()) {
+                $this->createQuestions($questionnaire, $data->questions);
+            }
+
+            // 4. Fire "after" event
+            event(new QuestionnaireCreated($questionnaire));
+
+            return $questionnaire;
+        });
+    }
+}
+```
+
+---
+
+## 5. Extension Points
+
+### 5.1 Config-Based Swapping
+
+All major components can be swapped via `config/questionnaire.php`:
+
+```php
+// Models
+'models' => [
+    'questionnaire' => \App\Models\CustomQuestionnaire::class,
+],
+
+// Repositories
+'bindings' => [
+    'questionnaire_repository' => \App\Repositories\CustomRepository::class,
+],
+
+// Actions
+'actions' => [
+    'create_questionnaire' => \App\Actions\CustomCreateAction::class,
+],
+
+// Question Types
+'question_types' => [
+    \App\QuestionTypes\RatingQuestionType::class,
+],
+```
+
+### 5.2 Custom Question Types
+
+Implement `QuestionTypeInterface`:
+
+```php
+class RatingQuestionType extends AbstractQuestionType
+{
+    public function getIdentifier(): string
+    {
+        return 'rating';
+    }
+
+    public function getValidationRules(Question $question): array
+    {
+        return ['integer', 'min:1', 'max:5'];
+    }
+
+    public function getVueComponent(): string
+    {
+        return 'RatingInput';
+    }
+}
+```
+
+### 5.3 Custom Guards
+
+Implement `DuplicateSubmissionGuardInterface`:
+
+```php
+class CustomGuard implements DuplicateSubmissionGuardInterface
+{
+    public function canSubmit(Questionnaire $questionnaire, Request $request): bool
+    {
+        // Custom logic
+    }
+}
+```
+
+---
+
+## 6. Testing Protocols
+
+### 6.1 Test Structure
+
+```text
+tests/
+├── Feature/       # Integration tests (Action -> DB flow)
+└── Unit/          # Isolated logic tests
+```
+
+### 6.2 Running Tests
+
+```bash
+./vendor/bin/phpunit
+./vendor/bin/phpunit --testdox
+./vendor/bin/phpunit --filter=CreateQuestionnaire
+```
+
+### 6.3 Test Guidelines
+
+- Test interfaces, not implementations
+- Mock dependencies via their interfaces
+- Use `RefreshDatabase` trait for database tests
+
+---
+
+## 7. Frontend Development (Vue + Inertia)
+
+### 7.1 Stack
+- Vue 3 (Composition API)
+- Inertia.js
+- Vuetify 3
+
+### 7.2 Rules
+- Entry point: `resources/js/questionnaire/index.js`
+- Use Vuetify components (`<v-card>`, `<v-btn>`)
+- Composables in `Composables/` directory
+- Support page overriding via `resolve` function
+
+---
+
+## 8. Code Style Checklist
+
+Before committing, verify:
+
+- [ ] `declare(strict_types=1);` at top of every PHP file
+- [ ] All new classes have corresponding interfaces (if swappable)
+- [ ] Actions receive DTOs, not arrays
+- [ ] Enums used instead of magic strings
+- [ ] Models resolved from config, not hardcoded
+- [ ] Dependencies injected via interfaces
+- [ ] Events fired before/after major operations
+- [ ] PHPDoc on all public methods
+
+---
+
+## 9. Quick Reference
+
+### Interface -> Implementation Mapping
+
+| Interface | Default Implementation |
+|-----------|----------------------|
+| `QuestionnaireRepositoryInterface` | `EloquentQuestionnaireRepository` |
+| `ResponseRepositoryInterface` | `EloquentResponseRepository` |
+| `QuestionTypeRegistryInterface` | `QuestionTypeManager` |
+| `ValidationStrategyInterface` | `DefaultValidationStrategy` |
+| `CreateQuestionnaireActionInterface` | `CreateQuestionnaireAction` |
+| `UpdateQuestionnaireActionInterface` | `UpdateQuestionnaireAction` |
+| `PublishQuestionnaireActionInterface` | `PublishQuestionnaireAction` |
+| `CloseQuestionnaireActionInterface` | `CloseQuestionnaireAction` |
+| `SubmitResponseActionInterface` | `SubmitResponseAction` |
+| `ExporterInterface` | `CsvExporter` |
+| `DuplicateSubmissionGuardInterface` | Via Factory |
+
+### Config Keys
+
+| Key | Purpose |
+|-----|---------|
+| `questionnaire.models.*` | Swap Eloquent models |
+| `questionnaire.bindings.*` | Swap repositories/services |
+| `questionnaire.actions.*` | Swap action classes |
+| `questionnaire.controllers.*` | Swap controllers |
+| `questionnaire.policies.*` | Swap authorization policies |
+| `questionnaire.question_types` | Register question types |
+| `questionnaire.duplicate_guards` | Register submission guards |

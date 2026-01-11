@@ -47,5 +47,6 @@ abstract class TestCase extends Orchestra
         ]);
 
         $app['config']->set('questionnaire.features.authorization', false);
+        $app['config']->set('auth.providers.users.model', \Illuminate\Foundation\Auth\User::class);
     }
 }

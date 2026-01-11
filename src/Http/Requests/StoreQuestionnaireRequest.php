@@ -92,4 +92,43 @@ class StoreQuestionnaireRequest extends FormRequest
             ]);
         }
     }
+
+    /**
+     * Convert validated data to QuestionnaireData DTO.
+     */
+    public function toDto(): \Liangjin0228\Questionnaire\DTOs\QuestionnaireData
+    {
+        $validated = $this->validated();
+
+        // Convert questions to QuestionData DTOs
+        $questions = [];
+        if (! empty($validated['questions'])) {
+            foreach ($validated['questions'] as $question) {
+                $questions[] = \Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType(
+                    type: $question['type'],
+                    content: $question['content'],
+                    description: $question['description'] ?? null,
+                    options: $question['options'] ?? null,
+                    required: $question['required'] ?? false,
+                    order: $question['order'] ?? 0,
+                    settings: $question['settings'] ?? [],
+                );
+            }
+        }
+
+        return new \Liangjin0228\Questionnaire\DTOs\QuestionnaireData(
+            title: $validated['title'],
+            description: $validated['description'] ?? null,
+            slug: $validated['slug'] ?? null,
+            status: \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft') 
+                ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
+            settings: $validated['settings'] ?? [],
+            starts_at: $validated['starts_at'] ?? null,
+            ends_at: $validated['ends_at'] ?? null,
+            requires_auth: $validated['requires_auth'] ?? false,
+            submission_limit: $validated['submission_limit'] ?? null,
+            duplicate_submission_strategy: $validated['duplicate_submission_strategy'] ?? 'allow_multiple',
+            questions: $questions,
+        );
+    }
 }

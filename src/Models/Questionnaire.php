@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 
 class Questionnaire extends Model
 {
@@ -23,10 +24,19 @@ class Questionnaire extends Model
         });
     }
 
+    /**
+     * @deprecated Use QuestionnaireStatus::DRAFT instead
+     */
     public const STATUS_DRAFT = 'draft';
 
+    /**
+     * @deprecated Use QuestionnaireStatus::PUBLISHED instead
+     */
     public const STATUS_PUBLISHED = 'published';
 
+    /**
+     * @deprecated Use QuestionnaireStatus::CLOSED instead
+     */
     public const STATUS_CLOSED = 'closed';
 
     /**
@@ -115,7 +125,7 @@ class Questionnaire extends Model
      */
     public function user(): BelongsTo
     {
-        $userModel = config('questionnaire.models.user', config('auth.providers.users.model', 'App\\Models\\User'));
+        $userModel = config('questionnaire.models.user') ?? config('auth.providers.users.model') ?? 'App\\Models\\User';
 
         return $this->belongsTo($userModel);
     }
@@ -125,7 +135,7 @@ class Questionnaire extends Model
      */
     public function getIsActiveAttribute(): bool
     {
-        if ($this->status !== self::STATUS_PUBLISHED) {
+        if ($this->status !== QuestionnaireStatus::PUBLISHED->value) {
             return false;
         }
 
@@ -163,7 +173,7 @@ class Questionnaire extends Model
      */
     public function scopePublished($query)
     {
-        return $query->where('status', self::STATUS_PUBLISHED);
+        return $query->where('status', QuestionnaireStatus::PUBLISHED->value);
     }
 
     /**
@@ -205,10 +215,9 @@ class Questionnaire extends Model
      */
     public static function getStatuses(): array
     {
-        return [
-            self::STATUS_DRAFT => 'Draft',
-            self::STATUS_PUBLISHED => 'Published',
-            self::STATUS_CLOSED => 'Closed',
-        ];
+        return array_combine(
+            array_map(fn (QuestionnaireStatus $status) => $status->value, QuestionnaireStatus::cases()),
+            array_map(fn (QuestionnaireStatus $status) => $status->label(), QuestionnaireStatus::cases())
+        );
     }
 }

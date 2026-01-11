@@ -9,6 +9,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
@@ -17,11 +22,6 @@ use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Services\CloseQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\PublishQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\SubmitResponseAction;
-use Liangjin0228\Questionnaire\Services\UpdateQuestionnaireAction;
 
 class QuestionnaireController extends BaseController
 {
@@ -29,11 +29,11 @@ class QuestionnaireController extends BaseController
         protected QuestionnaireRepositoryInterface $questionnaireRepository,
         protected ResponseRepositoryInterface $responseRepository,
         protected QuestionTypeRegistryInterface $questionTypeRegistry,
-        protected CreateQuestionnaireAction $createAction,
-        protected UpdateQuestionnaireAction $updateAction,
-        protected PublishQuestionnaireAction $publishAction,
-        protected CloseQuestionnaireAction $closeAction,
-        protected SubmitResponseAction $submitAction
+        protected CreateQuestionnaireActionInterface $createAction,
+        protected UpdateQuestionnaireActionInterface $updateAction,
+        protected PublishQuestionnaireActionInterface $publishAction,
+        protected CloseQuestionnaireActionInterface $closeAction,
+        protected SubmitResponseActionInterface $submitAction
     ) {}
 
     /**
@@ -81,7 +81,7 @@ class QuestionnaireController extends BaseController
     public function store(StoreQuestionnaireRequest $request): RedirectResponse
     {
         $questionnaire = $this->createAction->execute(
-            $request->validated(),
+            $request->toDto(),
             $request->user()?->getKey()
         );
 
@@ -131,7 +131,7 @@ class QuestionnaireController extends BaseController
     public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): RedirectResponse
     {
         $this->authorize('update', $questionnaire);
-        $this->updateAction->execute($questionnaire, $request->validated());
+        $this->updateAction->execute($questionnaire, $request->toDto());
 
         return redirect()
             ->route('questionnaire.admin.edit', $questionnaire)

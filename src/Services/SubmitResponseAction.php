@@ -6,6 +6,7 @@ namespace Liangjin0228\Questionnaire\Services;
 
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
+use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Models\Response;
 use Liangjin0228\Questionnaire\Submission\Pipes\CheckDuplicateSubmission;
@@ -15,7 +16,7 @@ use Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse;
 use Liangjin0228\Questionnaire\Submission\Pipes\ValidateSubmission;
 use Liangjin0228\Questionnaire\Submission\SubmissionPassable;
 
-class SubmitResponseAction
+class SubmitResponseAction implements SubmitResponseActionInterface
 {
     public function __construct(
         protected Pipeline $pipeline

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Services;
 
 use Illuminate\Support\Facades\DB;
+use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Events\QuestionnairePublished;
 use Liangjin0228\Questionnaire\Exceptions\QuestionnaireException;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
-class PublishQuestionnaireAction
+class PublishQuestionnaireAction implements PublishQuestionnaireActionInterface
 {
     public function __construct(
         protected QuestionnaireRepositoryInterface $repository
@@ -27,7 +29,7 @@ class PublishQuestionnaireAction
 
         return DB::transaction(function () use ($questionnaire) {
             $this->repository->update($questionnaire, [
-                'status' => Questionnaire::STATUS_PUBLISHED,
+                'status' => QuestionnaireStatus::PUBLISHED->value,
                 'published_at' => now(),
             ]);
 
@@ -46,11 +48,11 @@ class PublishQuestionnaireAction
      */
     protected function validate(Questionnaire $questionnaire): void
     {
-        if ($questionnaire->status === Questionnaire::STATUS_PUBLISHED) {
+        if ($questionnaire->status === QuestionnaireStatus::PUBLISHED->value) {
             throw QuestionnaireException::alreadyPublished();
         }
 
-        if ($questionnaire->status === Questionnaire::STATUS_CLOSED) {
+        if ($questionnaire->status === QuestionnaireStatus::CLOSED->value) {
             throw QuestionnaireException::cannotPublishClosed();
         }
 

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Services;
 
 use Illuminate\Support\Facades\DB;
+use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
+use Liangjin0228\Questionnaire\DTOs\QuestionnaireData;
 use Liangjin0228\Questionnaire\Events\QuestionnaireCreated;
+use Liangjin0228\Questionnaire\Events\QuestionnaireCreating;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
-class CreateQuestionnaireAction
+class CreateQuestionnaireAction implements CreateQuestionnaireActionInterface
 {
     public function __construct(
         protected QuestionnaireRepositoryInterface $repository
@@ -17,20 +20,18 @@ class CreateQuestionnaireAction
 
     /**
      * Create a new questionnaire.
-     *
-     * @param  array<string, mixed>  $data
-     * @param  int|null  $userId  The owner's user ID
      */
-    public function execute(array $data, ?int $userId = null): Questionnaire
+    public function execute(QuestionnaireData $data, int|string|null $userId = null): Questionnaire
     {
-        return DB::transaction(function () use ($data, $userId) {
-            $questionnaireData = $this->prepareData($data, $userId);
+        // Fire creating event
+        event(new QuestionnaireCreating($data, $userId));
 
-            $questionnaire = $this->repository->create($questionnaireData);
+        return DB::transaction(function () use ($data, $userId) {
+            $questionnaire = $this->repository->create($this->prepareData($data, $userId));
 
             // Handle questions if provided
-            if (! empty($data['questions'])) {
-                $this->createQuestions($questionnaire, $data['questions']);
+            if (! empty($data->questions)) {
+                $this->createQuestions($questionnaire, $data->questions);
             }
 
             event(new QuestionnaireCreated($questionnaire));
@@ -41,27 +42,21 @@ class CreateQuestionnaireAction
 
     /**
      * Prepare the questionnaire data.
-     *
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
      */
-    protected function prepareData(array $data, ?int $userId): array
+    protected function prepareData(QuestionnaireData $data, int|string|null $userId): array
     {
-        $modelClass = config('questionnaire.models.questionnaire', Questionnaire::class);
-        $status = defined("{$modelClass}::STATUS_DRAFT") ? $modelClass::STATUS_DRAFT : 'draft';
-
         return [
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-            'slug' => $data['slug'] ?? $this->generateSlug($data['title']),
-            'status' => $data['status'] ?? $status,
-            'settings' => $data['settings'] ?? [],
-            'starts_at' => $data['starts_at'] ?? null,
-            'ends_at' => $data['ends_at'] ?? null,
+            'title' => $data->title,
+            'description' => $data->description,
+            'slug' => $data->slug ?? $this->generateSlug($data->title),
+            'status' => $data->status->value,
+            'settings' => $data->settings,
+            'starts_at' => $data->starts_at,
+            'ends_at' => $data->ends_at,
             'user_id' => $userId,
-            'requires_auth' => $data['requires_auth'] ?? false,
-            'submission_limit' => $data['submission_limit'] ?? null,
-            'duplicate_submission_strategy' => $data['duplicate_submission_strategy'] ?? 'allow_multiple',
+            'requires_auth' => $data->requires_auth,
+            'submission_limit' => $data->submission_limit,
+            'duplicate_submission_strategy' => $data->duplicate_submission_strategy,
         ];
     }
 
@@ -85,19 +80,21 @@ class CreateQuestionnaireAction
     /**
      * Create questions for the questionnaire.
      *
-     * @param  array<int, array<string, mixed>>  $questions
+     * @param  array<\Liangjin0228\Questionnaire\DTOs\QuestionData>  $questions
      */
     protected function createQuestions(Questionnaire $questionnaire, array $questions): void
     {
-        foreach ($questions as $order => $questionData) {
+        foreach ($questions as $questionData) {
             $questionnaire->questions()->create([
-                'type' => $questionData['type'],
-                'content' => $questionData['content'],
-                'description' => $questionData['description'] ?? null,
-                'options' => $questionData['options'] ?? null,
-                'required' => $questionData['required'] ?? false,
-                'order' => $questionData['order'] ?? $order,
-                'settings' => $questionData['settings'] ?? [],
+                'type' => $questionData->type instanceof \Liangjin0228\Questionnaire\Enums\QuestionType 
+                    ? $questionData->type->value 
+                    : $questionData->type,
+                'content' => $questionData->content,
+                'description' => $questionData->description,
+                'options' => $questionData->options,
+                'required' => $questionData->required,
+                'order' => $questionData->order,
+                'settings' => $questionData->settings,
             ]);
         }
     }

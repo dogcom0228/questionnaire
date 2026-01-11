@@ -7,6 +7,11 @@ namespace Liangjin0228\Questionnaire\Http\Controllers\Api;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
+use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
@@ -14,11 +19,6 @@ use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Services\CloseQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\PublishQuestionnaireAction;
-use Liangjin0228\Questionnaire\Services\SubmitResponseAction;
-use Liangjin0228\Questionnaire\Services\UpdateQuestionnaireAction;
 
 class QuestionnaireApiController extends Controller
 {
@@ -26,11 +26,11 @@ class QuestionnaireApiController extends Controller
         protected QuestionnaireRepositoryInterface $questionnaireRepository,
         protected ResponseRepositoryInterface $responseRepository,
         protected QuestionTypeRegistryInterface $questionTypeRegistry,
-        protected CreateQuestionnaireAction $createAction,
-        protected UpdateQuestionnaireAction $updateAction,
-        protected PublishQuestionnaireAction $publishAction,
-        protected CloseQuestionnaireAction $closeAction,
-        protected SubmitResponseAction $submitAction
+        protected CreateQuestionnaireActionInterface $createAction,
+        protected UpdateQuestionnaireActionInterface $updateAction,
+        protected PublishQuestionnaireActionInterface $publishAction,
+        protected CloseQuestionnaireActionInterface $closeAction,
+        protected SubmitResponseActionInterface $submitAction
     ) {}
 
     /**
@@ -63,7 +63,7 @@ class QuestionnaireApiController extends Controller
     public function store(StoreQuestionnaireRequest $request): JsonResponse
     {
         $questionnaire = $this->createAction->execute(
-            $request->validated(),
+            $request->toDto(),
             $request->user()?->getKey()
         );
 
@@ -96,7 +96,7 @@ class QuestionnaireApiController extends Controller
     public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): JsonResponse
     {
         $this->authorize($request, 'update', $questionnaire);
-        $questionnaire = $this->updateAction->execute($questionnaire, $request->validated());
+        $questionnaire = $this->updateAction->execute($questionnaire, $request->toDto());
 
         return response()->json([
             'data' => $questionnaire,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 class QuestionnairePolicy
@@ -31,7 +32,7 @@ class QuestionnairePolicy
         }
 
         // Published questionnaires are viewable by anyone
-        return $questionnaire->status === Questionnaire::STATUS_PUBLISHED;
+        return $questionnaire->status === QuestionnaireStatus::PUBLISHED->value;
     }
 
     /**
@@ -68,7 +69,7 @@ class QuestionnairePolicy
             return false;
         }
 
-        return $questionnaire->status === Questionnaire::STATUS_DRAFT;
+        return $questionnaire->status === QuestionnaireStatus::DRAFT->value;
     }
 
     /**
@@ -80,7 +81,7 @@ class QuestionnairePolicy
             return false;
         }
 
-        return $questionnaire->status === Questionnaire::STATUS_PUBLISHED;
+        return $questionnaire->status === QuestionnaireStatus::PUBLISHED->value;
     }
 
     /**

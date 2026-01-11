@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Liangjin0228\Questionnaire;
 
 use Illuminate\Support\Facades\File;
