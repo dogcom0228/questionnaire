@@ -120,7 +120,7 @@ class StoreQuestionnaireRequest extends FormRequest
             title: $validated['title'],
             description: $validated['description'] ?? null,
             slug: $validated['slug'] ?? null,
-            status: \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft') 
+            status: \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft')
                 ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
             settings: $validated['settings'] ?? [],
             starts_at: $validated['starts_at'] ?? null,

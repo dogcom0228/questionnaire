@@ -342,16 +342,19 @@ class QuestionnaireServiceProvider extends ServiceProvider
     {
         $events = $this->app['events'];
 
-        // Register default listeners
-        $events->listen(
-            \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
-            \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
-        );
+        if (config('questionnaire.features.log_submissions', false)) {
+            $events->listen(
+                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
+            );
+        }
 
-        $events->listen(
-            \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
-            \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
-        );
+        if (config('questionnaire.features.email_notifications', false)) {
+            $events->listen(
+                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
+            );
+        }
     }
 
     /**
@@ -382,6 +385,14 @@ class QuestionnaireServiceProvider extends ServiceProvider
             'submit_response' => [
                 'interface' => SubmitResponseActionInterface::class,
                 'default' => Services\SubmitResponseAction::class,
+            ],
+            'add_question' => [
+                'interface' => \Liangjin0228\Questionnaire\Contracts\Actions\AddQuestionActionInterface::class,
+                'default' => Services\AddQuestionAction::class,
+            ],
+            'delete_question' => [
+                'interface' => \Liangjin0228\Questionnaire\Contracts\Actions\DeleteQuestionActionInterface::class,
+                'default' => Services\DeleteQuestionAction::class,
             ],
         ];
 
@@ -428,6 +439,8 @@ class QuestionnaireServiceProvider extends ServiceProvider
             PublishQuestionnaireActionInterface::class,
             CloseQuestionnaireActionInterface::class,
             SubmitResponseActionInterface::class,
+            \Liangjin0228\Questionnaire\Contracts\Actions\AddQuestionActionInterface::class,
+            \Liangjin0228\Questionnaire\Contracts\Actions\DeleteQuestionActionInterface::class,
         ];
     }
 }

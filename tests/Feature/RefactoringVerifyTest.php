@@ -4,7 +4,6 @@ namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
@@ -41,12 +40,10 @@ class RefactoringVerifyTest extends TestCase
 
     public function test_controller_show_returns_responsable()
     {
+        config(['questionnaire.features.authorization' => false]);
         $questionnaire = Questionnaire::create(['title' => 'Test', 'status' => 'published']);
 
         $controller = app(QuestionnaireController::class);
-
-        // Mock authorization if needed, or bypass.
-        // We might need to actAs a user or disable auth in config (TestCase does this).
 
         $response = $controller->show($questionnaire);
 

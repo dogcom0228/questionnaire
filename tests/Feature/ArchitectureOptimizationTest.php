@@ -30,7 +30,7 @@ class ArchitectureOptimizationTest extends TestCase
                     type: QuestionType::TEXT,
                     content: 'What is your name?',
                     order: 1
-                )
+                ),
             ]
         );
 

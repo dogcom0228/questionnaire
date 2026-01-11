@@ -65,4 +65,3 @@ class OnePerUserGuard implements DuplicateSubmissionGuardInterface
         return 'one_per_user';
     }
 }
-

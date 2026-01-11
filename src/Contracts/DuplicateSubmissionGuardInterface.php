@@ -29,4 +29,3 @@ interface DuplicateSubmissionGuardInterface
      */
     public function getIdentifier(): string;
 }
-

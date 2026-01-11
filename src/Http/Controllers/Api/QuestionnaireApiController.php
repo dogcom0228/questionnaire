@@ -189,8 +189,7 @@ class QuestionnaireApiController extends Controller
         try {
             $response = $this->submitAction->execute(
                 $questionnaire,
-                $request->validated(),
-                $request
+                $request->toDto()
             );
 
             return response()->json([

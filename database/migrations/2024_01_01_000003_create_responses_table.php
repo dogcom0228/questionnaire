@@ -23,7 +23,7 @@ return new class extends Migration
             // Composite indexes for duplicate submission checks
             $table->index(['questionnaire_id', 'ip_address'], 'q_ip_index');
             $table->index(['questionnaire_id', 'respondent_type', 'respondent_id'], 'q_resp_index');
-            
+
             $table->index('created_at');
         });
     }

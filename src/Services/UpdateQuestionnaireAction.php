@@ -19,8 +19,6 @@ class UpdateQuestionnaireAction implements UpdateQuestionnaireActionInterface
 
     /**
      * Update an existing questionnaire.
-     *
-     * @param  QuestionnaireData  $data
      */
     public function execute(Questionnaire $questionnaire, QuestionnaireData $data): Questionnaire
     {

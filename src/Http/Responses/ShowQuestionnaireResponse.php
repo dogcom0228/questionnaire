@@ -32,7 +32,7 @@ class ShowQuestionnaireResponse implements Responsable
             return $this->toJsonResponse();
         }
 
-        return $this->toInertiaResponse();
+        return $this->toInertiaResponse()->toResponse($request);
     }
 
     protected function toJsonResponse(): JsonResponse

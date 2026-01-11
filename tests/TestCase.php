@@ -16,6 +16,7 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
+        $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
@@ -29,6 +30,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             QuestionnaireServiceProvider::class,
+            \Inertia\ServiceProvider::class,
         ];
     }
 
@@ -39,14 +41,7 @@ abstract class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
-
-        $app['config']->set('questionnaire.features.authorization', false);
-        $app['config']->set('auth.providers.users.model', \Illuminate\Foundation\Auth\User::class);
+        // Add Inertia middleware
+        $app['router']->pushMiddlewareToGroup('web', \Liangjin0228\Questionnaire\Tests\Stubs\HandleInertiaRequests::class);
     }
 }

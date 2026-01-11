@@ -13,7 +13,7 @@ enum QuestionnaireStatus: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::DRAFT => 'Draft',
             self::PUBLISHED => 'Published',
             self::CLOSED => 'Closed',

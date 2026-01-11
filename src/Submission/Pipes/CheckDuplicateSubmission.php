@@ -38,4 +38,3 @@ class CheckDuplicateSubmission
         return $response;
     }
 }
-

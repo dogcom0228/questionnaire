@@ -45,4 +45,3 @@ class SubmitResponseAction implements SubmitResponseActionInterface
         return $passable->response;
     }
 }
-

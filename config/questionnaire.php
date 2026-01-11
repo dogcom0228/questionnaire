@@ -201,11 +201,13 @@ return [
     |
     | You can replace the default action classes with your own implementations.
     | Valid keys: create_questionnaire, update_questionnaire, publish_questionnaire,
-    | close_questionnaire, submit_response.
+    | close_questionnaire, submit_response, add_question, delete_question.
     |
     */
     'actions' => [
         // 'create_questionnaire' => \Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction::class,
+        // 'add_question' => \Liangjin0228\Questionnaire\Services\AddQuestionAction::class,
+        // 'delete_question' => \Liangjin0228\Questionnaire\Services\DeleteQuestionAction::class,
     ],
 
     /*

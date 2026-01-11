@@ -26,4 +26,3 @@ class ValidateSubmission
         return $next($passable);
     }
 }
-

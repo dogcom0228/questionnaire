@@ -63,4 +63,3 @@ class OnePerSessionGuard implements DuplicateSubmissionGuardInterface
         return self::SESSION_KEY_PREFIX.$questionnaire->id;
     }
 }
-

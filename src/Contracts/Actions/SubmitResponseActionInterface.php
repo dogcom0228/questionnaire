@@ -21,4 +21,3 @@ interface SubmitResponseActionInterface
      */
     public function execute(Questionnaire $questionnaire, SubmitResponseData $data): Response;
 }
-

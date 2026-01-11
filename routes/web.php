@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 $controller = config('questionnaire.controllers.questionnaire', \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class);
+$questionController = config('questionnaire.controllers.question', \Liangjin0228\Questionnaire\Http\Controllers\QuestionController::class);
 
 // Admin routes (require authentication)
 if (config('questionnaire.features.admin', true)) {
-    Route::prefix('admin')->name('admin.')->middleware(config('questionnaire.routes.middleware', ['web', 'auth']))->group(function () use ($controller) {
+    Route::prefix('admin')->name('admin.')->middleware(config('questionnaire.routes.middleware', ['web', 'auth']))->group(function () use ($controller, $questionController) {
         Route::get('/', [$controller, 'index'])->name('index');
         Route::get('/create', [$controller, 'create'])->name('create');
         Route::post('/', [$controller, 'store'])->name('store');
@@ -24,6 +25,10 @@ if (config('questionnaire.features.admin', true)) {
         Route::get('/{questionnaire}/edit', [$controller, 'edit'])->name('edit');
         Route::put('/{questionnaire}', [$controller, 'update'])->name('update');
         Route::delete('/{questionnaire}', [$controller, 'destroy'])->name('destroy');
+
+        // Question routes
+        Route::post('/{questionnaire}/questions', [$questionController, 'store'])->name('questions.store');
+        Route::delete('/{questionnaire}/questions/{questionId}', [$questionController, 'destroy'])->name('questions.destroy');
 
         // Status actions
         Route::post('/{questionnaire}/publish', [$controller, 'publish'])->name('publish');

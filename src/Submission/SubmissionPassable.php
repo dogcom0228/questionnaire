@@ -57,4 +57,3 @@ class SubmissionPassable
         return $this->data->ipAddress;
     }
 }
-

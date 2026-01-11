@@ -45,4 +45,3 @@ class AllowMultipleGuard implements DuplicateSubmissionGuardInterface
         return 'allow_multiple';
     }
 }
-

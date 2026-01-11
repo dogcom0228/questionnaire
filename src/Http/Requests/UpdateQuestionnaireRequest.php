@@ -130,10 +130,10 @@ class UpdateQuestionnaireRequest extends FormRequest
             title: $validated['title'] ?? $questionnaire->title,
             description: array_key_exists('description', $validated) ? $validated['description'] : $questionnaire->description,
             slug: $validated['slug'] ?? null,
-            status: isset($validated['status']) 
-                ? (\Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status']) 
+            status: isset($validated['status'])
+                ? (\Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'])
                     ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT)
-                : \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($questionnaire->status) 
+                : \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($questionnaire->status)
                     ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
             settings: $validated['settings'] ?? $questionnaire->settings,
             starts_at: $validated['starts_at'] ?? $questionnaire->starts_at?->toDateTimeString(),

@@ -61,4 +61,3 @@ class OnePerIpGuard implements DuplicateSubmissionGuardInterface
         return 'one_per_ip';
     }
 }
-

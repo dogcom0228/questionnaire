@@ -14,6 +14,12 @@ use Liangjin0228\Questionnaire\Tests\TestCase;
 
 class ResponseNotificationTest extends TestCase
 {
+    protected function getEnvironmentSetUp($app): void
+    {
+        parent::getEnvironmentSetUp($app);
+        $app['config']->set('questionnaire.features.email_notifications', true);
+    }
+
     public function test_sends_notification_email_when_feature_enabled(): void
     {
         config(['questionnaire.features.email_notifications' => true]);

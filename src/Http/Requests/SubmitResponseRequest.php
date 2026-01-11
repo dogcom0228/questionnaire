@@ -111,11 +111,16 @@ class SubmitResponseRequest extends FormRequest
      */
     public function toDto(): \Liangjin0228\Questionnaire\DTOs\SubmitResponseData
     {
+        $answers = $this->validated();
+
         return new \Liangjin0228\Questionnaire\DTOs\SubmitResponseData(
-            answers: $this->validated('answers') ?? [],
+            answers: $answers,
             userId: $this->user()?->getKey(),
             sessionId: $this->session()->getId(),
             ipAddress: $this->ip(),
+            metadata: [
+                'user_agent' => $this->userAgent(),
+            ],
         );
     }
 }

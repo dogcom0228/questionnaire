@@ -31,9 +31,6 @@ class SubmitResponseData extends Data
 
     /**
      * Get the answer for a specific question.
-     *
-     * @param  int|string  $questionId
-     * @return mixed
      */
     public function getAnswer(int|string $questionId): mixed
     {
