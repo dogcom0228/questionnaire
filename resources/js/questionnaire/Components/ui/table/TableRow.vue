@@ -2,22 +2,19 @@
     import { cn } from '@/lib/utils'
 
     const props = defineProps({
-        class: {
-            type: String,
-            default: '',
-        },
+        class: { type: String, default: '' },
     })
 </script>
 
 <template>
-    <h3
+    <tr
         :class="
             cn(
-                'text-2xl font-semibold leading-none tracking-tight',
+                'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
                 props.class
             )
         "
     >
         <slot />
-    </h3>
+    </tr>
 </template>

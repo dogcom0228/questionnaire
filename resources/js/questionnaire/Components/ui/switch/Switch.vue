@@ -1,6 +1,6 @@
 <script setup>
     import { SwitchRoot, SwitchThumb } from 'radix-vue'
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
 
     const props = defineProps({
         checked: {

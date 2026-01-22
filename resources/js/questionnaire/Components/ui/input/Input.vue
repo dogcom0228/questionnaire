@@ -1,6 +1,6 @@
 <script setup>
     import { useVModel } from '@vueuse/core'
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
 
     const props = defineProps({
         defaultValue: {

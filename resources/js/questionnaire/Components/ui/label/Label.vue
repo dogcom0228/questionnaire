@@ -1,7 +1,7 @@
 <script setup>
     import { computed } from 'vue'
     import { Label } from 'radix-vue'
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
 
     const props = defineProps({
         asChild: {

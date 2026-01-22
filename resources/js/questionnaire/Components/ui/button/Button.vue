@@ -2,7 +2,7 @@
     import { computed } from 'vue'
     import { cva } from 'class-variance-authority'
     import { Primitive } from 'radix-vue'
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
 
     const props = defineProps({
         variant: {

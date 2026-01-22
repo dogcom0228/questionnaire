@@ -2,22 +2,19 @@
     import { cn } from '@/lib/utils'
 
     const props = defineProps({
-        class: {
-            type: String,
-            default: '',
-        },
+        class: { type: String, default: '' },
     })
 </script>
 
 <template>
-    <h3
+    <th
         :class="
             cn(
-                'text-2xl font-semibold leading-none tracking-tight',
+                'h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
                 props.class
             )
         "
     >
         <slot />
-    </h3>
+    </th>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
     import { Link } from '@inertiajs/vue3'
     import { LayoutDashboard, FileText, Settings, Users } from 'lucide-vue-next'
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
     import Button from '@/questionnaire/Components/ui/button/Button.vue'
 
     const navigation = [

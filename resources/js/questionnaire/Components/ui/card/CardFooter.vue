@@ -1,5 +1,5 @@
 <script setup>
-    import { cn } from '@/questionnaire/Utils/cn'
+    import { cn } from '@/lib/utils'
 
     const props = defineProps({
         class: {

@@ -30,6 +30,7 @@ export default defineConfig({
                 __dirname,
                 './resources/js/questionnaire'
             ),
+            '@': resolve(__dirname, './resources/js'),
         },
     },
     build: {
