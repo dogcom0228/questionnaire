@@ -40,7 +40,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Liangjin0228\\Questionnaire\\Tests\\": "tests/"
+            "Liangjin0228\\Questionnaire\\Tests\\": "tests/",
+            "Liangjin0228\\Questionnaire\\Database\\Factories\\": "database/factories/"
         }
     },
     "extra": {

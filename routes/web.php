@@ -43,6 +43,9 @@ if (config('questionnaire.features.admin', true)) {
 
 // Public routes (for filling questionnaires)
 if (config('questionnaire.features.public_fill', true)) {
+    // Embed Route (Zero Config)
+    Route::get('/embed/{id}', [$controller, 'embed'])->name('embed');
+
     Route::prefix(config('questionnaire.routes.public_prefix', 'survey'))
         ->name('public.')
         ->middleware(config('questionnaire.routes.public_middleware', ['web', 'throttle:10,1']))

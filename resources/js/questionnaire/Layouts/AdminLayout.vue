@@ -18,12 +18,14 @@
                 <v-list-item
                     prepend-icon="mdi-view-dashboard"
                     title="Dashboard"
-                    :href="route('questionnaire.admin.index')"
+                    href="#"
+                    @click.prevent="navigate('questionnaire.admin.index')"
                 />
                 <v-list-item
                     prepend-icon="mdi-plus-circle"
                     title="Create Questionnaire"
-                    :href="route('questionnaire.admin.create')"
+                    href="#"
+                    @click.prevent="navigate('questionnaire.admin.create')"
                 />
             </v-list>
         </v-navigation-drawer>
@@ -51,8 +53,10 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue'
-    import { usePage } from '@inertiajs/vue3'
+    import { ref, watch } from 'vue'
+
+    const props = defineProps(['flash'])
+    const emit = defineEmits(['navigate'])
 
     const drawer = ref(false)
     const snackbar = ref({
@@ -61,37 +65,24 @@
         color: 'success',
     })
 
-    const page = usePage()
-
-    onMounted(() => {
-        // Show flash messages
-        if (page.props.flash?.success) {
+    watch(() => props.flash, (newFlash) => {
+        if (newFlash?.success) {
             snackbar.value = {
                 show: true,
-                message: page.props.flash.success,
+                message: newFlash.success,
                 color: 'success',
             }
         }
-        if (page.props.flash?.error) {
+        if (newFlash?.error) {
             snackbar.value = {
                 show: true,
-                message: page.props.flash.error,
+                message: newFlash.error,
                 color: 'error',
             }
         }
-    })
+    }, { deep: true, immediate: true })
 
-    // Helper to generate routes
-    const route = (name, params = {}) => {
-        // This is a simple implementation - in production, use ziggy or similar
-        const routes = {
-            'questionnaire.admin.index': '/questionnaire/admin',
-            'questionnaire.admin.create': '/questionnaire/admin/create',
-        }
-        let url = routes[name] || '#'
-        Object.entries(params).forEach(([key, value]) => {
-            url = url.replace(`:${key}`, value)
-        })
-        return url
+    const navigate = (name) => {
+        emit('navigate', name)
     }
 </script>

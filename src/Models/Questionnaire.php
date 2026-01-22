@@ -205,4 +205,12 @@ class Questionnaire extends Model
             array_map(fn (QuestionnaireStatus $status) => $status->label(), QuestionnaireStatus::cases())
         );
     }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return \Liangjin0228\Questionnaire\Database\Factories\QuestionnaireFactory::new();
+    }
 }

@@ -20,6 +20,7 @@ use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
+use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;
 use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
@@ -330,5 +331,27 @@ class QuestionnaireController extends BaseController
         if (! request()->user()?->can($ability, $model)) {
             abort(403);
         }
+    }
+
+    /**
+     * Display the embeddable questionnaire.
+     */
+    public function embed(string $id): \Illuminate\View\View
+    {
+        // Support fetching by ID or slug
+        $questionnaire = is_numeric($id)
+            ? $this->questionnaireRepository->find((int) $id)
+            : $this->questionnaireRepository->findBySlug($id);
+
+        if (! $questionnaire) {
+            abort(404);
+        }
+
+        $questionnaire->load('questions');
+
+        return view('questionnaire::embed', [
+            'questionnaire' => new QuestionnaireResource($questionnaire),
+            'options' => [], // Additional embed options can be passed here
+        ]);
     }
 }
