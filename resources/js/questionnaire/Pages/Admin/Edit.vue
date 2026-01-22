@@ -12,9 +12,9 @@
 <script setup>
     import { onMounted } from 'vue'
     import AdminLayout from '../../Layouts/AdminLayout.vue'
-    import Toolbox from '../../Components/Builder/Toolbox.vue'
-    import BuilderCanvas from '../../Components/Builder/BuilderCanvas.vue'
-    import PropertiesPanel from '../../Components/Builder/PropertiesPanel.vue'
+    import Toolbox from '../../Components/builder/Toolbox.vue'
+    import BuilderCanvas from '../../Components/builder/BuilderCanvas.vue'
+    import PropertiesPanel from '../../Components/builder/PropertiesPanel.vue'
     import { useBuilder } from '../../Composables/useBuilder'
 
     const props = defineProps({
