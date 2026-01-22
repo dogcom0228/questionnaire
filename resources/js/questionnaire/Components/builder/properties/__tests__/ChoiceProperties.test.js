@@ -1,24 +1,10 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import ChoiceProperties from '../ChoiceProperties.vue'
+import Input from '@/questionnaire/Components/ui/input/Input.vue'
+import Button from '@/questionnaire/Components/ui/button/Button.vue'
 
 describe('ChoiceProperties.vue', () => {
-    const VTextField = {
-        props: ['modelValue', 'label'],
-        template:
-            '<input class="v-text-field-stub" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
-    }
-
-    // Simplified VBtn stub - relies on attribute fallthrough for @click
-    const VBtn = {
-        template:
-            '<button type="button" class="v-btn-stub"><slot></slot></button>',
-    }
-
-    const VIcon = {
-        template: '<span class="v-icon-stub"><slot></slot></span>',
-    }
-
     const createWrapper = (questionData = {}) => {
         return mount(ChoiceProperties, {
             props: {
@@ -34,22 +20,16 @@ describe('ChoiceProperties.vue', () => {
                     },
                 },
             },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                    'v-btn': VBtn,
-                    'v-icon': VIcon,
-                },
-            },
         })
     }
 
     it('renders list of options', () => {
         const wrapper = createWrapper()
-        const inputs = wrapper.findAll('.v-text-field-stub')
+        const inputs = wrapper.findAllComponents(Input)
+        // Two options mean two inputs
         expect(inputs).toHaveLength(2)
-        expect(inputs[0].element.value).toBe('Option 1')
-        expect(inputs[1].element.value).toBe('Option 2')
+        expect(inputs[0].props('modelValue')).toBe('Option 1')
+        expect(inputs[1].props('modelValue')).toBe('Option 2')
     })
 
     it('initializes options array if missing', () => {
@@ -61,13 +41,6 @@ describe('ChoiceProperties.vue', () => {
 
         mount(ChoiceProperties, {
             props: { question },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                    'v-btn': VBtn,
-                    'v-icon': VIcon,
-                },
-            },
         })
 
         expect(Array.isArray(question.data.options)).toBe(true)
@@ -82,19 +55,14 @@ describe('ChoiceProperties.vue', () => {
 
         const wrapper = mount(ChoiceProperties, {
             props: { question },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                    'v-btn': VBtn,
-                    'v-icon': VIcon,
-                },
-            },
         })
 
-        // Find the add button (assuming it has text 'Add Option')
-        const addBtn = wrapper
-            .findAll('.v-btn-stub')
-            .find((w) => w.text().includes('Add Option'))
+        // Find the "Add Option" button
+        // It's the button that contains "Add Option" text
+        const buttons = wrapper.findAllComponents(Button)
+        const addBtn = buttons.find((btn) => btn.text().includes('Add Option'))
+
+        expect(addBtn).toBeDefined()
         await addBtn.trigger('click')
 
         expect(question.data.options).toHaveLength(1)
@@ -112,19 +80,18 @@ describe('ChoiceProperties.vue', () => {
 
         const wrapper = mount(ChoiceProperties, {
             props: { question },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                    'v-btn': VBtn,
-                    'v-icon': VIcon,
-                },
-            },
         })
 
-        // Find remove button
-        const removeBtns = wrapper
-            .findAll('.v-btn-stub')
-            .filter((w) => !w.text().includes('Add Option'))
+        // Find remove button (the one with sr-only text "Remove option" or just the first button that isn't Add Option)
+        // In our template, each option row has a remove button.
+        const buttons = wrapper.findAllComponents(Button)
+        // The last button is "Add Option", others are remove buttons. Or filter by icon/content.
+        // We can look for the button inside the loop.
+        const removeBtns = buttons.filter(
+            (btn) => !btn.text().includes('Add Option')
+        )
+
+        expect(removeBtns.length).toBeGreaterThan(0)
         await removeBtns[0].trigger('click')
 
         expect(question.data.options).toHaveLength(0)
@@ -141,16 +108,9 @@ describe('ChoiceProperties.vue', () => {
 
         const wrapper = mount(ChoiceProperties, {
             props: { question },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                    'v-btn': VBtn,
-                    'v-icon': VIcon,
-                },
-            },
         })
 
-        await wrapper.find('.v-text-field-stub').setValue('New')
+        await wrapper.findComponent(Input).vm.$emit('update:modelValue', 'New')
 
         expect(question.data.options[0].text).toBe('New')
         expect(question.data.options[0].value).toBe('New')

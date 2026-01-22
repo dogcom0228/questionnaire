@@ -1,13 +1,12 @@
 <template>
-    <v-card
-        class="properties-panel"
-        flat
-    >
-        <v-card-title>Properties</v-card-title>
-        <v-card-text v-if="question">
+    <Card class="properties-panel border-l-0 rounded-none h-full">
+        <CardHeader>
+            <CardTitle>Properties</CardTitle>
+        </CardHeader>
+        <CardContent v-if="question">
             <common-properties
                 :question="question"
-                class="mb-4"
+                class="mb-6 border-b pb-6"
             />
 
             <text-properties
@@ -19,14 +18,14 @@
                 v-if="isChoiceType"
                 :question="question"
             />
-        </v-card-text>
-        <v-card-text
+        </CardContent>
+        <CardContent
             v-else
-            class="text-center text-medium-emphasis mt-4"
+            class="text-center text-muted-foreground mt-4"
         >
             Select a question to edit properties
-        </v-card-text>
-    </v-card>
+        </CardContent>
+    </Card>
 </template>
 
 <script setup>
@@ -34,6 +33,12 @@
     import CommonProperties from './properties/CommonProperties.vue'
     import TextProperties from './properties/TextProperties.vue'
     import ChoiceProperties from './properties/ChoiceProperties.vue'
+    import {
+        Card,
+        CardHeader,
+        CardTitle,
+        CardContent,
+    } from '@/questionnaire/Components/ui/card'
 
     const props = defineProps({
         question: {

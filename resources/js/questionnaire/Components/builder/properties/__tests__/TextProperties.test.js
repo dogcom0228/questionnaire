@@ -1,14 +1,9 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import TextProperties from '../TextProperties.vue'
+import Input from '@/questionnaire/Components/ui/input/Input.vue'
 
 describe('TextProperties.vue', () => {
-    const VTextField = {
-        props: ['modelValue', 'label'],
-        template:
-            '<input class="v-text-field-stub" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
-    }
-
     const createWrapper = (questionData = {}) => {
         return mount(TextProperties, {
             props: {
@@ -21,22 +16,17 @@ describe('TextProperties.vue', () => {
                     },
                 },
             },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                },
-            },
         })
     }
 
     it('renders placeholder field', () => {
         const wrapper = createWrapper()
-        expect(wrapper.find('.v-text-field-stub').exists()).toBe(true)
+        expect(wrapper.findComponent(Input).exists()).toBe(true)
     })
 
     it('initializes with question data', () => {
         const wrapper = createWrapper()
-        const input = wrapper.findComponent(VTextField)
+        const input = wrapper.findComponent(Input)
         expect(input.props('modelValue')).toBe('Initial Placeholder')
     })
 
@@ -45,20 +35,17 @@ describe('TextProperties.vue', () => {
             id: 1,
             type: 'text',
             data: {
-                placeholder: '',
+                placeholder: 'Initial Placeholder',
             },
         }
 
         const wrapper = mount(TextProperties, {
             props: { question },
-            global: {
-                components: {
-                    'v-text-field': VTextField,
-                },
-            },
         })
 
-        await wrapper.find('.v-text-field-stub').setValue('New Placeholder')
+        await wrapper
+            .findComponent(Input)
+            .vm.$emit('update:modelValue', 'New Placeholder')
         expect(question.data.placeholder).toBe('New Placeholder')
     })
 })
