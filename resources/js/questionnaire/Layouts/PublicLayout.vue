@@ -30,13 +30,16 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue'
-    import { usePage } from '@inertiajs/vue3'
+    import { ref, watch } from 'vue'
 
-    defineProps({
+    const props = defineProps({
         title: {
             type: String,
             default: 'Survey',
+        },
+        flash: {
+            type: Object,
+            default: () => ({}),
         },
     })
 
@@ -46,22 +49,20 @@
         color: 'success',
     })
 
-    const page = usePage()
-
-    onMounted(() => {
-        if (page.props.flash?.success) {
+    watch(() => props.flash, (newFlash) => {
+        if (newFlash?.success) {
             snackbar.value = {
                 show: true,
-                message: page.props.flash.success,
+                message: newFlash.success,
                 color: 'success',
             }
         }
-        if (page.props.flash?.error) {
+        if (newFlash?.error) {
             snackbar.value = {
                 show: true,
-                message: page.props.flash.error,
+                message: newFlash.error,
                 color: 'error',
             }
         }
-    })
+    }, { deep: true, immediate: true })
 </script>
