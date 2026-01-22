@@ -25,8 +25,8 @@ class AssetManager
 
         $manifest = json_decode(File::get($manifestPath), true);
 
-        // Assuming the entry point is 'resources/js/app.js'
-        $entry = $manifest['resources/js/app.js'] ?? null;
+        // Assuming the entry point is 'resources/js/questionnaire/main.js'
+        $entry = $manifest['resources/js/questionnaire/main.js'] ?? null;
 
         if (! $entry) {
             return '<!-- Questionnaire entry point not found in manifest -->';

@@ -6,6 +6,7 @@
     <title>{{ config('app.name', 'Questionnaire') }}</title>
     
     <!-- Load User's Styles if they have any, or provide basic resets -->
+    @routes
     @questionnaireScripts
 </head>
 <body>

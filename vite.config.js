@@ -2,14 +2,16 @@ import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-import vuetify from 'vite-plugin-vuetify'
 
 export default defineConfig({
     // Ensure built asset URLs point to the published path under the host app
     base: '/vendor/questionnaire/',
     plugins: [
         laravel({
-            input: ['resources/js/questionnaire/main.js'],
+            input: [
+                'resources/js/questionnaire/main.js',
+                'resources/css/app.css',
+            ],
             refresh: true,
             buildDirectory: 'build',
         }),
@@ -20,9 +22,6 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        }),
-        vuetify({
-            autoImport: true,
         }),
     ],
     resolve: {
