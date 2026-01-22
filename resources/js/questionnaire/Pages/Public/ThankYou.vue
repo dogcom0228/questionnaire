@@ -1,34 +1,50 @@
 <template>
   <PublicLayout title="Thank You">
-    <v-container class="py-16">
-      <v-row justify="center">
-        <v-col cols="12" md="6" class="text-center">
-          <v-icon size="120" color="success" class="mb-4">
-            mdi-check-circle
-          </v-icon>
-          
-          <h1 class="text-h3 mb-4">Thank You!</h1>
-          
-          <p class="text-body-1 text-grey mb-8">
-            {{ message || 'Your response has been submitted successfully.' }}
-          </p>
+    <v-container class="py-8 fill-height">
+      <v-row
+        justify="center"
+        align="center"
+      >
+        <v-col
+          cols="12"
+          md="8"
+          lg="6"
+        >
+          <v-card class="text-center pa-8">
+            <v-icon
+              icon="mdi-check-circle"
+              color="success"
+              size="64"
+              class="mb-4"
+            ></v-icon>
 
-          <div class="d-flex justify-center gap-4">
-            <v-btn
-              v-if="allowAnotherResponse"
-              color="primary"
-              variant="outlined"
-              :href="fillUrl"
-            >
-              Submit Another Response
-            </v-btn>
-            <v-btn
-              href="/"
-              variant="text"
-            >
-              Back to Home
-            </v-btn>
-          </div>
+            <v-card-title class="text-h4 mb-2">
+              Thank You!
+            </v-card-title>
+
+            <v-card-text class="text-body-1">
+              <p class="mb-4">
+                {{
+                  message ||
+                  'Your response has been recorded successfully.'
+                }}
+              </p>
+
+              <div
+                v-if="allowAnotherResponse && fillUrl"
+                class="mt-6"
+              >
+                <v-btn
+                  :href="fillUrl"
+                  color="primary"
+                  variant="flat"
+                  size="large"
+                >
+                  Submit Another Response
+                </v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -37,7 +53,6 @@
 
 <script setup>
 import { computed } from 'vue';
-// Use public layout located at resources/js/questionnaire/Layouts
 import PublicLayout from '../../Layouts/PublicLayout.vue';
 
 const props = defineProps({
