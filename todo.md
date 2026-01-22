@@ -1,0 +1,4 @@
+- [x] **PropertiesPanel.vue**: Implement the switching logic to show properties based on selected question type.
+- [x] **CommonProperties.vue**: Implement Label, Description, Required fields using VTextField, VTextarea, VSwitch.
+- [x] **ChoiceProperties.vue**: Implement Option management (Add/Remove) for choice-based questions.
+- [x] **TextProperties.vue**: Implement Placeholder field for text-based questions.
