@@ -21,6 +21,7 @@
                             : undefined
                     "
                     aria-label="Question text input"
+                    class="mb-2"
                 />
             </v-col>
             <v-col
@@ -35,6 +36,7 @@
                     density="compact"
                     :disabled="disabled"
                     aria-label="Select question type"
+                    class="mb-2"
                 />
             </v-col>
         </v-row>
@@ -69,7 +71,7 @@
                     variant="outlined"
                     density="compact"
                     hide-details
-                    class="flex-grow-1"
+                    class="flex-grow-1 mr-2"
                     :disabled="disabled"
                     :aria-label="`Option ${optIndex + 1} text`"
                 />
@@ -112,6 +114,7 @@
                         density="compact"
                         :disabled="disabled"
                         aria-label="Minimum value"
+                        class="mb-2"
                     />
                 </v-col>
                 <v-col cols="6">
@@ -123,6 +126,7 @@
                         density="compact"
                         :disabled="disabled"
                         aria-label="Maximum value"
+                        class="mb-2"
                     />
                 </v-col>
             </v-row>
@@ -144,6 +148,7 @@
                         density="compact"
                         :disabled="disabled"
                         aria-label="Minimum character length"
+                        class="mb-2"
                     />
                 </v-col>
                 <v-col cols="6">
@@ -155,6 +160,7 @@
                         density="compact"
                         :disabled="disabled"
                         aria-label="Maximum character length"
+                        class="mb-2"
                     />
                 </v-col>
             </v-row>

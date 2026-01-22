@@ -49,20 +49,24 @@
         color: 'success',
     })
 
-    watch(() => props.flash, (newFlash) => {
-        if (newFlash?.success) {
-            snackbar.value = {
-                show: true,
-                message: newFlash.success,
-                color: 'success',
+    watch(
+        () => props.flash,
+        (newFlash) => {
+            if (newFlash?.success) {
+                snackbar.value = {
+                    show: true,
+                    message: newFlash.success,
+                    color: 'success',
+                }
             }
-        }
-        if (newFlash?.error) {
-            snackbar.value = {
-                show: true,
-                message: newFlash.error,
-                color: 'error',
+            if (newFlash?.error) {
+                snackbar.value = {
+                    show: true,
+                    message: newFlash.error,
+                    color: 'error',
+                }
             }
-        }
-    }, { deep: true, immediate: true })
+        },
+        { deep: true, immediate: true }
+    )
 </script>

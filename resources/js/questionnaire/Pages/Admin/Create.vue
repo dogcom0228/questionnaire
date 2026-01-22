@@ -21,7 +21,7 @@
                 ref="formRef"
             >
                 <v-row>
-                    <!-- Basic Info -->
+                    <!-- Main Content -->
                     <v-col
                         cols="12"
                         md="8"
@@ -47,19 +47,11 @@
                         </v-card>
 
                         <!-- Questions -->
-                        <v-card class="mb-4">
+                        <v-card>
                             <v-card-title
                                 class="d-flex justify-space-between align-center"
                             >
                                 <span>Questions</span>
-                                <v-btn
-                                    color="primary"
-                                    size="small"
-                                    @click="addQuestion"
-                                >
-                                    <v-icon left>mdi-plus</v-icon>
-                                    Add Question
-                                </v-btn>
                             </v-card-title>
                             <v-card-text>
                                 <v-expansion-panels v-model="openPanels">
@@ -68,6 +60,7 @@
                                         item-key="id"
                                         handle=".drag-handle"
                                         @end="updateQuestionOrder"
+                                        class="w-100"
                                     >
                                         <template #item="{ element, index }">
                                             <v-expansion-panel :value="index">
@@ -150,11 +143,22 @@
                                         to get started.
                                     </p>
                                 </div>
+
+                                <v-btn
+                                    block
+                                    variant="outlined"
+                                    color="primary"
+                                    class="mt-4 border-dashed"
+                                    @click="addQuestion"
+                                    prepend-icon="mdi-plus"
+                                >
+                                    Add Question
+                                </v-btn>
                             </v-card-text>
                         </v-card>
                     </v-col>
 
-                    <!-- Settings -->
+                    <!-- Sidebar -->
                     <v-col
                         cols="12"
                         md="4"
@@ -167,11 +171,14 @@
                                     :items="duplicateStrategyOptions"
                                     label="Duplicate Submission"
                                     variant="outlined"
+                                    class="mb-4"
                                 />
                                 <v-switch
                                     v-model="form.requires_auth"
                                     label="Require Login"
                                     color="primary"
+                                    hide-details
+                                    class="mb-4"
                                 />
                                 <v-text-field
                                     v-model.number="form.submission_limit"
@@ -181,6 +188,7 @@
                                     variant="outlined"
                                     hint="Leave empty for unlimited"
                                     persistent-hint
+                                    class="mb-4"
                                 />
                             </v-card-text>
                         </v-card>
@@ -193,25 +201,29 @@
                                     label="Start Date"
                                     type="datetime-local"
                                     variant="outlined"
+                                    class="mb-4"
                                 />
                                 <v-text-field
                                     v-model="form.ends_at"
                                     label="End Date"
                                     type="datetime-local"
                                     variant="outlined"
+                                    class="mb-4"
                                 />
                             </v-card-text>
                         </v-card>
 
-                        <v-btn
-                            type="submit"
-                            color="primary"
-                            block
-                            size="large"
-                            :loading="form.processing"
-                        >
-                            Create Questionnaire
-                        </v-btn>
+                        <div class="sticky-actions">
+                            <v-btn
+                                type="submit"
+                                color="primary"
+                                block
+                                size="large"
+                                :loading="form.processing"
+                            >
+                                Create Questionnaire
+                            </v-btn>
+                        </div>
                     </v-col>
                 </v-row>
             </v-form>

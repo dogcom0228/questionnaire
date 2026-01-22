@@ -19,14 +19,14 @@ import 'vuetify/styles'
 export const defaultTheme = {
     dark: false,
     colors: {
-        primary: '#1976D2',
-        secondary: '#424242',
-        accent: '#82B1FF',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107',
-        background: '#FFFFFF',
+        primary: '#4F46E5',
+        secondary: '#10B981',
+        accent: '#8B5CF6',
+        error: '#EF4444',
+        info: '#3B82F6',
+        success: '#22C55E',
+        warning: '#F59E0B',
+        background: '#F3F4F6',
         surface: '#FFFFFF',
     },
 }
@@ -46,6 +46,60 @@ export const defaultVuetifyConfig = {
         defaultTheme: 'light',
         themes: {
             light: defaultTheme,
+        },
+    },
+    defaults: {
+        VBtn: {
+            variant: 'flat',
+            rounded: 'lg',
+            height: '44',
+            class: 'text-capitalize font-weight-bold letter-spacing-0',
+        },
+        VCard: {
+            elevation: 2,
+            rounded: 'lg',
+        },
+        VTextField: {
+            variant: 'outlined',
+            density: 'comfortable',
+            color: 'primary',
+            hideDetails: 'auto',
+            class: 'mb-2',
+        },
+        VTextarea: {
+            variant: 'outlined',
+            density: 'comfortable',
+            color: 'primary',
+            hideDetails: 'auto',
+            class: 'mb-2',
+        },
+        VSelect: {
+            variant: 'outlined',
+            density: 'comfortable',
+            color: 'primary',
+            hideDetails: 'auto',
+            class: 'mb-2',
+        },
+        VCheckbox: {
+            color: 'primary',
+            density: 'comfortable',
+            hideDetails: 'auto',
+            class: 'mb-2',
+        },
+        VRadioGroup: {
+            color: 'primary',
+            density: 'comfortable',
+            hideDetails: 'auto',
+            class: 'mb-2',
+        },
+        VRadio: {
+            color: 'primary',
+        },
+        VSwitch: {
+            color: 'primary',
+            inset: true,
+            hideDetails: 'auto',
+            class: 'mb-2',
         },
     },
 }
@@ -88,6 +142,10 @@ export function createQuestionnaireVuetify(customConfig = {}) {
                 },
                 ...(customConfig.theme?.themes || {}),
             },
+        },
+        defaults: {
+            ...defaultVuetifyConfig.defaults,
+            ...(customConfig.defaults || {}),
         },
     }
 

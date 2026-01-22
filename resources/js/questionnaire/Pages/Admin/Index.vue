@@ -29,6 +29,7 @@
                         variant="outlined"
                         density="compact"
                         clearable
+                        class="mb-2"
                         @update:model-value="debounceSearch"
                     />
                 </v-col>
@@ -43,6 +44,7 @@
                         variant="outlined"
                         density="compact"
                         clearable
+                        class="mb-2"
                         @update:model-value="applyFilters"
                     />
                 </v-col>
@@ -56,6 +58,16 @@
                     :items-per-page="15"
                     class="elevation-1"
                 >
+                    <template #no-data>
+                        <v-empty-state
+                            icon="mdi-clipboard-text-outline"
+                            title="No questionnaires found"
+                            text="Create your first questionnaire to get started collecting responses."
+                            action-text="Create New"
+                            @click:action="router.visit(createUrl)"
+                        />
+                    </template>
+
                     <template #:[`item.status`]="{ item }">
                         <v-chip
                             :color="getStatusColor(item.status)"
@@ -81,25 +93,55 @@
                     </template>
 
                     <template #:[`item.actions`]="{ item }">
-                        <v-btn
-                            icon="mdi-eye"
-                            size="small"
-                            variant="text"
-                            :href="showUrl(item.id)"
-                        />
-                        <v-btn
-                            icon="mdi-pencil"
-                            size="small"
-                            variant="text"
-                            :href="editUrl(item.id)"
-                        />
-                        <v-btn
-                            icon="mdi-delete"
-                            size="small"
-                            variant="text"
-                            color="error"
-                            @click="confirmDelete(item)"
-                        />
+                        <v-tooltip
+                            location="top"
+                            text="View"
+                        >
+                            <template #activator="{ props }">
+                                <v-btn
+                                    v-bind="props"
+                                    icon="mdi-eye"
+                                    size="small"
+                                    variant="tonal"
+                                    color="info"
+                                    class="mr-2"
+                                    :href="showUrl(item.id)"
+                                />
+                            </template>
+                        </v-tooltip>
+
+                        <v-tooltip
+                            location="top"
+                            text="Edit"
+                        >
+                            <template #activator="{ props }">
+                                <v-btn
+                                    v-bind="props"
+                                    icon="mdi-pencil"
+                                    size="small"
+                                    variant="tonal"
+                                    color="success"
+                                    class="mr-2"
+                                    :href="editUrl(item.id)"
+                                />
+                            </template>
+                        </v-tooltip>
+
+                        <v-tooltip
+                            location="top"
+                            text="Delete"
+                        >
+                            <template #activator="{ props }">
+                                <v-btn
+                                    v-bind="props"
+                                    icon="mdi-delete"
+                                    size="small"
+                                    variant="tonal"
+                                    color="error"
+                                    @click="confirmDelete(item)"
+                                />
+                            </template>
+                        </v-tooltip>
                     </template>
                 </v-data-table>
             </v-card>
@@ -110,7 +152,14 @@
                 max-width="400"
             >
                 <v-card>
-                    <v-card-title>Confirm Delete</v-card-title>
+                    <v-card-title class="text-h5 d-flex align-center">
+                        <v-icon
+                            icon="mdi-alert"
+                            color="warning"
+                            class="mr-2"
+                        />
+                        Confirm Delete
+                    </v-card-title>
                     <v-card-text>
                         Are you sure you want to delete "{{
                             itemToDelete?.title
@@ -118,9 +167,15 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer />
-                        <v-btn @click="deleteDialog = false">Cancel</v-btn>
+                        <v-btn
+                            variant="text"
+                            @click="deleteDialog = false"
+                        >
+                            Cancel
+                        </v-btn>
                         <v-btn
                             color="error"
+                            variant="elevated"
                             @click="deleteItem"
                             :loading="deleting"
                         >

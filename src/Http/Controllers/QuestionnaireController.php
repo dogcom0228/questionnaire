@@ -56,14 +56,6 @@ class QuestionnaireController extends BaseController
             $filters
         );
 
-        \Illuminate\Support\Facades\Log::info('Questionnaire Index Data:', [
-            'user_id' => $request->user()?->getKey(),
-            'filters' => $filters,
-            'count' => $questionnaires->count(),
-            'total' => $questionnaires->total(),
-            'items' => $questionnaires->items(),
-        ]);
-
         return Inertia::render($this->resolveComponent('Admin/Index'), [
             'questionnaires' => $questionnaires,
             'filters' => $filters,
@@ -89,12 +81,6 @@ class QuestionnaireController extends BaseController
      */
     public function store(StoreQuestionnaireRequest $request): RedirectResponse
     {
-        \Illuminate\Support\Facades\Log::info('Store method called', [
-            'user' => $request->user(),
-            'user_id' => $request->user()?->getKey(),
-            'request_data' => $request->all(),
-        ]);
-
         $questionnaire = $this->createAction->execute(
             $request->toDto(),
             $request->user()?->getKey()

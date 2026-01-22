@@ -41,5 +41,5 @@ export default {
     },
     submitResponse(id, data) {
         return client.post(`/public/${id}/submit`, data)
-    }
+    },
 }

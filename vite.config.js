@@ -9,9 +9,7 @@ export default defineConfig({
     base: '/vendor/questionnaire/',
     plugins: [
         laravel({
-            input: [
-                'resources/js/questionnaire/main.js',
-            ],
+            input: ['resources/js/questionnaire/main.js'],
             refresh: true,
             buildDirectory: 'build',
         }),
