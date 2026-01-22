@@ -18,25 +18,27 @@ use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
+use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;
+use Liangjin0228\Questionnaire\Http\Resources\QuestionTypeResource;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 class QuestionnaireApiController extends Controller
 {
     public function __construct(
-        protected QuestionnaireRepositoryInterface $questionnaireRepository,
-        protected ResponseRepositoryInterface $responseRepository,
-        protected QuestionTypeRegistryInterface $questionTypeRegistry,
-        protected CreateQuestionnaireActionInterface $createAction,
-        protected UpdateQuestionnaireActionInterface $updateAction,
-        protected PublishQuestionnaireActionInterface $publishAction,
-        protected CloseQuestionnaireActionInterface $closeAction,
-        protected SubmitResponseActionInterface $submitAction
+        protected QuestionnaireRepositoryInterface ,
+        protected ResponseRepositoryInterface ,
+        protected QuestionTypeRegistryInterface ,
+        protected CreateQuestionnaireActionInterface ,
+        protected UpdateQuestionnaireActionInterface ,
+        protected PublishQuestionnaireActionInterface ,
+        protected CloseQuestionnaireActionInterface ,
+        protected SubmitResponseActionInterface 
     ) {}
 
     /**
      * Display a listing of questionnaires.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request ): JsonResponse
     {
         $filters = $request->only(['status', 'search']);
 
@@ -68,7 +70,7 @@ class QuestionnaireApiController extends Controller
         );
 
         return response()->json([
-            'data' => $questionnaire,
+            'data' => new QuestionnaireResource($questionnaire),
             'message' => 'Questionnaire created successfully.',
         ], 201);
     }
@@ -83,9 +85,9 @@ class QuestionnaireApiController extends Controller
         $questionnaire->load('questions');
 
         return response()->json([
-            'data' => $questionnaire,
+            'data' => new QuestionnaireResource($questionnaire),
             'meta' => [
-                'question_types' => $this->questionTypeRegistry->toArray(),
+                'question_types' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
             ],
         ]);
     }
@@ -99,7 +101,7 @@ class QuestionnaireApiController extends Controller
         $questionnaire = $this->updateAction->execute($questionnaire, $request->toDto());
 
         return response()->json([
-            'data' => $questionnaire,
+            'data' => new QuestionnaireResource($questionnaire),
             'message' => 'Questionnaire updated successfully.',
         ]);
     }
@@ -129,7 +131,7 @@ class QuestionnaireApiController extends Controller
             $questionnaire = $this->publishAction->execute($questionnaire);
 
             return response()->json([
-                'data' => $questionnaire,
+                'data' => new QuestionnaireResource($questionnaire),
                 'message' => 'Questionnaire published successfully.',
             ]);
         } catch (\Exception $e) {
@@ -150,7 +152,7 @@ class QuestionnaireApiController extends Controller
             $questionnaire = $this->closeAction->execute($questionnaire);
 
             return response()->json([
-                'data' => $questionnaire,
+                'data' => new QuestionnaireResource($questionnaire),
                 'message' => 'Questionnaire closed successfully.',
             ]);
         } catch (\Exception $e) {
@@ -174,9 +176,9 @@ class QuestionnaireApiController extends Controller
         $questionnaire->load('questions');
 
         return response()->json([
-            'data' => $questionnaire,
+            'data' => new QuestionnaireResource($questionnaire),
             'meta' => [
-                'question_types' => $this->questionTypeRegistry->toArray(),
+                'question_types' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
             ],
         ]);
     }
@@ -238,7 +240,7 @@ class QuestionnaireApiController extends Controller
     public function questionTypes(): JsonResponse
     {
         return response()->json([
-            'data' => $this->questionTypeRegistry->toArray(),
+            'data' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
         ]);
     }
 

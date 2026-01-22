@@ -4,7 +4,7 @@ namespace Liangjin0228\Questionnaire\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionnaireResource extends JsonResource
+class QuestionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,10 @@ class QuestionnaireResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'status' => $this->status,
-            'is_accepting_responses' => $this->is_accepting_responses,
-            'requires_auth' => $this->requires_auth,
-            'questions' => QuestionResource::collection($this->whenLoaded('questions')),
+            'content' => $this->content,
+            'type' => $this->type,
+            'required' => $this->required,
+            'settings' => $this->settings,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
