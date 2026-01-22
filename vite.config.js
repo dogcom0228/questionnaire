@@ -10,10 +10,10 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/app.js',
-                // 'resources/css/app.css',
+                'resources/js/questionnaire/main.js',
             ],
             refresh: true,
+            buildDirectory: 'build',
         }),
         vue({
             template: {
@@ -29,7 +29,6 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            // Alias for questionnaire package components
             '@questionnaire': resolve(
                 __dirname,
                 './resources/js/questionnaire'
@@ -37,21 +36,18 @@ export default defineConfig({
         },
     },
     build: {
-        // Build output for package assets
         outDir: 'public/build',
         emptyOutDir: true,
         manifest: true,
         rollupOptions: {
+            input: {
+                main: 'resources/js/questionnaire/main.js',
+            },
             output: {
-                entryFileNames: 'assets/[name]-[hash].js',
+                entryFileNames: 'assets/[name].js', // Stable name for zero-config
                 chunkFileNames: 'assets/[name]-[hash].js',
                 assetFileNames: 'assets/[name]-[hash].[ext]',
             },
-        },
-    },
-    server: {
-        hmr: {
-            host: 'localhost',
         },
     },
 })
