@@ -19,7 +19,7 @@ class InstallCommand extends Command
                             {--config : Publish configuration only}
                             {--migrations : Publish migrations only}
                             {--views : Publish views only}
-                            {--frontend : Publish frontend assets only}
+                            {--assets : Publish pre-built assets}
                             {--all : Publish all publishable assets}';
 
     /**
@@ -27,7 +27,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install the Questionnaire package';
+    protected $description = 'Install the Questionnaire package (Zero Config)';
 
     /**
      * Whether to publish all assets.
@@ -49,7 +49,7 @@ class InstallCommand extends Command
         $this->newLine();
 
         $force = $this->option('force');
-        $this->publishAll = $this->option('all') || (! $this->option('config') && ! $this->option('migrations') && ! $this->option('views') && ! $this->option('frontend'));
+        $this->publishAll = $this->option('all') || (! $this->option('config') && ! $this->option('migrations') && ! $this->option('views') && ! $this->option('assets'));
 
         // 1. Publish Configuration
         if ($this->shouldPublish('config') && ($force || $this->confirm('Do you want to publish the configuration file?', true))) {
@@ -71,9 +71,9 @@ class InstallCommand extends Command
             $this->publishViews($force);
         }
 
-        // 5. Publish Frontend Assets
-        if ($this->shouldPublish('frontend') && ($force || $this->confirm('Do you want to publish the frontend assets?', true))) {
-            $this->publishFrontend($force);
+        // 5. Publish Assets
+        if ($this->shouldPublish('assets') && ($force || $this->confirm('Do you want to publish the pre-built assets?', true))) {
+            $this->publishAssets($force);
         }
 
         $this->newLine();
@@ -131,57 +131,16 @@ class InstallCommand extends Command
     }
 
     /**
-     * Publish frontend assets.
+     * Publish assets.
      */
-    protected function publishFrontend(bool $force): void
+    protected function publishAssets(bool $force): void
     {
-        $this->info('Publishing frontend assets...');
+        $this->info('Publishing assets...');
 
-        // Publish Vue components to resources/js/vendor/questionnaire
-        $sourcePath = dirname(__DIR__, 2).'/resources/js/questionnaire';
-        $targetPath = resource_path('js/vendor/questionnaire');
-
-        if ($this->files->isDirectory($sourcePath)) {
-            if (! $force && $this->files->isDirectory($targetPath)) {
-                if (! $this->confirm("Frontend assets already exist at {$targetPath}. Overwrite?")) {
-                    $this->warn('Frontend assets not published.');
-
-                    return;
-                }
-            }
-
-            $this->files->ensureDirectoryExists($targetPath);
-            $this->files->copyDirectory($sourcePath, $targetPath);
-
-            $this->info("Frontend assets published to: {$targetPath}");
-        }
-
-        // Also publish the Vuetify config stub
-        $this->publishVuetifyConfig($force);
-
-        // Publish built assets (for immediate use without building)
         $this->call('vendor:publish', [
             '--tag' => 'questionnaire-assets',
             '--force' => $force,
         ]);
-    }
-
-    /**
-     * Publish Vuetify configuration stub.
-     */
-    protected function publishVuetifyConfig(bool $force): void
-    {
-        $sourceFile = dirname(__DIR__, 2).'/stubs/vuetify.config.js';
-        $targetFile = resource_path('js/vendor/questionnaire/vuetify.config.js');
-
-        if ($this->files->exists($sourceFile)) {
-            if (! $force && $this->files->exists($targetFile)) {
-                return;
-            }
-
-            $this->files->ensureDirectoryExists(dirname($targetFile));
-            $this->files->copy($sourceFile, $targetFile);
-        }
     }
 
     /**
@@ -199,31 +158,10 @@ class InstallCommand extends Command
         $this->line('     <fg=yellow>php artisan migrate</>');
         $this->newLine();
 
-        $this->line('  2. Configure your vite.config.js to include the questionnaire components:');
-        $this->newLine();
-        $this->line('     <fg=cyan>// vite.config.js</>');
-        $this->line('     resolve: {');
-        $this->line('       alias: {');
-        $this->line("         '@questionnaire': path.resolve(__dirname, 'resources/js/vendor/questionnaire'),");
-        $this->line('       },');
-        $this->line('     },');
+        $this->line('  2. (Optional) Customize the configuration in config/questionnaire.php');
         $this->newLine();
 
-        $this->line('  3. Configure Inertia page resolution in your app.js:');
-        $this->newLine();
-        $this->line('     <fg=cyan>// resources/js/app.js</>');
-        $this->line('     resolve: name => {');
-        $this->line('       // Check questionnaire pages first');
-        $this->line("       if (name.startsWith('Questionnaire/')) {");
-        $this->line("         const questionnairePage = name.replace('Questionnaire/', '');");
-        $this->line('         return import(`@questionnaire/Pages/${questionnairePage}.vue`);');
-        $this->line('       }');
-        $this->line('       // Fall back to your app pages');
-        $this->line('       return import(`./Pages/${name}.vue`);');
-        $this->line('     },');
-        $this->newLine();
-
-        $this->line('  4. (Optional) Customize the configuration in config/questionnaire.php');
+        $this->line('  That\'s it! No frontend configuration required.');
         $this->newLine();
 
         $this->components->bulletList([
