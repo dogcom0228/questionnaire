@@ -2,57 +2,12 @@
  * Questionnaire Package - Vue App Entry Point
  *
  * This file can be imported by the host application to register
- * the questionnaire components and Vuetify configuration.
+ * the questionnaire components.
  */
 
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, h } from 'vue'
-
-// Vuetify
-import '@mdi/font/css/materialdesignicons.css'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
-import 'vuetify/styles'
-
-/**
- * Create default Vuetify instance for the questionnaire package.
- * This can be customized by the host application.
- */
-export function createQuestionnaireVuetify(options = {}) {
-    const defaultTheme = {
-        dark: false,
-        colors: {
-            primary: '#1976D2',
-            secondary: '#424242',
-            accent: '#82B1FF',
-            error: '#FF5252',
-            info: '#2196F3',
-            success: '#4CAF50',
-            warning: '#FFC107',
-        },
-    }
-
-    return createVuetify({
-        components,
-        directives,
-        icons: {
-            defaultSet: 'mdi',
-            aliases,
-            sets: { mdi },
-        },
-        theme: {
-            defaultTheme: 'light',
-            themes: {
-                light: { ...defaultTheme, ...options.theme?.light },
-                dark: { ...(options.theme?.dark || {}) },
-            },
-        },
-        ...options,
-    })
-}
 
 /**
  * Initialize the questionnaire Inertia app.
@@ -60,9 +15,6 @@ export function createQuestionnaireVuetify(options = {}) {
  * pages directly.
  */
 export function initQuestionnaireApp(options = {}) {
-    const vuetify =
-        options.vuetify || createQuestionnaireVuetify(options.vuetifyOptions)
-
     createInertiaApp({
         // Ensure we target the questionnaire-specific root element
         id: options.id || 'questionnaire-app',
@@ -81,9 +33,7 @@ export function initQuestionnaireApp(options = {}) {
             )
         },
         setup({ el, App, props, plugin }) {
-            const app = createApp({ render: () => h(App, props) })
-                .use(plugin)
-                .use(vuetify)
+            const app = createApp({ render: () => h(App, props) }).use(plugin)
 
             // Register additional plugins from options
             if (options.plugins) {
@@ -102,19 +52,10 @@ export function initQuestionnaireApp(options = {}) {
 }
 
 // Export components for individual use
-export { default as QuestionEditor } from './Components/QuestionEditor.vue'
-export { default as QuestionRenderer } from './Components/QuestionRenderer.vue'
+// export { default as QuestionEditor } from './Components/QuestionEditor.vue'
+// export { default as QuestionRenderer } from './Components/QuestionRenderer.vue'
 export { default as AdminLayout } from './Layouts/AdminLayout.vue'
 export { default as PublicLayout } from './Layouts/PublicLayout.vue'
-
-// Export question type components
-export { default as CheckboxInput } from './Components/QuestionTypes/CheckboxInput.vue'
-export { default as DateInput } from './Components/QuestionTypes/DateInput.vue'
-export { default as NumberInput } from './Components/QuestionTypes/NumberInput.vue'
-export { default as RadioInput } from './Components/QuestionTypes/RadioInput.vue'
-export { default as SelectInput } from './Components/QuestionTypes/SelectInput.vue'
-export { default as TextareaInput } from './Components/QuestionTypes/TextareaInput.vue'
-export { default as TextInput } from './Components/QuestionTypes/TextInput.vue'
 
 // Export pages
 export { default as AdminCreate } from './Pages/Admin/Create.vue'

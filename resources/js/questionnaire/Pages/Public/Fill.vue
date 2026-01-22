@@ -1,64 +1,123 @@
 <template>
   <PublicLayout :title="questionnaire.title">
-    <v-container class="py-8">
-      <v-row justify="center">
-        <v-col cols="12" md="8" lg="6">
-          <v-card>
-            <v-card-title class="text-h5">{{ questionnaire.title }}</v-card-title>
-            <v-card-subtitle v-if="questionnaire.description">
-              {{ questionnaire.description }}
-            </v-card-subtitle>
-
-            <v-divider />
-
-            <v-form @submit.prevent="submit" ref="formRef">
-              <v-card-text>
-                <div
-                  v-for="(question, index) in questionnaire.questions"
-                  :key="question.id"
-                  :data-question-id="question.id"
-                  class="mb-6"
-                >
-                  <div class="text-subtitle-1 font-weight-bold mb-2">
-                    {{ index + 1 }}. {{ question.content }}
-                    <span v-if="question.required" class="text-error">*</span>
-                  </div>
-                  <div v-if="question.description" class="text-caption text-grey mb-2">
-                    {{ question.description }}
-                  </div>
-
-                  <QuestionRenderer
-                    v-model="form.answers[question.id]"
-                    :question="question"
-                    :error="getErrorMessage(question.id)"
+    <div class="py-8">
+      <Card class="border-t-4 border-t-primary">
+        <CardHeader>
+          <CardTitle class="text-2xl font-bold">{{ questionnaire.title }}</CardTitle>
+          <CardDescription v-if="questionnaire.description" class="text-base mt-2">
+            {{ questionnaire.description }}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form @submit.prevent="submit" class="space-y-8">
+            <div
+              v-for="(question, index) in questionnaire.questions"
+              :key="question.id"
+              :data-question-id="question.id"
+              class="space-y-4"
+            >
+              <div class="space-y-2">
+                <Label :class="{'text-destructive': getErrorMessage(question.id)}" class="text-base font-medium">
+                  {{ index + 1 }}. {{ question.content }}
+                  <span v-if="question.required" class="text-destructive">*</span>
+                </Label>
+                <div v-if="question.description" class="text-sm text-muted-foreground">
+                  {{ question.description }}
+                </div>
+                
+                <!-- Text Input -->
+                <div v-if="question.type === 'text'">
+                  <Input 
+                    v-model="form.answers[question.id]" 
+                    :placeholder="question.placeholder || 'Your answer'"
+                    :class="{'border-destructive': getErrorMessage(question.id)}"
                   />
                 </div>
-              </v-card-text>
 
-              <v-divider />
+                <!-- Multiple Choice (Radio) -->
+                <div v-else-if="question.type === 'radio'" class="space-y-2">
+                  <div 
+                    v-for="(option, optIndex) in question.options" 
+                    :key="optIndex"
+                    class="flex items-center space-x-2"
+                  >
+                    <input 
+                      type="radio" 
+                      :id="`${question.id}-${optIndex}`" 
+                      :name="`question-${question.id}`"
+                      :value="option"
+                      v-model="form.answers[question.id]"
+                      class="h-4 w-4 border-primary text-primary focus:ring-primary"
+                    />
+                    <Label :for="`${question.id}-${optIndex}`" class="font-normal cursor-pointer">
+                      {{ option }}
+                    </Label>
+                  </div>
+                </div>
 
-              <v-card-actions class="pa-4">
-                <v-spacer />
-                <v-btn
-                  type="submit"
-                  color="primary"
-                  size="large"
-                  :loading="form.processing"
-                  :disabled="!canSubmit"
-                >
-                  Submit Response
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
+                <!-- Checkbox -->
+                <div v-else-if="question.type === 'checkbox'" class="space-y-2">
+                  <div 
+                    v-for="(option, optIndex) in question.options" 
+                    :key="optIndex"
+                    class="flex items-center space-x-2"
+                  >
+                    <input 
+                      type="checkbox" 
+                      :id="`${question.id}-${optIndex}`" 
+                      :value="option"
+                      v-model="form.answers[question.id]"
+                      class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                    />
+                    <Label :for="`${question.id}-${optIndex}`" class="font-normal cursor-pointer">
+                      {{ option }}
+                    </Label>
+                  </div>
+                </div>
 
-          <!-- Progress indicator for long forms -->
-          <div v-if="questionnaire.questions.length > 5" class="mt-4 text-center text-grey">
-            Question {{ currentQuestion }} of {{ questionnaire.questions.length }}
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+                 <!-- Date Input -->
+                 <div v-else-if="question.type === 'date'">
+                  <Input 
+                    type="date"
+                    v-model="form.answers[question.id]" 
+                    :class="{'border-destructive': getErrorMessage(question.id)}"
+                  />
+                </div>
+
+                <!-- Textarea (Long Text) -->
+                 <div v-else-if="question.type === 'textarea'">
+                  <Textarea 
+                    v-model="form.answers[question.id]" 
+                    :placeholder="question.placeholder || 'Your answer'"
+                    :class="{'border-destructive': getErrorMessage(question.id)}"
+                    rows="4"
+                  />
+                </div>
+
+                <div v-if="getErrorMessage(question.id)" class="text-sm text-destructive">
+                  {{ getErrorMessage(question.id) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-6 border-t flex justify-end">
+              <Button 
+                type="submit" 
+                size="lg" 
+                :disabled="form.processing || !canSubmit"
+              >
+                {{ form.processing ? 'Submitting...' : 'Submit Response' }}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      
+      <!-- Progress indicator -->
+      <div v-if="questionnaire.questions.length > 5" class="mt-4 text-center text-sm text-muted-foreground">
+        {{ answeredCount }} of {{ questionnaire.questions.length }} questions answered
+      </div>
+    </div>
   </PublicLayout>
 </template>
 
@@ -66,9 +125,12 @@
 import { useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { validateForm } from '../../Utils/validation';
-// Use public layout located at resources/js/questionnaire/Layouts
-import QuestionRenderer from '../../Components/QuestionRenderer.vue';
 import PublicLayout from '../../Layouts/PublicLayout.vue';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../Components/ui/card';
+import { Button } from '../../Components/ui/button/index.js';
+import { Input } from '../../Components/ui/input/index.js';
+import { Label } from '../../Components/ui/label/index.js';
+import { Textarea } from '../../Components/ui/textarea';
 
 const props = defineProps({
   questionnaire: {
@@ -81,7 +143,6 @@ const props = defineProps({
   },
 });
 
-const formRef = ref(null);
 const validationErrors = ref({});
 
 // Initialize answers object with empty values
@@ -98,7 +159,15 @@ const form = useForm({
   answers: initialAnswers,
 });
 
-const currentQuestion = ref(1);
+const answeredCount = computed(() => {
+  return props.questionnaire.questions.filter(q => {
+     const answer = form.answers[q.id];
+      if (Array.isArray(answer)) {
+        return answer.length > 0;
+      }
+      return answer !== '' && answer !== null && answer !== undefined;
+  }).length;
+});
 
 const canSubmit = computed(() => {
   // Check if all required questions have answers

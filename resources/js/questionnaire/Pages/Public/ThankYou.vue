@@ -1,59 +1,37 @@
 <template>
   <PublicLayout title="Thank You">
-    <v-container class="py-8 fill-height">
-      <v-row
-        justify="center"
-        align="center"
-      >
-        <v-col
-          cols="12"
-          md="8"
-          lg="6"
-        >
-          <v-card class="text-center pa-8">
-            <v-icon
-              icon="mdi-check-circle"
-              color="success"
-              size="64"
-              class="mb-4"
-            ></v-icon>
+    <div class="py-8 flex items-center justify-center min-h-[50vh]">
+      <Card class="w-full max-w-lg text-center p-8">
+        <div class="flex justify-center mb-6">
+          <div class="rounded-full bg-green-100 p-3">
+            <CheckCircle class="h-16 w-16 text-green-600" />
+          </div>
+        </div>
+        
+        <h1 class="text-3xl font-bold mb-2">Thank You!</h1>
+        
+        <p class="text-lg text-muted-foreground mb-8">
+          {{ message || 'Your response has been recorded successfully.' }}
+        </p>
 
-            <v-card-title class="text-h4 mb-2">
-              Thank You!
-            </v-card-title>
-
-            <v-card-text class="text-body-1">
-              <p class="mb-4">
-                {{
-                  message ||
-                  'Your response has been recorded successfully.'
-                }}
-              </p>
-
-              <div
-                v-if="allowAnotherResponse && fillUrl"
-                class="mt-6"
-              >
-                <v-btn
-                  :href="fillUrl"
-                  color="primary"
-                  variant="flat"
-                  size="large"
-                >
-                  Submit Another Response
-                </v-btn>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+        <div v-if="allowAnotherResponse && fillUrl">
+          <a :href="fillUrl">
+            <Button size="lg">
+              Submit Another Response
+            </Button>
+          </a>
+        </div>
+      </Card>
+    </div>
   </PublicLayout>
 </template>
 
 <script setup>
 import { computed } from 'vue';
+import { CheckCircle } from 'lucide-vue-next';
 import PublicLayout from '../../Layouts/PublicLayout.vue';
+import { Card } from '../../Components/ui/card';
+import { Button } from '../../Components/ui/button';
 
 const props = defineProps({
   questionnaire: {

@@ -1,36 +1,15 @@
 <template>
-    <v-app>
-        <v-app-bar
-            color="primary"
-            density="compact"
-        >
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
-        </v-app-bar>
-
-        <v-main>
-            <slot />
-        </v-main>
-
-        <v-snackbar
-            v-model="snackbar.show"
-            :color="snackbar.color"
-            :timeout="3000"
-        >
-            {{ snackbar.message }}
-            <template #actions>
-                <v-btn
-                    variant="text"
-                    @click="snackbar.show = false"
-                >
-                    Close
-                </v-btn>
-            </template>
-        </v-snackbar>
-    </v-app>
+    <div class="min-h-screen bg-muted/30 py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+            <main>
+                <slot />
+            </main>
+        </div>
+    </div>
 </template>
 
 <script setup>
-    import { ref, watch } from 'vue'
+    import { watch } from 'vue'
 
     const props = defineProps({
         title: {
@@ -43,28 +22,16 @@
         },
     })
 
-    const snackbar = ref({
-        show: false,
-        message: '',
-        color: 'success',
-    })
-
+    // We can implement a toast notification here later if needed
+    // For now we just watch for flash messages
     watch(
         () => props.flash,
         (newFlash) => {
             if (newFlash?.success) {
-                snackbar.value = {
-                    show: true,
-                    message: newFlash.success,
-                    color: 'success',
-                }
+                console.log('Success:', newFlash.success)
             }
             if (newFlash?.error) {
-                snackbar.value = {
-                    show: true,
-                    message: newFlash.error,
-                    color: 'error',
-                }
+                console.error('Error:', newFlash.error)
             }
         },
         { deep: true, immediate: true }

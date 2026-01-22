@@ -1,83 +1,11 @@
 {
-  "resources/js/questionnaire/Components/QuestionTypes/CheckboxInput.vue": {
-    "file": "assets/CheckboxInput-Bc8G7T1i.js",
-    "name": "CheckboxInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/CheckboxInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/DateInput.vue": {
-    "file": "assets/DateInput-LCsiroLF.js",
-    "name": "DateInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/DateInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/NumberInput.vue": {
-    "file": "assets/NumberInput-Bf5NiEww.js",
-    "name": "NumberInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/NumberInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/RadioInput.vue": {
-    "file": "assets/RadioInput-fFKu-1tv.js",
-    "name": "RadioInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/RadioInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/SelectInput.vue": {
-    "file": "assets/SelectInput-CbvK6Ofe.js",
-    "name": "SelectInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/SelectInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/TextInput.vue": {
-    "file": "assets/TextInput-CFBVDGhf.js",
-    "name": "TextInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/TextInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
-  "resources/js/questionnaire/Components/QuestionTypes/TextareaInput.vue": {
-    "file": "assets/TextareaInput-JtuD4N-c.js",
-    "name": "TextareaInput",
-    "src": "resources/js/questionnaire/Components/QuestionTypes/TextareaInput.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/questionnaire/main.js"
-    ]
-  },
   "resources/js/questionnaire/main.js": {
     "file": "assets/main.js",
     "name": "main",
     "src": "resources/js/questionnaire/main.js",
     "isEntry": true,
-    "dynamicImports": [
-      "resources/js/questionnaire/Components/QuestionTypes/TextInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/TextareaInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/RadioInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/CheckboxInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/SelectInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/NumberInput.vue",
-      "resources/js/questionnaire/Components/QuestionTypes/DateInput.vue"
-    ],
     "css": [
-      "assets/main-DX-SRFk1.css"
+      "assets/main-BmAR14k5.css"
     ]
   }
 }
