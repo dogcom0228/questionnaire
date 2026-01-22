@@ -25,20 +25,20 @@ use Liangjin0228\Questionnaire\Models\Questionnaire;
 class QuestionnaireApiController extends Controller
 {
     public function __construct(
-        protected QuestionnaireRepositoryInterface ,
-        protected ResponseRepositoryInterface ,
-        protected QuestionTypeRegistryInterface ,
-        protected CreateQuestionnaireActionInterface ,
-        protected UpdateQuestionnaireActionInterface ,
-        protected PublishQuestionnaireActionInterface ,
-        protected CloseQuestionnaireActionInterface ,
-        protected SubmitResponseActionInterface 
+        protected QuestionnaireRepositoryInterface $questionnaireRepository,
+        protected ResponseRepositoryInterface $responseRepository,
+        protected QuestionTypeRegistryInterface $questionTypeRegistry,
+        protected CreateQuestionnaireActionInterface $createAction,
+        protected UpdateQuestionnaireActionInterface $updateAction,
+        protected PublishQuestionnaireActionInterface $publishAction,
+        protected CloseQuestionnaireActionInterface $closeAction,
+        protected SubmitResponseActionInterface $submitAction
     ) {}
 
     /**
      * Display a listing of questionnaires.
      */
-    public function index(Request ): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $filters = $request->only(['status', 'search']);
 

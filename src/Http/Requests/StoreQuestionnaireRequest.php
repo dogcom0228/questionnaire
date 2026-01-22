@@ -93,6 +93,16 @@ class StoreQuestionnaireRequest extends FormRequest
         }
     }
 
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        \Illuminate\Support\Facades\Log::error('Validation failed for StoreQuestionnaireRequest', [
+            'errors' => $validator->errors()->toArray(),
+            'input' => $this->all(),
+        ]);
+
+        parent::failedValidation($validator);
+    }
+
     /**
      * Convert validated data to QuestionnaireData DTO.
      */
