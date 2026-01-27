@@ -38,9 +38,5 @@ abstract class TestCase extends Orchestra
      *
      * @param  \Illuminate\Foundation\Application  $app
      */
-    protected function getEnvironmentSetUp($app): void
-    {
-        // Add Inertia middleware
-        $app['router']->pushMiddlewareToGroup('web', \Liangjin0228\Questionnaire\Tests\Stubs\HandleInertiaRequests::class);
-    }
+    protected function getEnvironmentSetUp($app): void {}
 }
