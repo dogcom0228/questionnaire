@@ -15,7 +15,7 @@ class QuestionTypeResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this['id'] ?? $this->resource['id'], // Handle array or object
+            'id' => $this['identifier'] ?? $this->resource['identifier'],
             'name' => $this['name'] ?? $this->resource['name'],
             'description' => $this['description'] ?? $this->resource['description'],
             'icon' => $this['icon'] ?? $this->resource['icon'],

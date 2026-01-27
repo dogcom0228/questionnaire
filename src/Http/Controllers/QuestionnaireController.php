@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\Http\Controllers;
 
-use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response as InertiaResponse;
+use Illuminate\Routing\Controller;
 use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
@@ -21,10 +19,10 @@ use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;
-use Liangjin0228\Questionnaire\Http\Responses\ShowQuestionnaireResponse;
+use Liangjin0228\Questionnaire\Http\Resources\QuestionTypeResource;
 use Liangjin0228\Questionnaire\Models\Questionnaire;
 
-class QuestionnaireController extends BaseController
+class QuestionnaireController extends Controller
 {
     public function __construct(
         protected QuestionnaireRepositoryInterface $questionnaireRepository,
@@ -40,318 +38,231 @@ class QuestionnaireController extends BaseController
     /**
      * Display a listing of questionnaires.
      */
-    public function index(Request $request): InertiaResponse
+    public function index(Request $request): JsonResponse
     {
-        $this->setRootView();
-
         $filters = $request->only(['status', 'search']);
 
-        // If authorization is enabled, filter by user
         if (config('questionnaire.features.authorization', true) && $request->user()) {
             $filters['user_id'] = $request->user()->getKey();
         }
 
         $questionnaires = $this->questionnaireRepository->paginate(
-            config('questionnaire.pagination.per_page', 15),
+            (int) $request->input('per_page', 15),
             $filters
         );
 
-        return Inertia::render($this->resolveComponent('Admin/Index'), [
-            'questionnaires' => $questionnaires,
-            'filters' => $filters,
-            'statuses' => Questionnaire::getStatuses(),
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new questionnaire.
-     */
-    public function create(): InertiaResponse
-    {
-        $this->setRootView();
-
-        return Inertia::render($this->resolveComponent('Admin/Create'), [
-            'questionTypes' => $this->questionTypeRegistry->toArray(),
-            'duplicateStrategies' => $this->getDuplicateStrategies(),
+        return response()->json([
+            'data' => $questionnaires,
+            'meta' => [
+                'statuses' => Questionnaire::getStatuses(),
+            ],
         ]);
     }
 
     /**
      * Store a newly created questionnaire.
      */
-    public function store(StoreQuestionnaireRequest $request): RedirectResponse
+    public function store(StoreQuestionnaireRequest $request): JsonResponse
     {
         $questionnaire = $this->createAction->execute(
             $request->toDto(),
             $request->user()?->getKey()
         );
 
-        return redirect()
-            ->route('questionnaire.admin.edit', $questionnaire)
-            ->with('success', 'Questionnaire created successfully.');
+        return response()->json([
+            'data' => new QuestionnaireResource($questionnaire),
+            'message' => 'Questionnaire created successfully.',
+        ], 201);
     }
 
     /**
-     * Display the specified questionnaire (admin view).
+     * Display the specified questionnaire.
      */
-    public function show(Questionnaire $questionnaire): Responsable
+    public function show(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->setRootView();
-        $this->authorize('view', $questionnaire);
+        $this->authorize($request, 'view', $questionnaire);
 
         $questionnaire->load('questions');
 
-        return new ShowQuestionnaireResponse(
-            $questionnaire,
-            $this->responseRepository->getStatistics($questionnaire),
-            $this->questionTypeRegistry->toArray(),
-            $this->resolveComponent('Admin/Show')
-        );
-    }
-
-    /**
-     * Show the form for editing the questionnaire.
-     */
-    public function edit(Questionnaire $questionnaire): InertiaResponse
-    {
-        $this->setRootView();
-        $this->authorize('update', $questionnaire);
-
-        $questionnaire->load('questions');
-
-        return Inertia::render($this->resolveComponent('Admin/Edit'), [
-            'questionnaire' => $questionnaire,
-            'questionTypes' => $this->questionTypeRegistry->toArray(),
-            'duplicateStrategies' => $this->getDuplicateStrategies(),
+        return response()->json([
+            'data' => new QuestionnaireResource($questionnaire),
+            'meta' => [
+                'question_types' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
+            ],
         ]);
     }
 
     /**
      * Update the specified questionnaire.
      */
-    public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): RedirectResponse
+    public function update(UpdateQuestionnaireRequest $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->authorize('update', $questionnaire);
-        $this->updateAction->execute($questionnaire, $request->toDto());
+        $this->authorize($request, 'update', $questionnaire);
+        $questionnaire = $this->updateAction->execute($questionnaire, $request->toDto());
 
-        return redirect()
-            ->route('questionnaire.admin.edit', $questionnaire)
-            ->with('success', 'Questionnaire updated successfully.');
+        return response()->json([
+            'data' => new QuestionnaireResource($questionnaire),
+            'message' => 'Questionnaire updated successfully.',
+        ]);
     }
 
     /**
      * Remove the specified questionnaire.
      */
-    public function destroy(Questionnaire $questionnaire): RedirectResponse
+    public function destroy(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->authorize('delete', $questionnaire);
+        $this->authorize($request, 'delete', $questionnaire);
 
         $this->questionnaireRepository->delete($questionnaire);
 
-        return redirect()
-            ->route('questionnaire.admin.index')
-            ->with('success', 'Questionnaire deleted successfully.');
+        return response()->json([
+            'message' => 'Questionnaire deleted successfully.',
+        ]);
     }
 
     /**
      * Publish the questionnaire.
      */
-    public function publish(Questionnaire $questionnaire): RedirectResponse
+    public function publish(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->authorize('publish', $questionnaire);
+        $this->authorize($request, 'publish', $questionnaire);
 
         try {
-            $this->publishAction->execute($questionnaire);
+            $questionnaire = $this->publishAction->execute($questionnaire);
 
-            return redirect()
-                ->back()
-                ->with('success', 'Questionnaire published successfully.');
+            return response()->json([
+                'data' => new QuestionnaireResource($questionnaire),
+                'message' => 'Questionnaire published successfully.',
+            ]);
         } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', $e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
         }
     }
 
     /**
      * Close the questionnaire.
      */
-    public function close(Questionnaire $questionnaire): RedirectResponse
+    public function close(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->authorize('close', $questionnaire);
+        $this->authorize($request, 'close', $questionnaire);
 
         try {
-            $this->closeAction->execute($questionnaire);
+            $questionnaire = $this->closeAction->execute($questionnaire);
 
-            return redirect()
-                ->back()
-                ->with('success', 'Questionnaire closed successfully.');
+            return response()->json([
+                'data' => new QuestionnaireResource($questionnaire),
+                'message' => 'Questionnaire closed successfully.',
+            ]);
         } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', $e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
         }
     }
 
     /**
-     * Display the public fill form.
+     * Get public questionnaire for filling.
      */
-    public function fill(Request $request, Questionnaire $questionnaire): InertiaResponse|RedirectResponse
+    public function public(Questionnaire $questionnaire): JsonResponse
     {
-        $this->setRootView();
-
-        // Check if questionnaire is active
         if (! $questionnaire->is_accepting_responses) {
-            return redirect()
-                ->route('questionnaire.public.closed', $questionnaire)
-                ->with('error', 'This questionnaire is not accepting responses.');
-        }
-
-        // Check authentication requirement
-        if ($questionnaire->requires_auth && ! $request->user()) {
-            return redirect()
-                ->route('login')
-                ->with('error', 'Please login to fill this questionnaire.');
+            return response()->json([
+                'message' => 'This questionnaire is not accepting responses.',
+            ], 403);
         }
 
         $questionnaire->load('questions');
 
-        return Inertia::render($this->resolveComponent('Public/Fill'), [
-            'questionnaire' => $questionnaire,
-            'questionTypes' => $this->questionTypeRegistry->toArray(),
+        return response()->json([
+            'data' => new QuestionnaireResource($questionnaire),
+            'meta' => [
+                'question_types' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
+            ],
         ]);
     }
 
     /**
      * Submit a response to the questionnaire.
      */
-    public function submit(SubmitResponseRequest $request, Questionnaire $questionnaire): RedirectResponse
+    public function submit(SubmitResponseRequest $request, Questionnaire $questionnaire): JsonResponse
     {
+        if (! $questionnaire->is_accepting_responses) {
+            return response()->json([
+                'message' => 'This questionnaire is not accepting responses.',
+            ], 403);
+        }
+
         try {
-            $this->submitAction->execute(
+            $response = $this->submitAction->execute(
                 $questionnaire,
                 $request->toDto()
             );
 
-            return redirect()
-                ->route('questionnaire.public.thankyou', $questionnaire)
-                ->with('success', 'Thank you for your response!');
+            return response()->json([
+                'data' => $response,
+                'message' => 'Response submitted successfully.',
+            ], 201);
         } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', $e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
         }
     }
 
     /**
-     * Display the thank you page after submission.
+     * Get responses for a questionnaire.
      */
-    public function thankyou(Questionnaire $questionnaire): InertiaResponse
+    public function responses(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $this->setRootView();
-
-        return Inertia::render($this->resolveComponent('Public/ThankYou'), [
-            'questionnaire' => $questionnaire,
-        ]);
-    }
-
-    /**
-     * Display the closed questionnaire page.
-     */
-    public function closed(Questionnaire $questionnaire): InertiaResponse
-    {
-        $this->setRootView();
-
-        return Inertia::render($this->resolveComponent('Public/Closed'), [
-            'questionnaire' => $questionnaire,
-        ]);
-    }
-
-    /**
-     * Display responses for a questionnaire.
-     */
-    public function responses(Questionnaire $questionnaire): InertiaResponse
-    {
-        $this->setRootView();
-        $this->authorize('viewResponses', $questionnaire);
+        $this->authorize($request, 'viewResponses', $questionnaire);
 
         $responses = $this->responseRepository->paginateForQuestionnaire(
             $questionnaire,
-            config('questionnaire.pagination.per_page', 15)
+            (int) $request->input('per_page', 15)
         );
 
-        return Inertia::render($this->resolveComponent('Admin/Responses'), [
-            'questionnaire' => $questionnaire,
-            'responses' => $responses,
-            'questionTypes' => $this->questionTypeRegistry->toArray(),
+        return response()->json([
+            'data' => $responses,
         ]);
     }
 
     /**
-     * Set the Inertia root view.
+     * Get statistics for a questionnaire.
      */
-    protected function setRootView(): void
+    public function statistics(Request $request, Questionnaire $questionnaire): JsonResponse
     {
-        $rootView = config('questionnaire.ui.root_view', 'questionnaire::app');
-        Inertia::setRootView($rootView);
+        $this->authorize($request, 'viewResponses', $questionnaire);
+
+        return response()->json([
+            'data' => $this->responseRepository->getStatistics($questionnaire),
+        ]);
     }
 
     /**
-     * Resolve component path (allows host app to override).
+     * Get available question types.
      */
-    protected function resolveComponent(string $component): string
+    public function questionTypes(): JsonResponse
     {
-        $prefix = config('questionnaire.ui.component_prefix', 'Questionnaire/');
-
-        return $prefix.$component;
+        return response()->json([
+            'data' => QuestionTypeResource::collection($this->questionTypeRegistry->toArray()),
+        ]);
     }
 
     /**
-     * Get available duplicate submission strategies.
+     * Authorize an action.
      *
-     * @return array<string, string>
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
-    protected function getDuplicateStrategies(): array
-    {
-        return \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::toArray();
-    }
-
-    /**
-     * Authorize an action (wrapper for policy).
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    protected function authorize(string $ability, $model): void
+    protected function authorize(Request $request, string $ability, $model): void
     {
         if (! config('questionnaire.features.authorization', true)) {
             return;
         }
 
-        if (! request()->user()?->can($ability, $model)) {
+        if (! $request->user()?->can($ability, $model)) {
             abort(403);
         }
-    }
-
-    /**
-     * Display the embeddable questionnaire.
-     */
-    public function embed(string $id): \Illuminate\View\View
-    {
-        // Support fetching by ID or slug
-        $questionnaire = is_numeric($id)
-            ? $this->questionnaireRepository->find((int) $id)
-            : $this->questionnaireRepository->findBySlug($id);
-
-        if (! $questionnaire) {
-            abort(404);
-        }
-
-        $questionnaire->load('questions');
-
-        return view('questionnaire::embed', [
-            'questionnaire' => new QuestionnaireResource($questionnaire),
-            'options' => [], // Additional embed options can be passed here
-        ]);
     }
 }
