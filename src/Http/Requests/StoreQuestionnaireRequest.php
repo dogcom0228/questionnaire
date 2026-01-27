@@ -137,9 +137,9 @@ class StoreQuestionnaireRequest extends FormRequest
             ends_at: $validated['ends_at'] ?? null,
             requires_auth: $validated['requires_auth'] ?? false,
             submission_limit: $validated['submission_limit'] ?? null,
-            duplicate_submission_strategy: \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::tryFrom(
+            duplicate_submission_strategy: \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy::tryFrom(
                 $validated['duplicate_submission_strategy'] ?? 'allow_multiple'
-            ) ?? \Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy::ALLOW_MULTIPLE,
+            ) ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy::ALLOW_MULTIPLE,
             questions: $questions,
         );
     }

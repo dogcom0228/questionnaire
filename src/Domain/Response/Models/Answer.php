@@ -68,7 +68,10 @@ class Answer extends Model
             return (string) $this->value;
         }
 
-        $handler = $question->getTypeHandler();
+        // Use the new strategy via facade or container
+        $strategy = app(\Liangjin0228\Questionnaire\Domain\Question\Strategies\QuestionTypeStrategy::class);
+        $handler = $strategy->getHandler($question);
+
         if (! $handler) {
             return (string) $this->value;
         }

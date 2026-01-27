@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\DTOs;
 
-use Liangjin0228\Questionnaire\Enums\QuestionType;
+use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\Data;

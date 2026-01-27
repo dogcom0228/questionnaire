@@ -86,7 +86,7 @@ class CreateQuestionnaireAction implements CreateQuestionnaireActionInterface
     {
         foreach ($questions as $questionData) {
             $questionnaire->questions()->create([
-                'type' => $questionData->type instanceof \Liangjin0228\Questionnaire\Enums\QuestionType
+                'type' => $questionData->type instanceof \Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType
                     ? $questionData->type->value
                     : $questionData->type,
                 'content' => $questionData->content,

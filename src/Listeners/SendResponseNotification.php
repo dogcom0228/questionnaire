@@ -7,7 +7,7 @@ namespace Liangjin0228\Questionnaire\Listeners;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Liangjin0228\Questionnaire\Events\ResponseSubmitted;
+use Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted;
 use Liangjin0228\Questionnaire\Mail\ResponseSubmittedNotification;
 
 class SendResponseNotification implements ShouldQueue

@@ -6,9 +6,9 @@ namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
-use Liangjin0228\Questionnaire\Enums\QuestionType;
+use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
 use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Tests\TestCase;
 

@@ -3,13 +3,13 @@
 namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Support\Facades\Event;
+use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Events\QuestionnaireCreated;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Events\QuestionnaireCreating;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\DTOs\QuestionData;
 use Liangjin0228\Questionnaire\DTOs\QuestionnaireData;
-use Liangjin0228\Questionnaire\Enums\QuestionType;
 use Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction;
 use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
 use Liangjin0228\Questionnaire\Tests\TestCase;

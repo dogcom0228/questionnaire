@@ -76,15 +76,7 @@ class Question extends Model
         return $this->hasMany($answerModel);
     }
 
-    /**
-     * Get the question type handler.
-     */
-    public function getTypeHandler()
-    {
-        $registry = app(\Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface::class);
-
-        return $registry->get($this->type);
-    }
+    // getTypeHandler() removed in favor of QuestionTypeStrategy
 
     /**
      * Scope a query to order by the order column.

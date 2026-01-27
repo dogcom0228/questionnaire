@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Liangjin0228\Questionnaire\Enums\QuestionType;
+use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class StoreQuestionRequest extends FormRequest

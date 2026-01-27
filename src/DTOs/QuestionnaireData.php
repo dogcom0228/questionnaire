@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire\DTOs;
 
-use Liangjin0228\Questionnaire\Enums\DuplicateSubmissionStrategy;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\WithCast;

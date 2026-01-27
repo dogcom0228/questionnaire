@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Submission\Pipes;
 
 use Closure;
-use Liangjin0228\Questionnaire\Events\ResponseSubmitted;
+use Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted;
 use Liangjin0228\Questionnaire\Submission\SubmissionPassable;
 
 class FireResponseEvent

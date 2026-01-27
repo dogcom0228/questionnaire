@@ -20,13 +20,13 @@ use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
-use Liangjin0228\Questionnaire\Export\CsvExporter;
-use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
-use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
+use Liangjin0228\Questionnaire\Export\CsvExporter;
+use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
 use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository;
 use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository;
+use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
 use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
 
 class QuestionnaireServiceProvider extends ServiceProvider
@@ -304,14 +304,14 @@ class QuestionnaireServiceProvider extends ServiceProvider
 
         if (config('questionnaire.features.log_submissions', false)) {
             $events->listen(
-                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted::class,
                 \Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::class
             );
         }
 
         if (config('questionnaire.features.email_notifications', false)) {
             $events->listen(
-                \Liangjin0228\Questionnaire\Events\ResponseSubmitted::class,
+                \Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted::class,
                 \Liangjin0228\Questionnaire\Listeners\SendResponseNotification::class
             );
         }
