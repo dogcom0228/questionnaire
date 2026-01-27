@@ -20,8 +20,16 @@ class DefaultValidationStrategy implements ValidationStrategyInterface
      */
     public function validate(Questionnaire $questionnaire, array $data): \Illuminate\Contracts\Validation\Validator
     {
+        // When validating inside the pipe, the data is just the [id => value] array.
+        // But Validator::make expects strings for keys if rules have string keys.
+        // We ensure keys are strings to match the rules we generate.
+        $stringKeyData = [];
+        foreach ($data as $key => $value) {
+            $stringKeyData[(string) $key] = $value;
+        }
+
         return Validator::make(
-            $data,
+            $stringKeyData,
             $this->getRules($questionnaire),
             $this->getMessages($questionnaire),
             $this->getAttributes($questionnaire)
@@ -36,7 +44,12 @@ class DefaultValidationStrategy implements ValidationStrategyInterface
         $rules = [];
 
         foreach ($questionnaire->questions as $question) {
-            $key = "question_{$question->id}";
+            // When validating the data passed from SubmissionPassable,
+            // the data is just the array of answers (key = question_id, value = answer).
+            // So the validation rules should just use the question ID as the key.
+            // HOWEVER, we need to cast the ID to string because arrays often have integer keys
+            // but validation rules and message keys are strings.
+            $key = (string) $question->id;
             $questionRules = [];
 
             // Required rule
@@ -67,7 +80,7 @@ class DefaultValidationStrategy implements ValidationStrategyInterface
         $messages = [];
 
         foreach ($questionnaire->questions as $question) {
-            $key = "question_{$question->id}";
+            $key = (string) $question->id;
             $questionType = $this->questionTypeRegistry->get($question->type);
 
             if ($question->required) {
@@ -92,7 +105,7 @@ class DefaultValidationStrategy implements ValidationStrategyInterface
         $attributes = [];
 
         foreach ($questionnaire->questions as $question) {
-            $key = "question_{$question->id}";
+            $key = (string) $question->id;
             $attributes[$key] = $question->content;
         }
 

@@ -34,11 +34,13 @@ class SubmissionTest extends TestCase
             'order' => 1,
         ]);
 
-        $response = $this->post(route('questionnaire.public.submit', $questionnaire), [
-            "question_{$question->id}" => 'John Doe',
+        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
+            'answers' => [
+                $question->id => 'John Doe',
+            ],
         ]);
 
-        $response->assertRedirect(route('questionnaire.public.thankyou', $questionnaire));
+        $response->assertStatus(201);
 
         $this->assertDatabaseHas('questionnaire_responses', [
             'questionnaire_id' => $questionnaire->id,
@@ -67,11 +69,12 @@ class SubmissionTest extends TestCase
             'order' => 1,
         ]);
 
-        $response = $this->post(route('questionnaire.public.submit', $questionnaire), [
+        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
             // Missing required field
         ]);
 
-        $response->assertSessionHasErrors(["question_{$question->id}"]);
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['answers.'.$question->id]);
     }
 
     public function test_cannot_submit_to_closed_questionnaire()
@@ -90,12 +93,13 @@ class SubmissionTest extends TestCase
             'order' => 1,
         ]);
 
-        $response = $this->post(route('questionnaire.public.submit', $questionnaire), [
-            "question_{$question->id}" => 'John Doe',
+        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
+            'answers' => [
+                $question->id => 'John Doe',
+            ],
         ]);
 
-        // It seems to redirect on auth failure in this env
-        $response->assertStatus(302);
+        $response->assertStatus(403);
 
         $this->assertDatabaseMissing('questionnaire_responses', [
             'questionnaire_id' => $questionnaire->id,

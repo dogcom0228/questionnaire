@@ -127,7 +127,7 @@ return [
     */
     'controllers' => [
         'questionnaire' => \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class,
-        'api' => \Liangjin0228\Questionnaire\Http\Controllers\Api\QuestionnaireApiController::class,
+        'api' => \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class,
     ],
 
     /*

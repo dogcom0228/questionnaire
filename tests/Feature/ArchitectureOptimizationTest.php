@@ -62,7 +62,10 @@ class ArchitectureOptimizationTest extends TestCase
         $strategy = app(DefaultValidationStrategy::class);
         $rules = $strategy->getRules($questionnaire);
 
-        $this->assertArrayHasKey("question_{$question->id}", $rules);
-        $this->assertContains('regex:/^\d+$/', $rules["question_{$question->id}"]);
+        // The strategy now returns rules keyed by question ID directly (as strings)
+        // because it validates the raw answers array in the pipe.
+        // The prefixing happens in the Request class for API validation.
+        $this->assertArrayHasKey((string) $question->id, $rules);
+        $this->assertContains('regex:/^\d+$/', $rules[(string) $question->id]);
     }
 }

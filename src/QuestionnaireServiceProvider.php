@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liangjin0228\Questionnaire;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -68,8 +67,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
     {
         $this->registerPublishing();
         $this->registerRoutes();
-        $this->registerViews();
-        $this->registerBladeDirectives();
         $this->registerMigrations();
         $this->registerPolicies();
         $this->registerCommands();
@@ -135,9 +132,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
         if (config('questionnaire.features.export_csv', true)) {
             $this->app->bind(ExporterInterface::class, CsvExporter::class);
         }
-
-        // Asset Manager
-        $this->app->singleton(AssetManager::class);
     }
 
     /**
@@ -177,7 +171,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->registerWebRoutes();
         $this->registerApiRoutes();
     }
 
@@ -225,24 +218,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
 
         Route::group($routeConfig, function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-        });
-    }
-
-    /**
-     * Register the package views.
-     */
-    protected function registerViews(): void
-    {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'questionnaire');
-    }
-
-    /**
-     * Register Blade directives for the package.
-     */
-    protected function registerBladeDirectives(): void
-    {
-        Blade::directive('questionnaireScripts', function () {
-            return '<?php echo app(\\Liangjin0228\\Questionnaire\\AssetManager::class)->scripts(); ?>';
         });
     }
 
@@ -298,21 +273,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'questionnaire-migrations');
-
-        // Views
-        $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/questionnaire'),
-        ], 'questionnaire-views');
-
-        // Frontend assets (built)
-        $this->publishes([
-            __DIR__.'/../public/build' => public_path('vendor/questionnaire'),
-        ], 'questionnaire-assets');
-
-        // Frontend source (Vue components)
-        $this->publishes([
-            __DIR__.'/../resources/js/questionnaire' => resource_path('js/vendor/questionnaire'),
-        ], 'questionnaire-frontend');
 
         // Stubs
         $this->publishes([
@@ -433,7 +393,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
             DuplicateSubmissionGuardInterface::class,
             DuplicateSubmissionGuardFactory::class,
             ExporterInterface::class,
-            AssetManager::class,
             CreateQuestionnaireActionInterface::class,
             UpdateQuestionnaireActionInterface::class,
             PublishQuestionnaireActionInterface::class,

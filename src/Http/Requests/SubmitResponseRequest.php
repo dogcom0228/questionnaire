@@ -46,8 +46,15 @@ class SubmitResponseRequest extends FormRequest
 
         // Use the validation strategy to get rules
         $validationStrategy = app(ValidationStrategyInterface::class);
+        $rules = $validationStrategy->getRules($questionnaire);
 
-        return $validationStrategy->getRules($questionnaire);
+        // Since we are validating inside the request class, the rules need to be prefixed with 'answers.'
+        $requestRules = [];
+        foreach ($rules as $key => $rule) {
+            $requestRules["answers.{$key}"] = $rule;
+        }
+
+        return $requestRules;
     }
 
     /**
@@ -64,8 +71,15 @@ class SubmitResponseRequest extends FormRequest
         }
 
         $validationStrategy = app(ValidationStrategyInterface::class);
+        $messages = $validationStrategy->getMessages($questionnaire);
 
-        return $validationStrategy->getMessages($questionnaire);
+        // Prefix messages with 'answers.'
+        $requestMessages = [];
+        foreach ($messages as $key => $message) {
+            $requestMessages["answers.{$key}"] = $message;
+        }
+
+        return $requestMessages;
     }
 
     /**
@@ -82,8 +96,15 @@ class SubmitResponseRequest extends FormRequest
         }
 
         $validationStrategy = app(ValidationStrategyInterface::class);
+        $attributes = $validationStrategy->getAttributes($questionnaire);
 
-        return $validationStrategy->getAttributes($questionnaire);
+        // Prefix attributes with 'answers.'
+        $requestAttributes = [];
+        foreach ($attributes as $key => $attribute) {
+            $requestAttributes["answers.{$key}"] = $attribute;
+        }
+
+        return $requestAttributes;
     }
 
     /**
@@ -111,7 +132,8 @@ class SubmitResponseRequest extends FormRequest
      */
     public function toDto(): \Liangjin0228\Questionnaire\DTOs\SubmitResponseData
     {
-        $answers = $this->validated();
+        $validated = $this->validated();
+        $answers = $validated['answers'] ?? [];
 
         return new \Liangjin0228\Questionnaire\DTOs\SubmitResponseData(
             answers: $answers,

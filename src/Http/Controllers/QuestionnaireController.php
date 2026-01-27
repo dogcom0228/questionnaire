@@ -204,6 +204,12 @@ class QuestionnaireController extends Controller
                 'data' => $response,
                 'message' => 'Response submitted successfully.',
             ], 201);
+        } catch (\Liangjin0228\Questionnaire\Exceptions\ValidationException $e) {
+            throw $e;
+        } catch (\Liangjin0228\Questionnaire\Exceptions\DuplicateSubmissionException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$controller = config('questionnaire.controllers.api', \Liangjin0228\Questionnaire\Http\Controllers\Api\QuestionnaireApiController::class);
+$controller = config('questionnaire.controllers.api', \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class);
 
 // Authenticated admin routes
 Route::middleware(config('questionnaire.routes.api_middleware', ['api']))->group(function () use ($controller) {
@@ -35,7 +35,12 @@ Route::middleware(config('questionnaire.routes.api_middleware', ['api']))->group
         Route::get('/{questionnaire}/statistics', [$controller, 'statistics'])->name('api.statistics');
     });
 
-    // Public routes
+    // Public routes - Apply 'web' middleware group if session is needed, or ensure 'api' handles sessions if needed
+    // Assuming 'api' middleware group includes 'StartSession' if configured, but typically API is stateless.
+    // However, the error 'Session store not set on request' suggests something is trying to access session.
+    // Let's explicitly check if 'StartSession' is needed for submit.
     Route::get('/public/{questionnaire}', [$controller, 'public'])->name('api.public');
-    Route::post('/public/{questionnaire}/submit', [$controller, 'submit'])->name('api.submit');
+    Route::group(['middleware' => [\Illuminate\Session\Middleware\StartSession::class]], function () use ($controller) {
+        Route::post('/public/{questionnaire}/submit', [$controller, 'submit'])->name('api.submit');
+    });
 });

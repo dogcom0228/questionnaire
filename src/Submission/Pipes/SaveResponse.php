@@ -55,7 +55,13 @@ class SaveResponse
         $transformed = [];
 
         foreach ($questionnaire->questions as $question) {
-            $key = "question_{$question->id}";
+            // Check for raw ID key first (API format), then fallback to question_ prefix (Old format)
+            $key = (string) $question->id;
+
+            if (! isset($answers[$key])) {
+                $key = "question_{$question->id}";
+            }
+
             if (! isset($answers[$key])) {
                 continue;
             }
