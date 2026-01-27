@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$controller = config('questionnaire.controllers.api', \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class);
+$controller = config('questionnaire.controllers.api', \Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireController::class);
 
 // Authenticated admin routes
 Route::middleware(config('questionnaire.routes.api_middleware', ['api']))->group(function () use ($controller) {

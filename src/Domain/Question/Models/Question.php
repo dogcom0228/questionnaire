@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Models;
+namespace Liangjin0228\Questionnaire\Domain\Question\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

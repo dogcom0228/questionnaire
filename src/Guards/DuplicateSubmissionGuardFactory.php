@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Guards;
 
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 /**
  * Factory for resolving duplicate submission guards based on questionnaire settings.

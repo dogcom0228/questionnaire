@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Http\Controllers;
+namespace Liangjin0228\Questionnaire\Infrastructure\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
 use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
 use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;
 use Liangjin0228\Questionnaire\Http\Resources\QuestionTypeResource;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class QuestionnaireController extends Controller
 {

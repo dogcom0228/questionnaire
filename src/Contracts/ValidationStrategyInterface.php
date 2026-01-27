@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Contracts;
 
 use Illuminate\Contracts\Validation\Validator;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 interface ValidationStrategyInterface
 {

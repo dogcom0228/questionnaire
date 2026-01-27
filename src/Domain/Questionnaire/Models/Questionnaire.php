@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Models;
+namespace Liangjin0228\Questionnaire\Domain\Questionnaire\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 
 class Questionnaire extends Model
 {
@@ -90,7 +90,7 @@ class Questionnaire extends Model
      */
     public function questions(): HasMany
     {
-        $questionModel = config('questionnaire.models.question', Question::class);
+        $questionModel = config('questionnaire.models.question', \Liangjin0228\Questionnaire\Domain\Question\Models\Question::class);
 
         return $this->hasMany($questionModel)->orderBy('order');
     }
@@ -100,7 +100,7 @@ class Questionnaire extends Model
      */
     public function responses(): HasMany
     {
-        $responseModel = config('questionnaire.models.response', Response::class);
+        $responseModel = config('questionnaire.models.response', \Liangjin0228\Questionnaire\Domain\Response\Models\Response::class);
 
         return $this->hasMany($responseModel);
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\QuestionTypes;
 
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeInterface;
-use Liangjin0228\Questionnaire\Models\Question;
+use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
 
 abstract class AbstractQuestionType implements QuestionTypeInterface
 {

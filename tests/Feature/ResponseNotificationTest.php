@@ -6,9 +6,9 @@ namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Support\Facades\Mail;
 use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
-use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Mail\ResponseSubmittedNotification;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Services\SubmitResponseAction;
 use Liangjin0228\Questionnaire\Tests\TestCase;
 

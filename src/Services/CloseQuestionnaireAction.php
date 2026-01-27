@@ -7,10 +7,10 @@ namespace Liangjin0228\Questionnaire\Services;
 use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
-use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
-use Liangjin0228\Questionnaire\Events\QuestionnaireClosed;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Events\QuestionnaireClosed;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Exceptions\QuestionnaireException;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 class CloseQuestionnaireAction implements CloseQuestionnaireActionInterface
 {

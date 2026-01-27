@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Contracts;
 
 use Illuminate\Contracts\Validation\Rule;
-use Liangjin0228\Questionnaire\Models\Question;
+use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
 
 interface QuestionTypeInterface
 {

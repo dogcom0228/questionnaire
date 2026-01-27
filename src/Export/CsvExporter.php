@@ -6,7 +6,7 @@ namespace Liangjin0228\Questionnaire\Export;
 
 use Liangjin0228\Questionnaire\Contracts\ExporterInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CsvExporter implements ExporterInterface

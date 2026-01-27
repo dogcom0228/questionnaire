@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Enums;
+namespace Liangjin0228\Questionnaire\Domain\Questionnaire\Enums;
 
 enum QuestionnaireStatus: string
 {

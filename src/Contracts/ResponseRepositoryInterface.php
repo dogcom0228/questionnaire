@@ -6,8 +6,8 @@ namespace Liangjin0228\Questionnaire\Contracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
 
 interface ResponseRepositoryInterface
 {

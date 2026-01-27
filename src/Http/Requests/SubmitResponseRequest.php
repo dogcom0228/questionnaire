@@ -6,7 +6,7 @@ namespace Liangjin0228\Questionnaire\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class SubmitResponseRequest extends FormRequest
 {

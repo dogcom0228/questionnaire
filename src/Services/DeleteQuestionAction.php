@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Services;
 
 use Liangjin0228\Questionnaire\Contracts\Actions\DeleteQuestionActionInterface;
-use Liangjin0228\Questionnaire\Models\Question;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class DeleteQuestionAction implements DeleteQuestionActionInterface
 {

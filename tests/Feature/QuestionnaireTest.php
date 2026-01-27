@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Liangjin0228\Questionnaire\Enums\QuestionnaireStatus;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Tests\TestCase;
 
 class QuestionnaireTest extends TestCase

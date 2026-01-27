@@ -6,7 +6,7 @@ namespace Liangjin0228\Questionnaire\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class UpdateQuestionnaireRequest extends FormRequest
 {
@@ -131,10 +131,10 @@ class UpdateQuestionnaireRequest extends FormRequest
             description: array_key_exists('description', $validated) ? $validated['description'] : $questionnaire->description,
             slug: $validated['slug'] ?? null,
             status: isset($validated['status'])
-                ? (\Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'])
-                    ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT)
-                : \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($questionnaire->status)
-                    ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
+                ? (\Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'])
+                    ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::DRAFT)
+                : \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom($questionnaire->status)
+                    ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
             settings: $validated['settings'] ?? $questionnaire->settings,
             starts_at: $validated['starts_at'] ?? $questionnaire->starts_at?->toDateTimeString(),
             ends_at: $validated['ends_at'] ?? $questionnaire->ends_at?->toDateTimeString(),

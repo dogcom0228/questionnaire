@@ -7,7 +7,7 @@ namespace Liangjin0228\Questionnaire\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
 
 class ResponseSubmittedNotification extends Mailable
 {

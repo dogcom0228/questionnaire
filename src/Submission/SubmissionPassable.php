@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Submission;
 
 use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
 
 class SubmissionPassable
 {

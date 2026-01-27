@@ -95,10 +95,10 @@ return [
     |
     */
     'models' => [
-        'questionnaire' => \Liangjin0228\Questionnaire\Models\Questionnaire::class,
-        'question' => \Liangjin0228\Questionnaire\Models\Question::class,
-        'response' => \Liangjin0228\Questionnaire\Models\Response::class,
-        'answer' => \Liangjin0228\Questionnaire\Models\Answer::class,
+        'questionnaire' => \Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::class,
+        'question' => \Liangjin0228\Questionnaire\Domain\Question\Models\Question::class,
+        'response' => \Liangjin0228\Questionnaire\Domain\Response\Models\Response::class,
+        'answer' => \Liangjin0228\Questionnaire\Domain\Response\Models\Answer::class,
         'user' => null, // null will use config('auth.providers.users.model')
     ],
 
@@ -126,8 +126,8 @@ return [
     |
     */
     'controllers' => [
-        'questionnaire' => \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class,
-        'api' => \Liangjin0228\Questionnaire\Http\Controllers\QuestionnaireController::class,
+        'questionnaire' => \Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireController::class,
+        'api' => \Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireController::class,
     ],
 
     /*
@@ -141,8 +141,8 @@ return [
     |
     */
     'bindings' => [
-        'questionnaire_repository' => \Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository::class,
-        'response_repository' => \Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository::class,
+        'questionnaire_repository' => \Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::class,
+        'response_repository' => \Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::class,
         'validation_strategy' => \Liangjin0228\Questionnaire\Services\DefaultValidationStrategy::class,
         'question_type_registry' => \Liangjin0228\Questionnaire\Managers\QuestionTypeManager::class,
     ],

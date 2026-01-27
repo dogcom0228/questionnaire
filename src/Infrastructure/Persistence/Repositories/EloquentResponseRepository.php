@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Repositories;
+namespace Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Models\Response;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
 
 class EloquentResponseRepository implements ResponseRepositoryInterface
 {

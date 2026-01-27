@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liangjin0228\Questionnaire\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class StoreQuestionnaireRequest extends FormRequest
 {
@@ -130,8 +130,8 @@ class StoreQuestionnaireRequest extends FormRequest
             title: $validated['title'],
             description: $validated['description'] ?? null,
             slug: $validated['slug'] ?? null,
-            status: \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft')
-                ?? \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
+            status: \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft')
+                ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
             settings: $validated['settings'] ?? [],
             starts_at: $validated['starts_at'] ?? null,
             ends_at: $validated['ends_at'] ?? null,

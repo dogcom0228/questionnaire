@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Repositories;
+namespace Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterface
 {
@@ -119,7 +119,7 @@ class EloquentQuestionnaireRepository implements QuestionnaireRepositoryInterfac
     public function getPublished(): Collection
     {
         return $this->newQuery()
-            ->where('status', \Liangjin0228\Questionnaire\Enums\QuestionnaireStatus::PUBLISHED->value)
+            ->where('status', \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::PUBLISHED->value)
             ->where(function ($query) {
                 $query->whereNull('starts_at')
                     ->orWhere('starts_at', '<=', now());

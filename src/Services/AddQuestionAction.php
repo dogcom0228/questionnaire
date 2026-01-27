@@ -6,8 +6,8 @@ namespace Liangjin0228\Questionnaire\Services;
 
 use Liangjin0228\Questionnaire\Contracts\Actions\AddQuestionActionInterface;
 use Liangjin0228\Questionnaire\DTOs\QuestionData;
-use Liangjin0228\Questionnaire\Models\Question;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class AddQuestionAction implements AddQuestionActionInterface
 {

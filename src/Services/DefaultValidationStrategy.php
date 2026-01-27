@@ -7,7 +7,7 @@ namespace Liangjin0228\Questionnaire\Services;
 use Illuminate\Support\Facades\Validator;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 
 class DefaultValidationStrategy implements ValidationStrategyInterface
 {

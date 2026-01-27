@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\DTOs\SubmitResponseData;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\Submission\SubmissionPassable;
 
 class SaveResponse

@@ -7,9 +7,9 @@ namespace Liangjin0228\Questionnaire\Services;
 use Illuminate\Support\Facades\DB;
 use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Events\QuestionnaireUpdated;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
 use Liangjin0228\Questionnaire\DTOs\QuestionnaireData;
-use Liangjin0228\Questionnaire\Events\QuestionnaireUpdated;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
 
 class UpdateQuestionnaireAction implements UpdateQuestionnaireActionInterface
 {

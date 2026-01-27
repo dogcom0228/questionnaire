@@ -23,10 +23,10 @@ use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
 use Liangjin0228\Questionnaire\Export\CsvExporter;
 use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
 use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
-use Liangjin0228\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Models\Response;
-use Liangjin0228\Questionnaire\Repositories\EloquentQuestionnaireRepository;
-use Liangjin0228\Questionnaire\Repositories\EloquentResponseRepository;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
+use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository;
+use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository;
 use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
 
 class QuestionnaireServiceProvider extends ServiceProvider
