@@ -37,7 +37,7 @@ interface QuestionTypeInterface
     /**
      * Get the validation rules for the answer value.
      *
-     * @return array<string, mixed>|Rule[]
+     * @return array<int|string, mixed>|array<Rule>
      */
     public function getValidationRules(Question $question): array;
 

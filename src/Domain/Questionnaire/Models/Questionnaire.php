@@ -9,8 +9,32 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Liangjin0228\Questionnaire\Database\Factories\QuestionnaireFactory;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string|null $description
+ * @property string $slug
+ * @property string $status
+ * @property array<string, mixed>|null $settings
+ * @property \Illuminate\Support\Carbon|null $starts_at
+ * @property \Illuminate\Support\Carbon|null $ends_at
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $closed_at
+ * @property int|null $user_id
+ * @property bool $requires_auth
+ * @property int|null $submission_limit
+ * @property string|null $duplicate_submission_strategy
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read bool $is_active
+ * @property-read bool $is_accepting_responses
+ *
+ * @method static \Liangjin0228\Questionnaire\Database\Factories\QuestionnaireFactory factory($count = null, $state = [])
+ */
 class Questionnaire extends Model
 {
     use HasFactory, SoftDeletes;
@@ -29,7 +53,9 @@ class Questionnaire extends Model
      */
     public function getTable(): string
     {
-        $tableName = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        /** @var mixed $configValue */
+        $configValue = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        $tableName = is_string($configValue) ? $configValue : 'questionnaires';
 
         // Validate table name to prevent SQL injection
         if (! preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
@@ -87,9 +113,12 @@ class Questionnaire extends Model
 
     /**
      * Get the questions for the questionnaire.
+     *
+     * @return HasMany<\Liangjin0228\Questionnaire\Domain\Question\Models\Question, $this>
      */
     public function questions(): HasMany
     {
+        /** @var class-string<\Liangjin0228\Questionnaire\Domain\Question\Models\Question> $questionModel */
         $questionModel = config('questionnaire.models.question', \Liangjin0228\Questionnaire\Domain\Question\Models\Question::class);
 
         return $this->hasMany($questionModel)->orderBy('order');
@@ -97,9 +126,12 @@ class Questionnaire extends Model
 
     /**
      * Get the responses for the questionnaire.
+     *
+     * @return HasMany<\Liangjin0228\Questionnaire\Domain\Response\Models\Response, $this>
      */
     public function responses(): HasMany
     {
+        /** @var class-string<\Liangjin0228\Questionnaire\Domain\Response\Models\Response> $responseModel */
         $responseModel = config('questionnaire.models.response', \Liangjin0228\Questionnaire\Domain\Response\Models\Response::class);
 
         return $this->hasMany($responseModel);
@@ -107,9 +139,12 @@ class Questionnaire extends Model
 
     /**
      * Get the user that owns the questionnaire.
+     *
+     * @return BelongsTo<\Illuminate\Foundation\Auth\User, $this>
      */
     public function user(): BelongsTo
     {
+        /** @var class-string<\Illuminate\Foundation\Auth\User> $userModel */
         $userModel = config('questionnaire.models.user') ?? config('auth.providers.users.model') ?? 'App\\Models\\User';
 
         return $this->belongsTo($userModel);
@@ -155,6 +190,9 @@ class Questionnaire extends Model
 
     /**
      * Scope a query to only include published questionnaires.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     public function scopePublished($query)
     {
@@ -163,6 +201,9 @@ class Questionnaire extends Model
 
     /**
      * Scope a query to only include active questionnaires.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     public function scopeActive($query)
     {
@@ -179,6 +220,10 @@ class Questionnaire extends Model
 
     /**
      * Scope a query to only include questionnaires for a specific user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @param  int|string  $userId
+     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     public function scopeForUser($query, $userId)
     {
@@ -208,6 +253,8 @@ class Questionnaire extends Model
 
     /**
      * Create a new factory instance for the model.
+     *
+     * @return QuestionnaireFactory
      */
     protected static function newFactory()
     {

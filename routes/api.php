@@ -1,46 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireCommandController;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireQueryController;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\ResponseCommandController;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\ResponseQueryController;
 
-/*
-|--------------------------------------------------------------------------
-| Questionnaire API Routes
-|--------------------------------------------------------------------------
-|
-| These API routes are loaded by the QuestionnaireServiceProvider.
-|
-*/
+Route::middleware(config('questionnaire.routes.api_middleware', ['api']))->group(function () {
+    Route::get('/question-types', [QuestionnaireQueryController::class, 'questionTypes'])->name('api.question-types');
 
-$controller = config('questionnaire.controllers.api', \Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireController::class);
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/', [QuestionnaireQueryController::class, 'index'])->name('api.index');
+        Route::post('/', [QuestionnaireCommandController::class, 'store'])->name('api.store');
+        Route::get('/{questionnaire}', [QuestionnaireQueryController::class, 'show'])->name('api.show');
+        Route::put('/{questionnaire}', [QuestionnaireCommandController::class, 'update'])->name('api.update');
+        Route::delete('/{questionnaire}', [QuestionnaireCommandController::class, 'destroy'])->name('api.destroy');
 
-// Authenticated admin routes
-Route::middleware(config('questionnaire.routes.api_middleware', ['api']))->group(function () use ($controller) {
-    // Meta routes
-    Route::get('/question-types', [$controller, 'questionTypes'])->name('api.question-types');
+        Route::post('/{questionnaire}/publish', [QuestionnaireCommandController::class, 'publish'])->name('api.publish');
+        Route::post('/{questionnaire}/close', [QuestionnaireCommandController::class, 'close'])->name('api.close');
 
-    // CRUD routes (require authentication)
-    Route::middleware(['auth:sanctum'])->group(function () use ($controller) {
-        Route::get('/', [$controller, 'index'])->name('api.index');
-        Route::post('/', [$controller, 'store'])->name('api.store');
-        Route::get('/{questionnaire}', [$controller, 'show'])->name('api.show');
-        Route::put('/{questionnaire}', [$controller, 'update'])->name('api.update');
-        Route::delete('/{questionnaire}', [$controller, 'destroy'])->name('api.destroy');
-
-        // Status actions
-        Route::post('/{questionnaire}/publish', [$controller, 'publish'])->name('api.publish');
-        Route::post('/{questionnaire}/close', [$controller, 'close'])->name('api.close');
-
-        // Results
-        Route::get('/{questionnaire}/responses', [$controller, 'responses'])->name('api.responses');
-        Route::get('/{questionnaire}/statistics', [$controller, 'statistics'])->name('api.statistics');
+        Route::get('/{questionnaire}/responses', [ResponseQueryController::class, 'responses'])->name('api.responses');
+        Route::get('/{questionnaire}/statistics', [ResponseQueryController::class, 'statistics'])->name('api.statistics');
     });
 
-    // Public routes - Apply 'web' middleware group if session is needed, or ensure 'api' handles sessions if needed
-    // Assuming 'api' middleware group includes 'StartSession' if configured, but typically API is stateless.
-    // However, the error 'Session store not set on request' suggests something is trying to access session.
-    // Let's explicitly check if 'StartSession' is needed for submit.
-    Route::get('/public/{questionnaire}', [$controller, 'public'])->name('api.public');
-    Route::group(['middleware' => [\Illuminate\Session\Middleware\StartSession::class]], function () use ($controller) {
-        Route::post('/public/{questionnaire}/submit', [$controller, 'submit'])->name('api.submit');
+    Route::get('/public/{questionnaire}', [QuestionnaireQueryController::class, 'public'])->name('api.public');
+    Route::group(['middleware' => [\Illuminate\Session\Middleware\StartSession::class]], function () {
+        Route::post('/public/{questionnaire}/submit', [ResponseCommandController::class, 'submit'])->name('api.submit');
     });
 });

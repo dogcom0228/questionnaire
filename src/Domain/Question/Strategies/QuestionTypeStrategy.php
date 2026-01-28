@@ -7,6 +7,10 @@ namespace Liangjin0228\Questionnaire\Domain\Question\Strategies;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
 
+/**
+ * @deprecated This strategy pattern will be refactored in later phases.
+ * QuestionTypes have been moved to Domain\Questionnaire\QuestionType\.
+ */
 class QuestionTypeStrategy
 {
     public function __construct(
@@ -14,7 +18,7 @@ class QuestionTypeStrategy
     ) {}
 
     /**
-     * Get the handler for a specific question type.
+     * @return \Liangjin0228\Questionnaire\Contracts\QuestionTypeInterface|null
      */
     public function getHandler(Question $question)
     {

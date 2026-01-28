@@ -20,17 +20,23 @@
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "ramsey/uuid": "^4.7",
         "spatie/laravel-package-tools": "^1.92",
-        "spatie/laravel-data": "^4.18"
+        "spatie/laravel-data": "^4.18",
+        "spatie/laravel-event-sourcing": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.27",
+        "larastan/larastan": "^2.9",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.8",
-        "phpunit/phpunit": "^12.5",
-        "orchestra/testbench": "^10.8"
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-arch": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
+        "orchestra/testbench": "^9.0",
+        "rector/rector": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -51,6 +57,11 @@
             "providers": [
                 "Liangjin0228\\Questionnaire\\QuestionnaireServiceProvider"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }

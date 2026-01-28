@@ -9,6 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property int $questionnaire_id
+ * @property string $type
+ * @property string $content
+ * @property string|null $description
+ * @property array<int|string, mixed>|null $options
+ * @property bool $required
+ * @property int $order
+ * @property array<string, mixed>|null $settings
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Liangjin0228\Questionnaire\Database\Factories\QuestionFactory factory($count = null, $state = [])
+ */
 class Question extends Model
 {
     use HasFactory;
@@ -18,7 +33,9 @@ class Question extends Model
      */
     public function getTable(): string
     {
-        $tableName = config('questionnaire.table_names.questions', 'questions');
+        /** @var mixed $configValue */
+        $configValue = config('questionnaire.table_names.questions', 'questions');
+        $tableName = is_string($configValue) ? $configValue : 'questions';
 
         // Validate table name to prevent SQL injection
         if (! preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
@@ -58,20 +75,26 @@ class Question extends Model
 
     /**
      * Get the questionnaire that owns the question.
+     *
+     * @return BelongsTo<\Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire, $this>
      */
     public function questionnaire(): BelongsTo
     {
-        $questionnaireModel = config('questionnaire.models.questionnaire', Questionnaire::class);
+        /** @var class-string<\Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire> $questionnaireModel */
+        $questionnaireModel = config('questionnaire.models.questionnaire', \Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::class);
 
         return $this->belongsTo($questionnaireModel);
     }
 
     /**
      * Get the answers for the question.
+     *
+     * @return HasMany<\Liangjin0228\Questionnaire\Domain\Response\Models\Answer, $this>
      */
     public function answers(): HasMany
     {
-        $answerModel = config('questionnaire.models.answer', Answer::class);
+        /** @var class-string<\Liangjin0228\Questionnaire\Domain\Response\Models\Answer> $answerModel */
+        $answerModel = config('questionnaire.models.answer', \Liangjin0228\Questionnaire\Domain\Response\Models\Answer::class);
 
         return $this->hasMany($answerModel);
     }
@@ -80,6 +103,9 @@ class Question extends Model
 
     /**
      * Scope a query to order by the order column.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     public function scopeOrdered($query)
     {
@@ -88,6 +114,9 @@ class Question extends Model
 
     /**
      * Scope a query to only include required questions.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     public function scopeRequired($query)
     {

@@ -1,0 +1,146 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Liangjin0228\Questionnaire\Infrastructure\Http\Request;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+
+class StoreQuestionnaireRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        if (! config('questionnaire.features.authorization', true)) {
+            return true;
+        }
+
+        return $this->user()?->can('create', Questionnaire::class) ?? false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        $allowedQuestionTypes = ['text', 'textarea', 'radio', 'checkbox', 'select', 'number', 'date'];
+
+        $questionnairesTable = config('questionnaire.table_names.questionnaires', 'questionnaires');
+        $questionsTable = config('questionnaire.table_names.questions', 'questions');
+
+        return [
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['nullable', 'string', 'max:65535'],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/^[a-z0-9-]+$/',
+                \Illuminate\Validation\Rule::unique($questionnairesTable, 'slug'),
+            ],
+            'status' => ['nullable', 'string', 'in:draft,published,closed'],
+            'settings' => ['nullable', 'array', 'max:50'],
+            'starts_at' => ['nullable', 'date', 'after_or_equal:today'],
+            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
+            'requires_auth' => ['nullable', 'boolean'],
+            'submission_limit' => ['nullable', 'integer', 'min:1', 'max:1000000'],
+            'duplicate_submission_strategy' => ['nullable', 'string', 'in:allow_multiple,one_per_user,one_per_session,one_per_ip'],
+
+            // Questions (optional during creation) - Enhanced validation
+            'questions' => ['nullable', 'array', 'max:100'],
+            'questions.*.type' => ['required_with:questions', 'string', 'in:'.implode(',', $allowedQuestionTypes)],
+            'questions.*.content' => ['required_with:questions', 'string', 'min:3', 'max:1000'],
+            'questions.*.description' => ['nullable', 'string', 'max:2000'],
+            'questions.*.options' => ['nullable', 'array', 'min:2', 'max:50'],
+            'questions.*.options.*' => ['string', 'max:500', 'distinct'],
+            'questions.*.required' => ['nullable', 'boolean'],
+            'questions.*.order' => ['nullable', 'integer', 'min:0', 'max:1000'],
+            'questions.*.settings' => ['nullable', 'array', 'max:20'],
+            'questions.*.settings.min' => ['nullable', 'numeric'],
+            'questions.*.settings.max' => ['nullable', 'numeric', 'gte:questions.*.settings.min'],
+            'questions.*.settings.max_length' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'questions.*.settings.placeholder' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Please provide a title for the questionnaire.',
+            'ends_at.after_or_equal' => 'The end date must be after or equal to the start date.',
+        ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('requires_auth')) {
+            $this->merge([
+                'requires_auth' => filter_var($this->requires_auth, FILTER_VALIDATE_BOOLEAN),
+            ]);
+        }
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        \Illuminate\Support\Facades\Log::error('Validation failed for StoreQuestionnaireRequest', [
+            'errors' => $validator->errors()->toArray(),
+            'input' => $this->all(),
+        ]);
+
+        parent::failedValidation($validator);
+    }
+
+    /**
+     * Convert validated data to QuestionnaireData DTO.
+     */
+    public function toDto(): \Liangjin0228\Questionnaire\DTOs\QuestionnaireData
+    {
+        $validated = $this->validated();
+
+        // Convert questions to QuestionData DTOs
+        $questions = [];
+        if (! empty($validated['questions'])) {
+            foreach ($validated['questions'] as $question) {
+                $questions[] = \Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType(
+                    type: $question['type'],
+                    content: $question['content'],
+                    description: $question['description'] ?? null,
+                    options: $question['options'] ?? null,
+                    required: $question['required'] ?? false,
+                    order: $question['order'] ?? 0,
+                    settings: $question['settings'] ?? [],
+                );
+            }
+        }
+
+        return new \Liangjin0228\Questionnaire\DTOs\QuestionnaireData(
+            title: $validated['title'],
+            description: $validated['description'] ?? null,
+            slug: $validated['slug'] ?? null,
+            status: \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom($validated['status'] ?? 'draft')
+                ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::DRAFT,
+            settings: $validated['settings'] ?? [],
+            starts_at: $validated['starts_at'] ?? null,
+            ends_at: $validated['ends_at'] ?? null,
+            requires_auth: $validated['requires_auth'] ?? false,
+            submission_limit: $validated['submission_limit'] ?? null,
+            duplicate_submission_strategy: \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy::tryFrom(
+                $validated['duplicate_submission_strategy'] ?? 'allow_multiple'
+            ) ?? \Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy::ALLOW_MULTIPLE,
+            questions: $questions,
+        );
+    }
+}

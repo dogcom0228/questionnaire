@@ -9,9 +9,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Liangjin0228\Questionnaire\Database\Factories\ResponseFactory;
 
+/**
+ * @property int $id
+ * @property int $questionnaire_id
+ * @property int|string|null $respondent_id
+ * @property string|null $respondent_type
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property array<string, mixed>|null $metadata
+ * @property \Illuminate\Support\Carbon|null $submitted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static ResponseFactory factory($count = null, $state = [])
+ */
 class Response extends Model
 {
+    /** @use HasFactory<ResponseFactory> */
     use HasFactory;
 
     /**

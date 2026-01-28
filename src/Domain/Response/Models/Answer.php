@@ -7,9 +7,21 @@ namespace Liangjin0228\Questionnaire\Domain\Response\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Liangjin0228\Questionnaire\Database\Factories\AnswerFactory;
 
+/**
+ * @property int $id
+ * @property int $response_id
+ * @property int $question_id
+ * @property mixed $value
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static AnswerFactory factory($count = null, $state = [])
+ */
 class Answer extends Model
 {
+    /** @use HasFactory<AnswerFactory> */
     use HasFactory;
 
     /**

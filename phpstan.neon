@@ -1,0 +1,34 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 9
+    paths:
+        - src
+    
+    # Exclude generated files and migrations
+    excludePaths:
+        - src/Console/InstallCommand.php
+    
+    # Type inference improvements
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+    reportUnmatchedIgnoredErrors: true
+    
+    # Strict rules for DDD
+    checkAlwaysTrueCheckTypeFunctionCall: true
+    checkAlwaysTrueInstanceof: true
+    checkAlwaysTrueStrictComparison: true
+    checkExplicitMixedMissingReturn: true
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
+    
+    # Laravel-specific
+    noUnnecessaryCollectionCall: true
+    noUnnecessaryCollectionCallOnly: []
+    noUnnecessaryCollectionCallExcept: []
+    
+    # Ignore common Laravel patterns that are safe
+    ignoreErrors:
+        # Allow dynamic properties on Eloquent models during migration
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\(Model|Builder)#'

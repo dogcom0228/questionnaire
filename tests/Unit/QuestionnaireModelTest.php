@@ -2,80 +2,73 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Tests\Unit;
-
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Tests\TestCase;
 
-class QuestionnaireModelTest extends TestCase
-{
-    public function test_get_statuses_returns_array(): void
-    {
-        $statuses = Questionnaire::getStatuses();
+test('getStatuses returns array with correct keys', function () {
+    $statuses = Questionnaire::getStatuses();
 
-        $this->assertIsArray($statuses);
-        $this->assertArrayHasKey('draft', $statuses);
-        $this->assertArrayHasKey('published', $statuses);
-        $this->assertArrayHasKey('closed', $statuses);
+    expect($statuses)
+        ->toBeArray()
+        ->toHaveKeys(['draft', 'published', 'closed']);
+});
+
+test('questionnaire has is_active attribute', function () {
+    $questionnaire = new Questionnaire([
+        'title' => 'Test',
+        'status' => QuestionnaireStatus::PUBLISHED->value,
+    ]);
+
+    expect($questionnaire->toArray())
+        ->toHaveKey('is_active');
+});
+
+test('questionnaire has is_accepting_responses attribute', function () {
+    $questionnaire = new Questionnaire([
+        'title' => 'Test',
+        'status' => QuestionnaireStatus::PUBLISHED->value,
+    ]);
+
+    expect($questionnaire->toArray())
+        ->toHaveKey('is_accepting_responses');
+});
+
+test('questionnaire has correct fillable attributes', function () {
+    $fillable = (new Questionnaire)->getFillable();
+
+    $expectedAttributes = [
+        'title',
+        'description',
+        'slug',
+        'status',
+        'settings',
+        'starts_at',
+        'ends_at',
+        'published_at',
+        'closed_at',
+        'user_id',
+        'requires_auth',
+        'submission_limit',
+        'duplicate_submission_strategy',
+    ];
+
+    foreach ($expectedAttributes as $attribute) {
+        expect($fillable)->toContain($attribute);
     }
+});
 
-    public function test_is_active_attribute_exists(): void
-    {
-        $questionnaire = new Questionnaire([
-            'title' => 'Test',
-            'status' => QuestionnaireStatus::PUBLISHED->value,
+test('questionnaire casts attributes correctly', function () {
+    $questionnaire = new Questionnaire;
+    $casts = $questionnaire->getCasts();
+
+    expect($casts)
+        ->toMatchArray([
+            'settings' => 'array',
+            'starts_at' => 'datetime',
+            'ends_at' => 'datetime',
+            'published_at' => 'datetime',
+            'closed_at' => 'datetime',
+            'requires_auth' => 'boolean',
+            'submission_limit' => 'integer',
         ]);
-
-        $this->assertArrayHasKey('is_active', $questionnaire->toArray());
-    }
-
-    public function test_is_accepting_responses_attribute_exists(): void
-    {
-        $questionnaire = new Questionnaire([
-            'title' => 'Test',
-            'status' => QuestionnaireStatus::PUBLISHED->value,
-        ]);
-
-        $this->assertArrayHasKey('is_accepting_responses', $questionnaire->toArray());
-    }
-
-    public function test_fillable_attributes(): void
-    {
-        $fillable = (new Questionnaire)->getFillable();
-
-        $expectedAttributes = [
-            'title',
-            'description',
-            'slug',
-            'status',
-            'settings',
-            'starts_at',
-            'ends_at',
-            'published_at',
-            'closed_at',
-            'user_id',
-            'requires_auth',
-            'submission_limit',
-            'duplicate_submission_strategy',
-        ];
-
-        foreach ($expectedAttributes as $attribute) {
-            $this->assertContains($attribute, $fillable);
-        }
-    }
-
-    public function test_casts_attributes_correctly(): void
-    {
-        $questionnaire = new Questionnaire;
-        $casts = $questionnaire->getCasts();
-
-        $this->assertEquals('array', $casts['settings']);
-        $this->assertEquals('datetime', $casts['starts_at']);
-        $this->assertEquals('datetime', $casts['ends_at']);
-        $this->assertEquals('datetime', $casts['published_at']);
-        $this->assertEquals('datetime', $casts['closed_at']);
-        $this->assertEquals('boolean', $casts['requires_auth']);
-        $this->assertEquals('integer', $casts['submission_limit']);
-    }
-}
+});

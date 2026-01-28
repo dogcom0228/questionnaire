@@ -2,107 +2,100 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Tests\Feature;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
 use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Tests\TestCase;
 
-class SubmissionTest extends TestCase
-{
-    use RefreshDatabase;
-    use WithFaker;
+uses(RefreshDatabase::class, WithFaker::class);
 
-    public function test_can_submit_valid_response()
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test Questionnaire',
-            'status' => QuestionnaireStatus::PUBLISHED,
-            'user_id' => 1,
-            'is_accepting_responses' => true,
-        ]);
+test('can submit valid response', function () {
+    $questionnaire = Questionnaire::create([
+        'title' => 'Test Questionnaire',
+        'status' => QuestionnaireStatus::PUBLISHED,
+        'user_id' => 1,
+        'is_accepting_responses' => true,
+    ]);
 
-        $question = Question::create([
-            'questionnaire_id' => $questionnaire->id,
-            'content' => 'What is your name?',
-            'type' => QuestionType::TEXT,
-            'required' => true,
-            'order' => 1,
-        ]);
+    $question = Question::create([
+        'questionnaire_id' => $questionnaire->id,
+        'content' => 'What is your name?',
+        'type' => QuestionType::TEXT,
+        'required' => true,
+        'order' => 1,
+    ]);
 
-        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
-            'answers' => [
-                $question->id => 'John Doe',
-            ],
-        ]);
+    // Debug: Check if question was created and questionnaire has questions
+    $questionnaire->refresh();
+    expect($questionnaire->questions)->toHaveCount(1);
+    expect($questionnaire->questions->first()->id)->toBe($question->id);
 
-        $response->assertStatus(201);
+    $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
+        'answers' => [
+            $question->id => 'John Doe',
+        ],
+    ]);
 
-        $this->assertDatabaseHas('questionnaire_responses', [
-            'questionnaire_id' => $questionnaire->id,
-        ]);
+    $response->assertStatus(201);
 
-        $this->assertDatabaseHas('questionnaire_answers', [
-            'question_id' => $question->id,
-            'value' => 'John Doe',
-        ]);
-    }
+    $this->assertDatabaseHas('questionnaire_responses', [
+        'questionnaire_id' => $questionnaire->id,
+    ]);
 
-    public function test_validation_fails_for_required_field()
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test Questionnaire',
-            'status' => QuestionnaireStatus::PUBLISHED,
-            'user_id' => 1,
-            'is_accepting_responses' => true,
-        ]);
+    $this->assertDatabaseHas('questionnaire_answers', [
+        'question_id' => $question->id,
+        'value' => 'John Doe',
+    ]);
+});
 
-        $question = Question::create([
-            'questionnaire_id' => $questionnaire->id,
-            'content' => 'What is your name?',
-            'type' => QuestionType::TEXT,
-            'required' => true,
-            'order' => 1,
-        ]);
+test('validation fails for required field', function () {
+    $questionnaire = Questionnaire::create([
+        'title' => 'Test Questionnaire',
+        'status' => QuestionnaireStatus::PUBLISHED,
+        'user_id' => 1,
+        'is_accepting_responses' => true,
+    ]);
 
-        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
-            // Missing required field
-        ]);
+    $question = Question::create([
+        'questionnaire_id' => $questionnaire->id,
+        'content' => 'What is your name?',
+        'type' => QuestionType::TEXT,
+        'required' => true,
+        'order' => 1,
+    ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['answers.'.$question->id]);
-    }
+    $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), []);
 
-    public function test_cannot_submit_to_closed_questionnaire()
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test Questionnaire',
-            'status' => QuestionnaireStatus::CLOSED,
-            'user_id' => 1,
-        ]);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['answers.'.$question->id]);
+});
 
-        $question = Question::create([
-            'questionnaire_id' => $questionnaire->id,
-            'content' => 'What is your name?',
-            'type' => QuestionType::TEXT,
-            'required' => true,
-            'order' => 1,
-        ]);
+test('cannot submit to closed questionnaire', function () {
+    $questionnaire = Questionnaire::create([
+        'title' => 'Test Questionnaire',
+        'status' => QuestionnaireStatus::CLOSED,
+        'user_id' => 1,
+    ]);
 
-        $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
-            'answers' => [
-                $question->id => 'John Doe',
-            ],
-        ]);
+    $question = Question::create([
+        'questionnaire_id' => $questionnaire->id,
+        'content' => 'What is your name?',
+        'type' => QuestionType::TEXT,
+        'required' => true,
+        'order' => 1,
+    ]);
 
-        $response->assertStatus(403);
+    $response = $this->postJson(route('questionnaire.api.submit', $questionnaire), [
+        'answers' => [
+            $question->id => 'John Doe',
+        ],
+    ]);
 
-        $this->assertDatabaseMissing('questionnaire_responses', [
-            'questionnaire_id' => $questionnaire->id,
-        ]);
-    }
-}
+    $response->assertStatus(403);
+
+    $this->assertDatabaseMissing('questionnaire_responses', [
+        'questionnaire_id' => $questionnaire->id,
+    ]);
+});

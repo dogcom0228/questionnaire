@@ -13,11 +13,15 @@ interface ResponseRepositoryInterface
 {
     /**
      * Get all responses for a questionnaire.
+     *
+     * @return Collection<int, Response>
      */
     public function getForQuestionnaire(Questionnaire $questionnaire): Collection;
 
     /**
      * Get paginated responses for a questionnaire.
+     *
+     * @return LengthAwarePaginator<Response>
      */
     public function paginateForQuestionnaire(Questionnaire $questionnaire, int $perPage = 15): LengthAwarePaginator;
 
@@ -45,6 +49,8 @@ interface ResponseRepositoryInterface
 
     /**
      * Get responses by respondent.
+     *
+     * @return Collection<int, Response>
      */
     public function getByRespondent(string $respondentType, int|string $respondentId): Collection;
 

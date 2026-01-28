@@ -14,6 +14,7 @@ interface QuestionnaireRepositoryInterface
      * Get all questionnaires with optional filters.
      *
      * @param  array<string, mixed>  $filters
+     * @return Collection<int, Questionnaire>
      */
     public function all(array $filters = []): Collection;
 
@@ -21,6 +22,7 @@ interface QuestionnaireRepositoryInterface
      * Get paginated questionnaires.
      *
      * @param  array<string, mixed>  $filters
+     * @return LengthAwarePaginator<Questionnaire>
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -60,16 +62,22 @@ interface QuestionnaireRepositoryInterface
 
     /**
      * Get questionnaires by status.
+     *
+     * @return Collection<int, Questionnaire>
      */
     public function getByStatus(string $status): Collection;
 
     /**
      * Get published questionnaires (for public access).
+     *
+     * @return Collection<int, Questionnaire>
      */
     public function getPublished(): Collection;
 
     /**
      * Get questionnaires for a specific user (owner).
+     *
+     * @return Collection<int, Questionnaire>
      */
     public function getByUser(int $userId): Collection;
 }

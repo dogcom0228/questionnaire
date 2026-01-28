@@ -143,8 +143,8 @@ return [
     'bindings' => [
         'questionnaire_repository' => \Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::class,
         'response_repository' => \Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::class,
-        'validation_strategy' => \Liangjin0228\Questionnaire\Services\DefaultValidationStrategy::class,
-        'question_type_registry' => \Liangjin0228\Questionnaire\Managers\QuestionTypeManager::class,
+        'validation_strategy' => \Liangjin0228\Questionnaire\Domain\Questionnaire\Validation\DefaultValidationStrategy::class,
+        'question_type_registry' => \Liangjin0228\Questionnaire\Domain\Questionnaire\QuestionType\QuestionTypeRegistry::class,
     ],
 
     /*
@@ -157,13 +157,8 @@ return [
     |
     */
     'question_types' => [
-        \Liangjin0228\Questionnaire\QuestionTypes\TextQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\TextareaQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\RadioQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\CheckboxQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\SelectQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\NumberQuestionType::class,
-        \Liangjin0228\Questionnaire\QuestionTypes\DateQuestionType::class,
+        // Question types removed during DDD refactoring
+        // Custom question types can be registered via QuestionTypeRegistry
     ],
 
     /*
@@ -175,10 +170,10 @@ return [
     |
     */
     'duplicate_guards' => [
-        'allow_multiple' => \Liangjin0228\Questionnaire\Guards\AllowMultipleGuard::class,
-        'one_per_user' => \Liangjin0228\Questionnaire\Guards\OnePerUserGuard::class,
-        'one_per_session' => \Liangjin0228\Questionnaire\Guards\OnePerSessionGuard::class,
-        'one_per_ip' => \Liangjin0228\Questionnaire\Guards\OnePerIpGuard::class,
+        'allow_multiple' => \Liangjin0228\Questionnaire\Domain\Response\Guard\AllowMultipleGuard::class,
+        'one_per_user' => \Liangjin0228\Questionnaire\Domain\Response\Guard\OnePerUserGuard::class,
+        'one_per_session' => \Liangjin0228\Questionnaire\Domain\Response\Guard\OnePerSessionGuard::class,
+        'one_per_ip' => \Liangjin0228\Questionnaire\Domain\Response\Guard\OnePerIpGuard::class,
     ],
 
     /*

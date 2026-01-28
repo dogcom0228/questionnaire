@@ -15,12 +15,12 @@ use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterf
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
-use Liangjin0228\Questionnaire\Http\Requests\StoreQuestionnaireRequest;
-use Liangjin0228\Questionnaire\Http\Requests\SubmitResponseRequest;
-use Liangjin0228\Questionnaire\Http\Requests\UpdateQuestionnaireRequest;
-use Liangjin0228\Questionnaire\Http\Resources\QuestionnaireResource;
-use Liangjin0228\Questionnaire\Http\Resources\QuestionTypeResource;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Request\StoreQuestionnaireRequest;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Request\SubmitResponseRequest;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Request\UpdateQuestionnaireRequest;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource;
+use Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionTypeResource;
 
 class QuestionnaireController extends Controller
 {

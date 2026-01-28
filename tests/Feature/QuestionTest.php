@@ -2,105 +2,158 @@
 
 declare(strict_types=1);
 
-namespace Liangjin0228\Questionnaire\Tests\Feature;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Liangjin0228\Questionnaire\Domain\Question\Models\Question;
-use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
-use Liangjin0228\Questionnaire\Tests\TestCase;
+use Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Entity\Question;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Event\QuestionAdded;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionId;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireId;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionOptions;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionText;
+use Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionModel;
 
-class QuestionTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    public function test_can_create_question(): void
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test Questionnaire',
-            'status' => 'draft',
-        ]);
+test('can create question via aggregate', function () {
+    $questionnaireId = QuestionnaireId::generate();
+    $questionnaire = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::create(
+        id: $questionnaireId,
+        title: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireTitle::fromString('Test Questionnaire'),
+        slug: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSlug::fromString('test'),
+        description: null,
+        dateRange: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create(null, null),
+        settings: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::default()
+    );
 
-        $question = $questionnaire->questions()->create([
-            'type' => 'text',
-            'content' => 'What is your favorite color?',
-            'required' => true,
-            'order' => 1,
-        ]);
+    $questionId = QuestionId::generate();
+    $question = Question::create(
+        id: $questionId,
+        text: QuestionText::fromString('What is your favorite color?'),
+        type: QuestionType::TEXT->value,
+        options: QuestionOptions::empty(),
+        required: true,
+        order: 1,
+        description: null,
+        settings: []
+    );
 
-        $this->assertDatabaseHas('questions', [
-            'content' => 'What is your favorite color?',
-            'type' => 'text',
-            'required' => true,
-        ]);
+    $questionnaire->addQuestion($question);
+    $questionnaire->persist();
 
-        $this->assertEquals('text', $question->type);
-    }
+    $this->assertDatabaseHas('stored_events', [
+        'aggregate_uuid' => (string) $questionnaireId->toUuid(),
+        'event_class' => QuestionAdded::class,
+    ]);
 
-    public function test_question_belongs_to_questionnaire(): void
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Parent Questionnaire',
-            'status' => 'draft',
-        ]);
+    $retrieved = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::retrieve((string) $questionnaireId->toUuid());
+    $questions = $retrieved->questions();
 
-        $question = $questionnaire->questions()->create([
-            'type' => 'radio',
-            'content' => 'Choose one',
-            'options' => ['Option A', 'Option B'],
-            'required' => false,
-            'order' => 1,
-        ]);
+    expect($questions)->toHaveCount(1);
+    $retrievedQuestion = array_values($questions)[0];
+    expect($retrievedQuestion->text()->value())->toBe('What is your favorite color?')
+        ->and($retrievedQuestion->type())->toBe(QuestionType::TEXT->value);
+});
 
-        $this->assertEquals($questionnaire->id, $question->questionnaire->id);
-    }
+test('question is part of questionnaire aggregate', function () {
+    $questionnaireId = QuestionnaireId::generate();
+    $questionnaire = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::create(
+        id: $questionnaireId,
+        title: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireTitle::fromString('Parent Questionnaire'),
+        slug: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSlug::fromString('parent'),
+        description: null,
+        dateRange: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create(null, null),
+        settings: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::default()
+    );
 
-    public function test_question_options_are_casted_to_array(): void
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test',
-            'status' => 'draft',
-        ]);
+    $question = Question::create(
+        id: QuestionId::generate(),
+        text: QuestionText::fromString('Choose one'),
+        type: QuestionType::RADIO->value,
+        options: QuestionOptions::fromArray(['Option A', 'Option B']),
+        required: false,
+        order: 1,
+        description: null,
+        settings: []
+    );
 
-        $question = $questionnaire->questions()->create([
-            'type' => 'checkbox',
-            'content' => 'Select all that apply',
-            'options' => ['Option 1', 'Option 2', 'Option 3'],
-            'required' => false,
-            'order' => 1,
-        ]);
+    $questionnaire->addQuestion($question);
+    $questionnaire->persist();
 
-        $this->assertIsArray($question->options);
-        $this->assertCount(3, $question->options);
-    }
+    $retrieved = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::retrieve((string) $questionnaireId->toUuid());
 
-    public function test_question_settings_are_casted_to_array(): void
-    {
-        $questionnaire = Questionnaire::create([
-            'title' => 'Test',
-            'status' => 'draft',
-        ]);
+    expect($retrieved->questions())->toHaveCount(1);
+    $retrievedQuestion = array_values($retrieved->questions())[0];
+    expect($retrievedQuestion->text()->value())->toBe('Choose one');
+});
 
-        $question = $questionnaire->questions()->create([
-            'type' => 'number',
-            'content' => 'Enter a number',
-            'settings' => ['min' => 1, 'max' => 100],
-            'required' => true,
-            'order' => 1,
-        ]);
+test('question options are stored as array', function () {
+    $questionnaireId = QuestionnaireId::generate();
+    $questionnaire = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::create(
+        id: $questionnaireId,
+        title: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireTitle::fromString('Test'),
+        slug: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSlug::fromString('test'),
+        description: null,
+        dateRange: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create(null, null),
+        settings: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::default()
+    );
 
-        $this->assertIsArray($question->settings);
-        $this->assertEquals(1, $question->settings['min']);
-        $this->assertEquals(100, $question->settings['max']);
-    }
+    $question = Question::create(
+        id: QuestionId::generate(),
+        text: QuestionText::fromString('Select all that apply'),
+        type: QuestionType::CHECKBOX->value,
+        options: QuestionOptions::fromArray(['Option 1', 'Option 2', 'Option 3']),
+        required: false,
+        order: 1,
+        description: null,
+        settings: []
+    );
 
-    public function test_validates_table_name_for_security(): void
-    {
-        config(['questionnaire.table_names.questions' => 'invalid;DROP TABLE']);
+    $questionnaire->addQuestion($question);
+    $questionnaire->persist();
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid table name');
+    $retrieved = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::retrieve((string) $questionnaireId->toUuid());
+    $retrievedQuestion = array_values($retrieved->questions())[0];
 
-        $question = new Question;
-        $question->getTable();
-    }
-}
+    expect($retrievedQuestion->options()->value())->toBeArray()
+        ->toHaveCount(3);
+});
+
+test('question settings are stored as array', function () {
+    $questionnaireId = QuestionnaireId::generate();
+    $questionnaire = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::create(
+        id: $questionnaireId,
+        title: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireTitle::fromString('Test'),
+        slug: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSlug::fromString('test'),
+        description: null,
+        dateRange: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create(null, null),
+        settings: \Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::default()
+    );
+
+    $question = Question::create(
+        id: QuestionId::generate(),
+        text: QuestionText::fromString('Enter a number'),
+        type: QuestionType::NUMBER->value,
+        options: QuestionOptions::empty(),
+        required: true,
+        order: 1,
+        description: null,
+        settings: ['min' => 1, 'max' => 100]
+    );
+
+    $questionnaire->addQuestion($question);
+    $questionnaire->persist();
+
+    $retrieved = \Liangjin0228\Questionnaire\Domain\Questionnaire\Aggregate\Questionnaire::retrieve((string) $questionnaireId->toUuid());
+    $retrievedQuestion = array_values($retrieved->questions())[0];
+
+    expect($retrievedQuestion->settings())->toBeArray()
+        ->and($retrievedQuestion->settings()['min'])->toBe(1)
+        ->and($retrievedQuestion->settings()['max'])->toBe(100);
+});
+
+test('validates question read model table name for security', function () {
+    config(['questionnaire.table_names.questions' => 'invalid;DROP TABLE']);
+
+    $questionModel = new QuestionModel;
+    $questionModel->getTable();
+})->throws(\InvalidArgumentException::class, 'Invalid table name');

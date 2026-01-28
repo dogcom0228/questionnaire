@@ -7,13 +7,6 @@ namespace Liangjin0228\Questionnaire;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Liangjin0228\Questionnaire\Console\InstallCommand;
-use Liangjin0228\Questionnaire\Console\ListQuestionTypesCommand;
-use Liangjin0228\Questionnaire\Contracts\Actions\CloseQuestionnaireActionInterface;
-use Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface;
-use Liangjin0228\Questionnaire\Contracts\Actions\PublishQuestionnaireActionInterface;
-use Liangjin0228\Questionnaire\Contracts\Actions\SubmitResponseActionInterface;
-use Liangjin0228\Questionnaire\Contracts\Actions\UpdateQuestionnaireActionInterface;
 use Liangjin0228\Questionnaire\Contracts\DuplicateSubmissionGuardInterface;
 use Liangjin0228\Questionnaire\Contracts\ExporterInterface;
 use Liangjin0228\Questionnaire\Contracts\QuestionnaireRepositoryInterface;
@@ -21,13 +14,12 @@ use Liangjin0228\Questionnaire\Contracts\QuestionTypeRegistryInterface;
 use Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface;
 use Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface;
 use Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire;
+use Liangjin0228\Questionnaire\Domain\Questionnaire\Validation\DefaultValidationStrategy;
+use Liangjin0228\Questionnaire\Domain\Response\Guard\DuplicateSubmissionGuardFactory;
 use Liangjin0228\Questionnaire\Domain\Response\Models\Response;
-use Liangjin0228\Questionnaire\Export\CsvExporter;
-use Liangjin0228\Questionnaire\Guards\DuplicateSubmissionGuardFactory;
+use Liangjin0228\Questionnaire\Infrastructure\Export\CsvExporter;
 use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository;
 use Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository;
-use Liangjin0228\Questionnaire\Managers\QuestionTypeManager;
-use Liangjin0228\Questionnaire\Services\DefaultValidationStrategy;
 
 class QuestionnaireServiceProvider extends ServiceProvider
 {
@@ -101,14 +93,11 @@ class QuestionnaireServiceProvider extends ServiceProvider
             )
         );
 
-        // Action bindings
-        $this->registerActionBindings();
-
         // Question type registry (singleton)
         $this->app->singleton(
             QuestionTypeRegistryInterface::class,
             fn () => $this->app->make(
-                config('questionnaire.bindings.question_type_registry', QuestionTypeManager::class)
+                config('questionnaire.bindings.question_type_registry', QuestionTypeRegistry::class)
             )
         );
 
@@ -125,7 +114,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
             }
 
             // Default to allow multiple
-            return $app->make(\Liangjin0228\Questionnaire\Guards\AllowMultipleGuard::class);
+            return $app->make(AllowMultipleGuard::class);
         });
 
         // Exporter
@@ -289,10 +278,7 @@ class QuestionnaireServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->commands([
-            InstallCommand::class,
-            ListQuestionTypesCommand::class,
-        ]);
+        // Commands removed during DDD refactoring
     }
 
     /**
@@ -318,67 +304,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register action bindings.
-     *
-     * Actions are bound to their interfaces, allowing for easy replacement
-     * through configuration while maintaining type safety.
-     */
-    protected function registerActionBindings(): void
-    {
-        $actionBindings = [
-            'create_questionnaire' => [
-                'interface' => CreateQuestionnaireActionInterface::class,
-                'default' => Services\CreateQuestionnaireAction::class,
-            ],
-            'update_questionnaire' => [
-                'interface' => UpdateQuestionnaireActionInterface::class,
-                'default' => Services\UpdateQuestionnaireAction::class,
-            ],
-            'publish_questionnaire' => [
-                'interface' => PublishQuestionnaireActionInterface::class,
-                'default' => Services\PublishQuestionnaireAction::class,
-            ],
-            'close_questionnaire' => [
-                'interface' => CloseQuestionnaireActionInterface::class,
-                'default' => Services\CloseQuestionnaireAction::class,
-            ],
-            'submit_response' => [
-                'interface' => SubmitResponseActionInterface::class,
-                'default' => Services\SubmitResponseAction::class,
-            ],
-            'add_question' => [
-                'interface' => \Liangjin0228\Questionnaire\Contracts\Actions\AddQuestionActionInterface::class,
-                'default' => Services\AddQuestionAction::class,
-            ],
-            'delete_question' => [
-                'interface' => \Liangjin0228\Questionnaire\Contracts\Actions\DeleteQuestionActionInterface::class,
-                'default' => Services\DeleteQuestionAction::class,
-            ],
-        ];
-
-        foreach ($actionBindings as $key => $binding) {
-            $this->app->bind(
-                $binding['interface'],
-                function ($app) use ($key, $binding) {
-                    $concrete = config("questionnaire.actions.{$key}", $binding['default']);
-
-                    if ($concrete === $binding['default']) {
-                        return $app->build($binding['default']);
-                    }
-
-                    return $app->make($concrete);
-                }
-            );
-
-            // Also bind concrete class for backward compatibility
-            $this->app->bind(
-                $binding['default'],
-                fn ($app) => $app->make($binding['interface'])
-            );
-        }
-    }
-
-    /**
      * Get the services provided by the provider.
      *
      * @return array<string>
@@ -393,13 +318,6 @@ class QuestionnaireServiceProvider extends ServiceProvider
             DuplicateSubmissionGuardInterface::class,
             DuplicateSubmissionGuardFactory::class,
             ExporterInterface::class,
-            CreateQuestionnaireActionInterface::class,
-            UpdateQuestionnaireActionInterface::class,
-            PublishQuestionnaireActionInterface::class,
-            CloseQuestionnaireActionInterface::class,
-            SubmitResponseActionInterface::class,
-            \Liangjin0228\Questionnaire\Contracts\Actions\AddQuestionActionInterface::class,
-            \Liangjin0228\Questionnaire\Contracts\Actions\DeleteQuestionActionInterface::class,
         ];
     }
 }

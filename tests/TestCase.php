@@ -29,6 +29,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            \Spatie\EventSourcing\EventSourcingServiceProvider::class,
             QuestionnaireServiceProvider::class,
         ];
     }

@@ -1,0 +1,1788 @@
+Note: Using configuration file /home/liangjin0228/liangjin0228/questionnaire/phpstan.neon.
+   0/209 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[1G[2K  20/209 [▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░]   9%[1G[2K  60/209 [▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░]  28%[1G[2K  80/209 [▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░]  38%[1G[2K 100/209 [▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░]  47%[1G[2K 120/209 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░]  57%[1G[2K 160/209 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░]  76%[1G[2K 189/209 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░]  90%[1G[2K 209/209 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+  Line   Application/Command/Questionnaire/CreateQuestionnaire/CreateQuestionnaireHandler.php                                      
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+  21     Property                                                                                                                  
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\CreateQuestionnaire\CreateQuestionnaireHandler::$repository  
+         is never read, only written.                                                                                              
+         💡 See:                                                                                                                   
+            https://phpstan.org/developing-extensions/always-read-written-properties                                               
+  22     Property                                                                                                                  
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\CreateQuestionnaire\CreateQuestionnaireHandler::$eventBus    
+         is never read, only written.                                                                                              
+         💡 See:                                                                                                                   
+            https://phpstan.org/developing-extensions/always-read-written-properties                                               
+  34     Parameter #1 $allowAnonymous of static method                                                                             
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::create()                               
+         expects bool, mixed given.                                                                                                
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+  Line   Application/Command/Questionnaire/PublishQuestionnaire/PublishQuestionnaireHandler.php                                      
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+  17     Property                                                                                                                    
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\PublishQuestionnaire\PublishQuestionnaireHandler::$repository  
+         is never read, only written.                                                                                                
+         💡 See:                                                                                                                     
+            https://phpstan.org/developing-extensions/always-read-written-properties                                                 
+  18     Property                                                                                                                    
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\PublishQuestionnaire\PublishQuestionnaireHandler::$eventBus    
+         is never read, only written.                                                                                                
+         💡 See:                                                                                                                     
+            https://phpstan.org/developing-extensions/always-read-written-properties                                                 
+  28     Parameter #1 $startDate of static method                                                                                    
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create()                                             
+         expects Carbon\CarbonImmutable|null, DateTimeImmutable|null given.                                                          
+  28     Parameter #2 $endDate of static method                                                                                      
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\DateRange::create()                                             
+         expects Carbon\CarbonImmutable|null, DateTimeImmutable|null given.                                                          
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+  Line   Application/Command/Questionnaire/UpdateQuestionnaire/UpdateQuestionnaireHandler.php                                      
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+  20     Property                                                                                                                  
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\UpdateQuestionnaire\UpdateQuestionnaireHandler::$repository  
+         is never read, only written.                                                                                              
+         💡 See:                                                                                                                   
+            https://phpstan.org/developing-extensions/always-read-written-properties                                               
+  21     Property                                                                                                                  
+         Liangjin0228\Questionnaire\Application\Command\Questionnaire\UpdateQuestionnaire\UpdateQuestionnaireHandler::$eventBus    
+         is never read, only written.                                                                                              
+         💡 See:                                                                                                                   
+            https://phpstan.org/developing-extensions/always-read-written-properties                                               
+  33     Parameter #1 $allowAnonymous of static method                                                                             
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::create()                               
+         expects bool, mixed given.                                                                                                
+ ------ -------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------------------ 
+  Line   Application/Command/Response/SubmitResponse/SubmitResponseHandler.php                                                   
+ ------ ------------------------------------------------------------------------------------------------------------------------ 
+  22     Property                                                                                                                
+         Liangjin0228\Questionnaire\Application\Command\Response\SubmitResponse\SubmitResponseHandler::$questionnaireRepository  
+         is never read, only written.                                                                                            
+         💡 See:                                                                                                                 
+            https://phpstan.org/developing-extensions/always-read-written-properties                                             
+  23     Property                                                                                                                
+         Liangjin0228\Questionnaire\Application\Command\Response\SubmitResponse\SubmitResponseHandler::$responseRepository       
+         is never read, only written.                                                                                            
+         💡 See:                                                                                                                 
+            https://phpstan.org/developing-extensions/always-read-written-properties                                             
+  24     Property                                                                                                                
+         Liangjin0228\Questionnaire\Application\Command\Response\SubmitResponse\SubmitResponseHandler::$eventBus                 
+         is never read, only written.                                                                                            
+         💡 See:                                                                                                                 
+            https://phpstan.org/developing-extensions/always-read-written-properties                                             
+  45     Parameter $ipAddress of static method                                                                                   
+         Liangjin0228\Questionnaire\Domain\Response\Aggregate\Response::submit()                                                 
+         expects                                                                                                                 
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\IpAddress,                                                       
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\IpAddress|null                                                   
+         given.                                                                                                                  
+ ------ ------------------------------------------------------------------------------------------------------------------------ 
+
+ ------ ----------------------------------------------------------------- 
+  Line   Application/DTO/Input/QuestionInput.php                          
+ ------ ----------------------------------------------------------------- 
+  28     Parameter $type of class                                         
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects string, mixed given.                         
+  29     Parameter $content of class                                      
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects string, mixed given.                         
+  30     Parameter $order of class                                        
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects int, mixed given.                            
+  31     Parameter $isRequired of class                                   
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects bool, mixed given.                           
+  32     Parameter $options of class                                      
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects array<int|string, mixed>|null, mixed given.  
+  33     Parameter $settings of class                                     
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionInput   
+         constructor expects array<string, mixed>|null, mixed given.      
+ ------ ----------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Application/DTO/Input/QuestionnaireInput.php                         
+ ------ --------------------------------------------------------------------- 
+  33     Parameter $title of class                                            
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionnaireInput  
+         constructor expects string, mixed given.                             
+  34     Parameter $description of class                                      
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionnaireInput  
+         constructor expects string|null, mixed given.                        
+  35     Parameter $settings of class                                         
+         Liangjin0228\Questionnaire\Application\DTO\Input\QuestionnaireInput  
+         constructor expects array<string, mixed>|null, mixed given.          
+ ------ --------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Application/DTO/Input/SubmitResponseInput.php                         
+ ------ ---------------------------------------------------------------------- 
+  24     Parameter $answers of class                                           
+         Liangjin0228\Questionnaire\Application\DTO\Input\SubmitResponseInput  
+         constructor expects array<string, mixed>, mixed given.                
+  25     Parameter $email of class                                             
+         Liangjin0228\Questionnaire\Application\DTO\Input\SubmitResponseInput  
+         constructor expects string|null, mixed given.                         
+  26     Parameter $name of class                                              
+         Liangjin0228\Questionnaire\Application\DTO\Input\SubmitResponseInput  
+         constructor expects string|null, mixed given.                         
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------ 
+  Line   Application/Mapper/QuestionnaireMapper.php                                          
+ ------ ------------------------------------------------------------------------------------ 
+  12     Property                                                                            
+         Liangjin0228\Questionnaire\Application\Mapper\QuestionnaireMapper::$questionMapper  
+         is never read, only written.                                                        
+         💡 See:                                                                             
+            https://phpstan.org/developing-extensions/always-read-written-properties         
+ ------ ------------------------------------------------------------------------------------ 
+
+ ------ ----------------------------------------------------------------------------- 
+  Line   Application/Mapper/ResponseMapper.php                                        
+ ------ ----------------------------------------------------------------------------- 
+  12     Property                                                                     
+         Liangjin0228\Questionnaire\Application\Mapper\ResponseMapper::$answerMapper  
+         is never read, only written.                                                 
+         💡 See:                                                                      
+            https://phpstan.org/developing-extensions/always-read-written-properties  
+ ------ ----------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+  Line   Application/Query/Questionnaire/ListQuestionnaires/ListQuestionnairesQuery.php                                                                                                                                                                                     
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+  12     PHPDoc tag @implements contains generic type                                                                                                                                                                                                                       
+         Liangjin0228\Questionnaire\Contracts\Application\QueryInterface<Liangjin0228\Questionnaire\Application\Query\Questionnaire\ListQuestionnaires\PaginatedResult<Liangjin0228\Questionnaire\Application\Query\Questionnaire\ListQuestionnaires\QuestionnaireOutput>>  
+         but interface                                                                                                                                                                                                                                                      
+         Liangjin0228\Questionnaire\Contracts\Application\QueryInterface is                                                                                                                                                                                                 
+         not generic.                                                                                                                                                                                                                                                       
+  12     PHPDoc tag @implements has invalid type                                                                                                                                                                                                                            
+         Liangjin0228\Questionnaire\Application\Query\Questionnaire\ListQuestionnaires\PaginatedResult.                                                                                                                                                                     
+  12     PHPDoc tag @implements has invalid type                                                                                                                                                                                                                            
+         Liangjin0228\Questionnaire\Application\Query\Questionnaire\ListQuestionnaires\QuestionnaireOutput.                                                                                                                                                                 
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   DTOs/QuestionData.php                                                                 
+ ------ -------------------------------------------------------------------------------------- 
+  47     Method Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                 
+         has parameter $options with no value type specified in iterable type                  
+         array.                                                                                
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  47     Method Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                 
+         has parameter $settings with no value type specified in iterable type                 
+         array.                                                                                
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   Domain/Question/Models/Question.php                                                
+ ------ ----------------------------------------------------------------------------------- 
+  14     Class Liangjin0228\Questionnaire\Domain\Question\Models\Question uses              
+         generic trait Illuminate\Database\Eloquent\Factories\HasFactory but                
+         does not specify its types: TFactory                                               
+  24     Parameter #2 $subject of function preg_match expects string, mixed                 
+         given.                                                                             
+  28     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::getTable()             
+         should return string but returns mixed.                                            
+  62     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::questionnaire()        
+         return type with generic class                                                     
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its              
+         types: TRelatedModel, TDeclaringModel                                              
+  64     Class Liangjin0228\Questionnaire\Domain\Question\Models\Questionnaire              
+         not found.                                                                         
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                
+  66     Parameter #1 $related of method                                                    
+         Illuminate\Database\Eloquent\Model::belongsTo() expects                            
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                     
+  66     Unable to resolve the template type TRelatedModel in call to method                
+         Illuminate\Database\Eloquent\Model::belongsTo()                                    
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  72     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::answers()              
+         return type with generic class                                                     
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                
+         types: TRelatedModel, TDeclaringModel                                              
+  74     Class Liangjin0228\Questionnaire\Domain\Question\Models\Answer not                 
+         found.                                                                             
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                
+  76     Parameter #1 $related of method                                                    
+         Illuminate\Database\Eloquent\Model::hasMany() expects                              
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                     
+  76     Unable to resolve the template type TRelatedModel in call to method                
+         Illuminate\Database\Eloquent\Model::hasMany()                                      
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  84     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::scopeOrdered()         
+         has no return type specified.                                                      
+  84     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::scopeOrdered()         
+         has parameter $query with no type specified.                                       
+  92     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::scopeRequired()        
+         has no return type specified.                                                      
+  92     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::scopeRequired()        
+         has parameter $query with no type specified.                                       
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------ 
+  Line   Domain/Question/Strategies/QuestionTypeStrategy.php                                       
+ ------ ------------------------------------------------------------------------------------------ 
+  20     Method                                                                                    
+         Liangjin0228\Questionnaire\Domain\Question\Strategies\QuestionTypeStrategy::getHandler()  
+         has no return type specified.                                                             
+  22     Access to an undefined property                                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.                        
+         💡 Learn more:                                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                  
+ ------ ------------------------------------------------------------------------------------------ 
+
+ ------ ------------------------------------------------------------------------------------------------------------ 
+  Line   Domain/Questionnaire/Models/Questionnaire.php                                                               
+ ------ ------------------------------------------------------------------------------------------------------------ 
+  60     Parameter #2 $subject of function preg_match expects string, mixed                                          
+         given.                                                                                                      
+  64     Method                                                                                                      
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::getTable()                            
+         should return string but returns mixed.                                                                     
+  122    Method                                                                                                      
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::questions()                           
+         should return                                                                                               
+         Illuminate\Database\Eloquent\Relations\HasMany<Liangjin0228\Questionnaire\Domain\Question\Models\Question,  
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>                                
+         but returns                                                                                                 
+         Illuminate\Database\Eloquent\Relations\HasMany<Illuminate\Database\Eloquent\Model,                          
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>.                               
+  122    Parameter #1 $related of method                                                                             
+         Illuminate\Database\Eloquent\Model::hasMany() expects                                                       
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                                              
+  122    Unable to resolve the template type TRelatedModel in call to method                                         
+         Illuminate\Database\Eloquent\Model::hasMany()                                                               
+         💡 See:                                                                                                     
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type                           
+  134    Method                                                                                                      
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::responses()                           
+         should return                                                                                               
+         Illuminate\Database\Eloquent\Relations\HasMany<Liangjin0228\Questionnaire\Domain\Response\Models\Response,  
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>                                
+         but returns                                                                                                 
+         Illuminate\Database\Eloquent\Relations\HasMany<Illuminate\Database\Eloquent\Model,                          
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>.                               
+  134    Parameter #1 $related of method                                                                             
+         Illuminate\Database\Eloquent\Model::hasMany() expects                                                       
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                                              
+  134    Unable to resolve the template type TRelatedModel in call to method                                         
+         Illuminate\Database\Eloquent\Model::hasMany()                                                               
+         💡 See:                                                                                                     
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type                           
+  146    Method                                                                                                      
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire::user()                                
+         should return                                                                                               
+         Illuminate\Database\Eloquent\Relations\BelongsTo<Illuminate\Foundation\Auth\User,                           
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>                                
+         but returns                                                                                                 
+         Illuminate\Database\Eloquent\Relations\BelongsTo<Illuminate\Database\Eloquent\Model,                        
+         $this(Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire)>.                               
+  146    Parameter #1 $related of method                                                                             
+         Illuminate\Database\Eloquent\Model::belongsTo() expects                                                     
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                                              
+  146    Unable to resolve the template type TRelatedModel in call to method                                         
+         Illuminate\Database\Eloquent\Model::belongsTo()                                                             
+         💡 See:                                                                                                     
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type                           
+ ------ ------------------------------------------------------------------------------------------------------------ 
+
+ ------ ------------------------------------------------------------ 
+  Line   Domain/Questionnaire/QuestionType/AbstractQuestionType.php  
+ ------ ------------------------------------------------------------ 
+  79     Cannot cast mixed to string.                                
+ ------ ------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------- 
+  Line   Domain/Questionnaire/QuestionType/CheckboxQuestionType.php    
+ ------ -------------------------------------------------------------- 
+  103    Cannot cast mixed to string.                                  
+  107    Argument of an invalid type mixed supplied for foreach, only  
+         iterables are supported.                                      
+ ------ -------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Domain/Questionnaire/QuestionType/DateQuestionType.php                
+ ------ ---------------------------------------------------------------------- 
+  85     Parameter #1 $time of static method Carbon\Carbon::parse() expects    
+         Carbon\Month|Carbon\WeekDay|DateTimeInterface|float|int|string|null,  
+         mixed given.                                                          
+  89     Cannot cast mixed to string.                                          
+ ------ ---------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------- 
+  Line   Domain/Questionnaire/QuestionType/RadioQuestionType.php  
+ ------ --------------------------------------------------------- 
+  90     Cannot cast mixed to string.                             
+ ------ --------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------- 
+  Line   Domain/Questionnaire/QuestionType/SelectQuestionType.php  
+ ------ ---------------------------------------------------------- 
+  90     Cannot cast mixed to string.                              
+ ------ ---------------------------------------------------------- 
+
+ ------ -------------------------------------------------------- 
+  Line   Domain/Questionnaire/QuestionType/TextQuestionType.php  
+ ------ -------------------------------------------------------- 
+  86     Cannot cast mixed to string.                            
+ ------ -------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------ 
+  Line   Domain/Questionnaire/QuestionType/TextareaQuestionType.php  
+ ------ ------------------------------------------------------------ 
+  82     Cannot cast mixed to string.                                
+ ------ ------------------------------------------------------------ 
+
+ ------ ----------------------------------------------------------- 
+  Line   Domain/Questionnaire/ValueObject/QuestionText.php          
+ ------ ----------------------------------------------------------- 
+  38     Comparison operation ">" between 1 and 1 is always false.  
+  38     Result of && is always false.                              
+ ------ ----------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------- 
+  Line   Domain/Response/Guard/OnePerIpGuard.php                            
+ ------ ------------------------------------------------------------------- 
+  30     Parameter #1 $abstract of function app expects string|null, mixed  
+         given.                                                             
+ ------ ------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------------- 
+  Line   Domain/Response/Guard/OnePerUserGuard.php                                                   
+ ------ -------------------------------------------------------------------------------------------- 
+  35     Parameter #2 $respondentType of method                                                      
+         Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface::hasRespondentSubmitted()  
+         expects string, mixed given.                                                                
+ ------ -------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------ 
+  Line   Domain/Response/Models/Answer.php                                                         
+ ------ ------------------------------------------------------------------------------------------ 
+  13     Class Liangjin0228\Questionnaire\Domain\Response\Models\Answer uses                       
+         generic trait Illuminate\Database\Eloquent\Factories\HasFactory but                       
+         does not specify its types: TFactory                                                      
+  23     Parameter #2 $subject of function preg_match expects string, mixed                        
+         given.                                                                                    
+  27     Method                                                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::getTable()                      
+         should return string but returns mixed.                                                   
+  44     Method                                                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::response()                      
+         return type with generic class                                                            
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                     
+         types: TRelatedModel, TDeclaringModel                                                     
+  48     Parameter #1 $related of method                                                           
+         Illuminate\Database\Eloquent\Model::belongsTo() expects                                   
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                            
+  48     Unable to resolve the template type TRelatedModel in call to method                       
+         Illuminate\Database\Eloquent\Model::belongsTo()                                           
+         💡 See:                                                                                   
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type         
+  54     Method                                                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::question()                      
+         return type with generic class                                                            
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                     
+         types: TRelatedModel, TDeclaringModel                                                     
+  56     Class Liangjin0228\Questionnaire\Domain\Response\Models\Question not                      
+         found.                                                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                       
+  58     Parameter #1 $related of method                                                           
+         Illuminate\Database\Eloquent\Model::belongsTo() expects                                   
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                            
+  58     Unable to resolve the template type TRelatedModel in call to method                       
+         Illuminate\Database\Eloquent\Model::belongsTo()                                           
+         💡 See:                                                                                   
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type         
+  68     Access to an undefined property                                                           
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::$value.                         
+         💡 Learn more:                                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                  
+  73     Parameter #1 $question of method                                                          
+         Liangjin0228\Questionnaire\Domain\Question\Strategies\QuestionTypeStrategy::getHandler()  
+         expects Liangjin0228\Questionnaire\Domain\Question\Models\Question,                       
+         Illuminate\Database\Eloquent\Model given.                                                 
+  76     Access to an undefined property                                                           
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::$value.                         
+         💡 Learn more:                                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                  
+  79     Access to an undefined property                                                           
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::$value.                         
+         💡 Learn more:                                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                  
+  87     Access to an undefined property                                                           
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer::$value.                         
+         💡 Learn more:                                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                  
+ ------ ------------------------------------------------------------------------------------------ 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   Domain/Response/Models/Response.php                                                
+ ------ ----------------------------------------------------------------------------------- 
+  15     Class Liangjin0228\Questionnaire\Domain\Response\Models\Response uses              
+         generic trait Illuminate\Database\Eloquent\Factories\HasFactory but                
+         does not specify its types: TFactory                                               
+  25     Parameter #2 $subject of function preg_match expects string, mixed                 
+         given.                                                                             
+  29     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::getTable()             
+         should return string but returns mixed.                                            
+  58     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::questionnaire()        
+         return type with generic class                                                     
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its              
+         types: TRelatedModel, TDeclaringModel                                              
+  60     Class Liangjin0228\Questionnaire\Domain\Response\Models\Questionnaire              
+         not found.                                                                         
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                
+  62     Parameter #1 $related of method                                                    
+         Illuminate\Database\Eloquent\Model::belongsTo() expects                            
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                     
+  62     Unable to resolve the template type TRelatedModel in call to method                
+         Illuminate\Database\Eloquent\Model::belongsTo()                                    
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  68     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::respondent()           
+         return type with generic class                                                     
+         Illuminate\Database\Eloquent\Relations\MorphTo does not specify its                
+         types: TRelatedModel, TDeclaringModel                                              
+  76     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::answers()              
+         return type with generic class                                                     
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                
+         types: TRelatedModel, TDeclaringModel                                              
+  80     Parameter #1 $related of method                                                    
+         Illuminate\Database\Eloquent\Model::hasMany() expects                              
+         class-string<Illuminate\Database\Eloquent\Model>, mixed given.                     
+  80     Unable to resolve the template type TRelatedModel in call to method                
+         Illuminate\Database\Eloquent\Model::hasMany()                                      
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  98     Method                                                                             
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::getAnswer()            
+         should return                                                                      
+         Liangjin0228\Questionnaire\Domain\Response\Models\Answer|null but                  
+         returns Illuminate\Database\Eloquent\Model|null.                                   
+  106    Access to an undefined property                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::$respondent_id.        
+         💡 Learn more:                                                                     
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property           
+  106    Access to an undefined property                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::$respondent_type.      
+         💡 Learn more:                                                                     
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property           
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  Line   Domain/Response/Specification/ResponseHasAnswerForQuestionSpecification.php                                                          
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  14     PHPDoc tag @extends contains generic type                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification<Liangjin0228\Questionnaire\Domain\Response\Aggregate\Response>  
+         but class                                                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification                                                                 
+         is not generic.                                                                                                                      
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  Line   Domain/Response/Specification/ResponseIsAuthenticatedSpecification.php                                                               
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  13     PHPDoc tag @extends contains generic type                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification<Liangjin0228\Questionnaire\Domain\Response\Aggregate\Response>  
+         but class                                                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification                                                                 
+         is not generic.                                                                                                                      
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  Line   Domain/Response/Specification/ResponseIsCompleteSpecification.php                                                                    
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+  16     PHPDoc tag @extends contains generic type                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification<Liangjin0228\Questionnaire\Domain\Response\Aggregate\Response>  
+         but class                                                                                                                            
+         Liangjin0228\Questionnaire\Domain\Shared\Specification\Specification                                                                 
+         is not generic.                                                                                                                      
+ ------ ------------------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Domain/Response/ValueObject/AnswerValue.php                                           
+ ------ -------------------------------------------------------------------------------------- 
+  25     Method                                                                                
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\AnswerValue::fromArray()       
+         has parameter $value with no value type specified in iterable type                    
+         array.                                                                                
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  85     Cannot cast mixed to string.                                                          
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Domain/Response/ValueObject/Respondent.php                                            
+ ------ -------------------------------------------------------------------------------------- 
+  64     Method                                                                                
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\Respondent::value()            
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  81     Method                                                                                
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\Respondent::jsonSerialize()    
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------ 
+  Line   Domain/Shared/Aggregate/AggregateRoot.php                   
+ ------ ------------------------------------------------------------ 
+  19     Access to private property $recordedEvents of parent class  
+         Spatie\EventSourcing\AggregateRoots\AggregateRoot.          
+  32     Access to private property $recordedEvents of parent class  
+         Spatie\EventSourcing\AggregateRoots\AggregateRoot.          
+ ------ ------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Domain/Shared/Event/DomainEvent.php                                                   
+ ------ -------------------------------------------------------------------------------------- 
+  36     Method                                                                                
+         Liangjin0228\Questionnaire\Domain\Shared\Event\DomainEvent::toArray()                 
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------ 
+  Line   Domain/Shared/Exception/DomainException.php                                   
+ ------ ------------------------------------------------------------------------------ 
+  13     Unsafe usage of new static().                                                 
+         💡 See:                                                                       
+            https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static  
+ ------ ------------------------------------------------------------------------------ 
+
+ ------ ------------------------------------------------------------------------------ 
+  Line   Domain/Shared/ValueObject/EntityId.php                                        
+ ------ ------------------------------------------------------------------------------ 
+  18     Unsafe usage of new static().                                                 
+         💡 See:                                                                       
+            https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static  
+  23     Unsafe usage of new static().                                                 
+         💡 See:                                                                       
+            https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static  
+ ------ ------------------------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Export/CsvExporter.php                                                    
+ ------ -------------------------------------------------------------------------- 
+  59     Parameter #1 $stream of function fprintf expects resource,                
+         resource|false given.                                                     
+  64     Parameter #1 $stream of function fputcsv expects resource,                
+         resource|false given.                                                     
+  64     Parameter #3 $separator of function fputcsv expects string, mixed         
+         given.                                                                    
+  64     Parameter #4 $enclosure of function fputcsv expects string, mixed         
+         given.                                                                    
+  70     Parameter #1 $stream of function fputcsv expects resource,                
+         resource|false given.                                                     
+  70     Parameter #3 $separator of function fputcsv expects string, mixed         
+         given.                                                                    
+  70     Parameter #4 $enclosure of function fputcsv expects string, mixed         
+         given.                                                                    
+  73     Parameter #1 $stream of function fclose expects resource,                 
+         resource|false given.                                                     
+  110    Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$content.     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  121    Method Liangjin0228\Questionnaire\Export\CsvExporter::buildRow() has      
+         parameter $response with no type specified.                               
+  135    Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.        
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------- 
+  Line   Guards/OnePerIpGuard.php                                           
+ ------ ------------------------------------------------------------------- 
+  30     Parameter #1 $abstract of function app expects string|null, mixed  
+         given.                                                             
+ ------ ------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------------- 
+  Line   Guards/OnePerUserGuard.php                                                                  
+ ------ -------------------------------------------------------------------------------------------- 
+  35     Parameter #2 $respondentType of method                                                      
+         Liangjin0228\Questionnaire\Contracts\ResponseRepositoryInterface::hasRespondentSubmitted()  
+         expects string, mixed given.                                                                
+ ------ -------------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Bus/IlluminateCommandBus.php                                              
+ ------ ----------------------------------------------------------------------------------------- 
+  22     Property                                                                                 
+         Liangjin0228\Questionnaire\Infrastructure\Bus\IlluminateCommandBus::$handlers            
+         (array<class-string<Liangjin0228\Questionnaire\Contracts\Application\CommandInterface>,  
+         class-string>) does not accept array<string, string>.                                    
+ ------ ----------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Bus/IlluminateQueryBus.php                                              
+ ------ --------------------------------------------------------------------------------------- 
+  22     Property                                                                               
+         Liangjin0228\Questionnaire\Infrastructure\Bus\IlluminateQueryBus::$handlers            
+         (array<class-string<Liangjin0228\Questionnaire\Contracts\Application\QueryInterface>,  
+         class-string>) does not accept array<string, string>.                                  
+ ------ --------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------------ 
+  Line   Infrastructure/Console/Commands/CreateSnapshotCommand.php                                                   
+ ------ ------------------------------------------------------------------------------------------------------------ 
+  72     Parameter #1 $type of method                                                                                
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\CreateSnapshotCommand::createSingleSnapshot()    
+         expects string, array|string|true given.                                                                    
+  72     Parameter #2 $uuid of method                                                                                
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\CreateSnapshotCommand::createSingleSnapshot()    
+         expects string, array|string|true given.                                                                    
+  74     Parameter #1 $type of method                                                                                
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\CreateSnapshotCommand::createSnapshotsForType()  
+         expects string, array|string|true given.                                                                    
+  103    Access to an undefined property                                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::$uuid.                              
+         💡 Learn more:                                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                    
+  118    Access to an undefined property                                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\ResponseModel::$uuid.                                   
+         💡 Learn more:                                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                    
+  141    Parameter #1 $id of method                                                                                  
+         Liangjin0228\Questionnaire\Contracts\EventSourcedQuestionnaireRepositoryInterface::retrieve()               
+         expects                                                                                                     
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireId,                                
+         string given.                                                                                               
+  143    Parameter #1 $id of method                                                                                  
+         Liangjin0228\Questionnaire\Contracts\EventSourcedResponseRepositoryInterface::retrieve()                    
+         expects                                                                                                     
+         Liangjin0228\Questionnaire\Domain\Response\ValueObject\ResponseId,                                          
+         string given.                                                                                               
+ ------ ------------------------------------------------------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Console/Commands/MigrateToEventSourcingCommand.php                                 
+ ------ -------------------------------------------------------------------------------------------------- 
+  42     Parameter #1 $table of static method                                                              
+         Illuminate\Database\Connection::table() expects                                                   
+         Closure|Illuminate\Contracts\Database\Query\Expression|Illuminate\Database\Query\Builder|string,  
+         mixed given.                                                                                      
+  99     Access to an undefined property object::$uuid.                                                    
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+  100    Access to an undefined property object::$title.                                                   
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+  101    Access to an undefined property object::$slug.                                                    
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+  102    Access to an undefined property object::$description.                                             
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+  106    Cannot access offset 'max_responses' on mixed.                                                    
+  106    Parameter #1 $allowAnonymous of static method                                                     
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::create()       
+         expects bool, mixed given.                                                                        
+  107    Cannot access offset 'allow_multiple…' on mixed.                                                  
+  108    Cannot access offset 'require_auth' on mixed.                                                     
+  108    Parameter #3 $duplicateSubmissionStrategy of static method                                        
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::create()       
+         expects                                                                                           
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Enum\DuplicateSubmissionStrategy|null,            
+         bool given.                                                                                       
+  109    Cannot access offset 'show_results' on mixed.                                                     
+  110    Cannot access offset 'randomize_questions' on mixed.                                              
+  110    Parameter #5 $notificationEmail of static method                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\ValueObject\QuestionnaireSettings::create()       
+         expects string|null, bool given.                                                                  
+  114    Access to an undefined property object::$starts_at.                                               
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+  115    Access to an undefined property object::$ends_at.                                                 
+         💡 Learn more:                                                                                    
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                          
+ ------ -------------------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Infrastructure/Console/Commands/RebuildProjectionsCommand.php         
+ ------ ---------------------------------------------------------------------- 
+  56     Parameter #1 $projectors of static method                             
+         Spatie\EventSourcing\Projectionist::replay() expects                  
+         Illuminate\Support\Collection, Closure given.                         
+  59     Static method Spatie\EventSourcing\Projectionist::replay() invoked    
+         with 0 parameters, 1-4 required.                                      
+  65     Argument of an invalid type array|string|true supplied for foreach,   
+         only iterables are supported.                                         
+  76     Parameter #1 $projectors of static method                             
+         Spatie\EventSourcing\Projectionist::replay() expects                  
+         Illuminate\Support\Collection, Closure given.                         
+  77     Parameter #2 $startingFromEventId of static method                    
+         Spatie\EventSourcing\Projectionist::replay() expects int, array<int,  
+         class-string> given.                                                  
+  80     Parameter #1 $projectors of static method                             
+         Spatie\EventSourcing\Projectionist::replay() expects                  
+         Illuminate\Support\Collection, null given.                            
+  80     Parameter #2 $startingFromEventId of static method                    
+         Spatie\EventSourcing\Projectionist::replay() expects int, array<int,  
+         class-string> given.                                                  
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------ 
+  Line   Infrastructure/Console/Commands/ReplayEventsCommand.php                                         
+ ------ ------------------------------------------------------------------------------------------------ 
+  61     Parameter #1 $from of method                                                                    
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         expects string|null, array|bool|string|null given.                                              
+  61     Parameter #2 $to of method                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         expects string|null, array|bool|string|null given.                                              
+  61     Parameter #3 $events of method                                                                  
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         expects array, array|bool|string|null given.                                                    
+  61     Parameter #4 $aggregateUuid of method                                                           
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         expects string|null, array|bool|string|null given.                                              
+  73     Parameter #2 $projectors of method                                                              
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::replayEvents()  
+         expects array, array|bool|string|null given.                                                    
+  88     Method                                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         has parameter $events with no value type specified in iterable type                             
+         array.                                                                                          
+         💡 See:                                                                                         
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type            
+  88     Method                                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::buildQuery()    
+         return type with generic class Illuminate\Database\Eloquent\Builder                             
+         does not specify its types: TModel                                                              
+  118    Method                                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::replayEvents()  
+         has parameter $projectors with no value type specified in iterable                              
+         type array.                                                                                     
+         💡 See:                                                                                         
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type            
+  118    Method                                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Console\Commands\ReplayEventsCommand::replayEvents()  
+         has parameter $query with generic class                                                         
+         Illuminate\Database\Eloquent\Builder but does not specify its types:                            
+         TModel                                                                                          
+  128    Parameter #1 $projectors of static method                                                       
+         Spatie\EventSourcing\Projectionist::replay() expects                                            
+         Illuminate\Support\Collection, Closure given.                                                   
+  129    Parameter #2 $startingFromEventId of static method                                              
+         Spatie\EventSourcing\Projectionist::replay() expects int, null given.                           
+  141    Parameter #1 $projectors of static method                                                       
+         Spatie\EventSourcing\Projectionist::replay() expects                                            
+         Illuminate\Support\Collection, Closure given.                                                   
+  142    Parameter #2 $startingFromEventId of static method                                              
+         Spatie\EventSourcing\Projectionist::replay() expects int, array<int,                            
+         class-string> given.                                                                            
+ ------ ------------------------------------------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Controllers/QuestionnaireCommandController.php                                      
+ ------ -------------------------------------------------------------------------------------------------------- 
+  37     Parameter #2 $userId of method                                                                          
+         Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface::execute()              
+         expects int|string|null, mixed given.                                                                   
+  121    Method                                                                                                  
+         Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireCommandController::authorize()  
+         has parameter $model with no type specified.                                                            
+ ------ -------------------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Controllers/QuestionnaireController.php                                      
+ ------ ------------------------------------------------------------------------------------------------- 
+  50     Cannot cast mixed to int.                                                                        
+  69     Parameter #2 $userId of method                                                                   
+         Liangjin0228\Questionnaire\Contracts\Actions\CreateQuestionnaireActionInterface::execute()       
+         expects int|string|null, mixed given.                                                            
+  229    Cannot cast mixed to int.                                                                        
+  264    Method                                                                                           
+         Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireController::authorize()  
+         has parameter $model with no type specified.                                                     
+ ------ ------------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------------------------ 
+  Line   Infrastructure/Http/Controllers/QuestionnaireQueryController.php                                      
+ ------ ------------------------------------------------------------------------------------------------------ 
+  37     Cannot cast mixed to int.                                                                             
+  106    Cannot cast mixed to int.                                                                             
+  131    Method                                                                                                
+         Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\QuestionnaireQueryController::authorize()  
+         has parameter $model with no type specified.                                                          
+ ------ ------------------------------------------------------------------------------------------------------ 
+
+ ------ ------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Controllers/ResponseQueryController.php                                      
+ ------ ------------------------------------------------------------------------------------------------- 
+  28     Cannot cast mixed to int.                                                                        
+  53     Method                                                                                           
+         Liangjin0228\Questionnaire\Infrastructure\Http\Controllers\ResponseQueryController::authorize()  
+         has parameter $model with no type specified.                                                     
+ ------ ------------------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------- 
+  Line   Infrastructure/Http/Request/StoreQuestionRequest.php            
+ ------ ---------------------------------------------------------------- 
+  58     Parameter $type of static method                                
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects string, mixed given.                                    
+  59     Parameter $content of static method                             
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects string, mixed given.                                    
+  60     Parameter $description of static method                         
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects string|null, mixed given.                               
+  61     Parameter $options of static method                             
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects array|null, mixed given.                                
+  62     Parameter $required of static method                            
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects bool, mixed given.                                      
+  63     Parameter $order of static method                               
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects int, mixed given.                                       
+  64     Parameter $settings of static method                            
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()  
+         expects array|null, mixed given.                                
+ ------ ---------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Request/StoreQuestionnaireRequest.php                                     
+ ------ ---------------------------------------------------------------------------------------------- 
+  44     Parameter #1 $table of static method                                                          
+         Illuminate\Validation\Rule::unique() expects string, mixed given.                             
+  116    Argument of an invalid type mixed supplied for foreach, only                                  
+         iterables are supported.                                                                      
+  118    Cannot access offset 'type' on mixed.                                                         
+  118    Parameter $type of static method                                                              
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects string, mixed given.                                                                  
+  119    Cannot access offset 'content' on mixed.                                                      
+  119    Parameter $content of static method                                                           
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects string, mixed given.                                                                  
+  120    Cannot access offset 'description' on mixed.                                                  
+  120    Parameter $description of static method                                                       
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects string|null, mixed given.                                                             
+  121    Cannot access offset 'options' on mixed.                                                      
+  121    Parameter $options of static method                                                           
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects array|null, mixed given.                                                              
+  122    Cannot access offset 'required' on mixed.                                                     
+  122    Parameter $required of static method                                                          
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects bool, mixed given.                                                                    
+  123    Cannot access offset 'order' on mixed.                                                        
+  123    Parameter $order of static method                                                             
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects int, mixed given.                                                                     
+  124    Cannot access offset 'settings' on mixed.                                                     
+  124    Parameter $settings of static method                                                          
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                                
+         expects array|null, mixed given.                                                              
+  130    Parameter $title of class                                                                     
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         string, mixed given.                                                                          
+  131    Parameter $description of class                                                               
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         string|null, mixed given.                                                                     
+  132    Parameter $slug of class                                                                      
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         string|null, mixed given.                                                                     
+  133    Parameter #1 $value of static method                                                          
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom()          
+         expects int|string, mixed given.                                                              
+  135    Parameter $settings of class                                                                  
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         array<string, mixed>|null, mixed given.                                                       
+  136    Parameter $starts_at of class                                                                 
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         string|null, mixed given.                                                                     
+  137    Parameter $ends_at of class                                                                   
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         string|null, mixed given.                                                                     
+  138    Parameter $requires_auth of class                                                             
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         bool, mixed given.                                                                            
+  139    Parameter $submission_limit of class                                                          
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                         
+         int|null, mixed given.                                                                        
+  141    Parameter #1 $value of static method                                                          
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\DuplicateSubmissionStrategy::tryFrom()  
+         expects int|string, mixed given.                                                              
+ ------ ---------------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------- 
+  Line   Infrastructure/Http/Request/SubmitResponseRequest.php           
+ ------ ---------------------------------------------------------------- 
+  158    Argument of an invalid type mixed supplied for foreach, only    
+         iterables are supported.                                        
+  159    Cannot cast mixed to string.                                    
+  160    Cannot cast mixed to string.                                    
+  169    Parameter $userId of class                                      
+         Liangjin0228\Questionnaire\DTOs\SubmitResponseData constructor  
+         expects int|string|null, mixed given.                           
+ ------ ---------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Request/UpdateQuestionnaireRequest.php                            
+ ------ -------------------------------------------------------------------------------------- 
+  38     Access to an undefined property (object|string)::$id.                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  52     Parameter #1 $table of static method                                                  
+         Illuminate\Validation\Rule::unique() expects string, mixed given.                     
+  63     Parameter #1 $table of static method                                                  
+         Illuminate\Validation\Rule::exists() expects string, mixed given.                     
+  115    Argument of an invalid type mixed supplied for foreach, only                          
+         iterables are supported.                                                              
+  117    Cannot access offset 'type' on mixed.                                                 
+  117    Parameter $type of static method                                                      
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects string, mixed given.                                                          
+  118    Cannot access offset 'content' on mixed.                                              
+  118    Parameter $content of static method                                                   
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects string, mixed given.                                                          
+  119    Cannot access offset 'description' on mixed.                                          
+  119    Parameter $description of static method                                               
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects string|null, mixed given.                                                     
+  120    Cannot access offset 'options' on mixed.                                              
+  120    Parameter $options of static method                                                   
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects array|null, mixed given.                                                      
+  121    Cannot access offset 'required' on mixed.                                             
+  121    Parameter $required of static method                                                  
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects bool, mixed given.                                                            
+  122    Cannot access offset 'order' on mixed.                                                
+  122    Parameter $order of static method                                                     
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects int, mixed given.                                                             
+  123    Cannot access offset 'settings' on mixed.                                             
+  123    Parameter $settings of static method                                                  
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects array|null, mixed given.                                                      
+  124    Cannot access offset 'id' on mixed.                                                   
+  124    Parameter $id of static method                                                        
+         Liangjin0228\Questionnaire\DTOs\QuestionData::fromStringType()                        
+         expects int|null, mixed given.                                                        
+  130    Access to an undefined property (object|string|null)::$title.                         
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  131    Access to an undefined property (object|string|null)::$description.                   
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  132    Parameter $slug of class                                                              
+         Liangjin0228\Questionnaire\DTOs\QuestionnaireData constructor expects                 
+         string|null, mixed given.                                                             
+  134    Parameter #1 $value of static method                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Enums\QuestionnaireStatus::tryFrom()  
+         expects int|string, mixed given.                                                      
+  136    Access to an undefined property (object|string|null)::$status.                        
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  138    Access to an undefined property (object|string|null)::$settings.                      
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  139    Access to an undefined property (object|string|null)::$starts_at.                     
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  140    Access to an undefined property (object|string|null)::$ends_at.                       
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  141    Access to an undefined property (object|string|null)::$requires_auth.                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  142    Access to an undefined property                                                       
+         (object|string|null)::$submission_limit.                                              
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Resource/QuestionResource.php                                       
+ ------ ---------------------------------------------------------------------------------------- 
+  15     Method                                                                                  
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::toArray()     
+         return type has no value type specified in iterable type array.                         
+         💡 See:                                                                                 
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type    
+  18     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$id.          
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  19     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$content.     
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  20     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$type.        
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  21     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$required.    
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  22     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$settings.    
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  23     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$created_at.  
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  24     Access to an undefined property                                                         
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionResource::$updated_at.  
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+ ------ ---------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Resource/QuestionTypeResource.php                                    
+ ------ ----------------------------------------------------------------------------------------- 
+  15     Method                                                                                   
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionTypeResource::toArray()  
+         return type has no value type specified in iterable type array.                          
+         💡 See:                                                                                  
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type     
+  18     Cannot access offset 'identifier' on mixed.                                              
+  19     Cannot access offset 'name' on mixed.                                                    
+  20     Cannot access offset 'description' on mixed.                                             
+  21     Cannot access offset 'icon' on mixed.                                                    
+  22     Cannot access offset 'rules' on mixed.                                                   
+ ------ ----------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Http/Resource/QuestionnaireResource.php                                                   
+ ------ --------------------------------------------------------------------------------------------------------- 
+  15     Method                                                                                                   
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::toArray()                 
+         return type has no value type specified in iterable type array.                                          
+         💡 See:                                                                                                  
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type                     
+  18     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$id.                      
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  19     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$title.                   
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  20     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$description.             
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  21     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$status.                  
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  22     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$is_accepting_responses.  
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  23     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$requires_auth.           
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  25     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$created_at.              
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+  26     Access to an undefined property                                                                          
+         Liangjin0228\Questionnaire\Infrastructure\Http\Resource\QuestionnaireResource::$updated_at.              
+         💡 Learn more:                                                                                           
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                 
+ ------ --------------------------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Persistence/EventSourcedRepositories/EventSourcedQuestionnaireRepository.php  
+ ------ --------------------------------------------------------------------------------------------- 
+  15     Parameter #1 $uuid of static method                                                          
+         Spatie\EventSourcing\AggregateRoots\AggregateRoot::retrieve() expects                        
+         string, Ramsey\Uuid\UuidInterface given.                                                     
+ ------ --------------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Persistence/EventSourcedRepositories/EventSourcedResponseRepository.php  
+ ------ ---------------------------------------------------------------------------------------- 
+  15     Parameter #1 $uuid of static method                                                     
+         Spatie\EventSourcing\AggregateRoots\AggregateRoot::retrieve() expects                   
+         string, Ramsey\Uuid\UuidInterface given.                                                
+ ------ ---------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Persistence/Repositories/EloquentQuestionnaireRepository.php                                                 
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+  21     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::getModelClass()         
+         should return                                                                                                               
+         class-string<Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>                                          
+         but returns mixed.                                                                                                          
+  27     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::newQuery()              
+         return type with generic class Illuminate\Database\Eloquent\Builder                                                         
+         does not specify its types: TModel                                                                                          
+  43     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::all()                   
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>                                                       
+         but returns Illuminate\Database\Eloquent\Collection<int,                                                                    
+         Illuminate\Database\Eloquent\Model>.                                                                                        
+  57     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::paginate()              
+         should return                                                                                                               
+         Illuminate\Contracts\Pagination\LengthAwarePaginator<Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>  
+         but returns                                                                                                                 
+         Illuminate\Pagination\LengthAwarePaginator<Illuminate\Database\Eloquent\Model>.                                             
+  65     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::find()                  
+         should return                                                                                                               
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire|null                                                   
+         but returns Illuminate\Database\Eloquent\Model|null.                                                                        
+  73     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::findOrFail()            
+         should return                                                                                                               
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire                                                        
+         but returns Illuminate\Database\Eloquent\Model.                                                                             
+  81     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::findBySlug()            
+         should return                                                                                                               
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire|null                                                   
+         but returns Illuminate\Database\Eloquent\Model|null.                                                                        
+  89     Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::create()                
+         should return                                                                                                               
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire                                                        
+         but returns Illuminate\Database\Eloquent\Model.                                                                             
+  105    Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::delete()                
+         should return bool but returns bool|null.                                                                                   
+  113    Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::getByStatus()           
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>                                                       
+         but returns Illuminate\Database\Eloquent\Collection<int,                                                                    
+         Illuminate\Database\Eloquent\Model>.                                                                                        
+  121    Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::getPublished()          
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>                                                       
+         but returns Illuminate\Database\Eloquent\Collection<int,                                                                    
+         Illuminate\Database\Eloquent\Model>.                                                                                        
+  139    Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::getByUser()             
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                  
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Models\Questionnaire>                                                       
+         but returns Illuminate\Database\Eloquent\Collection<int,                                                                    
+         Illuminate\Database\Eloquent\Model>.                                                                                        
+  148    Method                                                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentQuestionnaireRepository::applyFilters()          
+         has parameter $query with generic class                                                                                     
+         Illuminate\Database\Eloquent\Builder but does not specify its types:                                                        
+         TModel                                                                                                                      
+  161    Part $search (mixed) of encapsed string cannot be cast to string.                                                           
+  162    Part $search (mixed) of encapsed string cannot be cast to string.                                                           
+ ------ ---------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/Persistence/Repositories/EloquentResponseRepository.php                                                     
+ ------ --------------------------------------------------------------------------------------------------------------------------- 
+  23     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::getModelClass()             
+         should return                                                                                                              
+         class-string<Liangjin0228\Questionnaire\Domain\Response\Models\Response>                                                   
+         but returns mixed.                                                                                                         
+  29     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::newQuery()                  
+         return type with generic class Illuminate\Database\Eloquent\Builder                                                        
+         does not specify its types: TModel                                                                                         
+  39     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::getForQuestionnaire()       
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                 
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response> but                                                            
+         returns Illuminate\Database\Eloquent\Collection<int,                                                                       
+         Illuminate\Database\Eloquent\Model>.                                                                                       
+  51     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::paginateForQuestionnaire()  
+         should return                                                                                                              
+         Illuminate\Contracts\Pagination\LengthAwarePaginator<Liangjin0228\Questionnaire\Domain\Response\Models\Response>           
+         but returns                                                                                                                
+         Illuminate\Pagination\LengthAwarePaginator<Illuminate\Database\Eloquent\Model>.                                            
+  63     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::find()                      
+         should return                                                                                                              
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response|null but                                                        
+         returns Illuminate\Database\Eloquent\Model|null.                                                                           
+  71     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::findOrFail()                
+         should return                                                                                                              
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response but                                                             
+         returns Illuminate\Database\Eloquent\Model.                                                                                
+  79     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::create()                    
+         should return                                                                                                              
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response but                                                             
+         returns Illuminate\Database\Eloquent\Model.                                                                                
+  87     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::delete()                    
+         should return bool but returns bool|null.                                                                                  
+  95     Method                                                                                                                     
+         Liangjin0228\Questionnaire\Infrastructure\Persistence\Repositories\EloquentResponseRepository::getByRespondent()           
+         should return Illuminate\Database\Eloquent\Collection<int,                                                                 
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response> but                                                            
+         returns Illuminate\Database\Eloquent\Collection<int,                                                                       
+         Illuminate\Database\Eloquent\Model>.                                                                                       
+  137    Called 'pluck' on Laravel collection, but could have been retrieved                                                        
+         as a query.                                                                                                                
+  137    Parameter #1 $table of static method                                                                                       
+         Illuminate\Database\Connection::table() expects                                                                            
+         Closure|Illuminate\Contracts\Database\Query\Expression|Illuminate\Database\Query\Builder|string,                           
+         mixed given.                                                                                                               
+  147    Access to an undefined property                                                                                            
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$content.                                                      
+         💡 Learn more:                                                                                                             
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                                   
+  148    Access to an undefined property                                                                                            
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.                                                         
+         💡 Learn more:                                                                                                             
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                                                   
+ ------ --------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------- 
+  Line   Infrastructure/ReadModel/AnswerModel.php                                     
+ ------ ----------------------------------------------------------------------------- 
+  21     Parameter #2 $subject of function preg_match expects string, mixed           
+         given.                                                                       
+  25     Method                                                                       
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\AnswerModel::getTable()  
+         should return string but returns mixed.                                      
+  39     Method                                                                       
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\AnswerModel::response()  
+         return type with generic class                                               
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its        
+         types: TRelatedModel, TDeclaringModel                                        
+  44     Method                                                                       
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\AnswerModel::question()  
+         return type with generic class                                               
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its        
+         types: TRelatedModel, TDeclaringModel                                        
+ ------ ----------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------ 
+  Line   Infrastructure/ReadModel/QuestionModel.php                                          
+ ------ ------------------------------------------------------------------------------------ 
+  23     Parameter #2 $subject of function preg_match expects string, mixed                  
+         given.                                                                              
+  27     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionModel::getTable()       
+         should return string but returns mixed.                                             
+  49     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionModel::questionnaire()  
+         return type with generic class                                                      
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its               
+         types: TRelatedModel, TDeclaringModel                                               
+  54     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionModel::answers()        
+         return type with generic class                                                      
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                               
+ ------ ------------------------------------------------------------------------------------ 
+
+ ------ -------------------------------------------------------------------------------------------- 
+  Line   Infrastructure/ReadModel/QuestionnaireModel.php                                             
+ ------ -------------------------------------------------------------------------------------------- 
+  29     Parameter #2 $subject of function preg_match expects string, mixed                          
+         given.                                                                                      
+  33     Method                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::getTable()          
+         should return string but returns mixed.                                                     
+  86     Method                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::questions()         
+         return type with generic class                                                              
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                         
+         types: TRelatedModel, TDeclaringModel                                                       
+  94     Method                                                                                      
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::responses()         
+         return type with generic class                                                              
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                         
+         types: TRelatedModel, TDeclaringModel                                                       
+  104    Access to an undefined property                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::$status.            
+         💡 Learn more:                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                    
+  110    Access to an undefined property                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::$starts_at.         
+         💡 Learn more:                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                    
+  114    Access to an undefined property                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::$ends_at.           
+         💡 Learn more:                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                    
+  130    Access to an undefined property                                                             
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\QuestionnaireModel::$submission_limit.  
+         💡 Learn more:                                                                              
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                    
+ ------ -------------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------ 
+  Line   Infrastructure/ReadModel/ResponseModel.php                                          
+ ------ ------------------------------------------------------------------------------------ 
+  22     Parameter #2 $subject of function preg_match expects string, mixed                  
+         given.                                                                              
+  26     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\ResponseModel::getTable()       
+         should return string but returns mixed.                                             
+  45     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\ResponseModel::questionnaire()  
+         return type with generic class                                                      
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its               
+         types: TRelatedModel, TDeclaringModel                                               
+  50     Method                                                                              
+         Liangjin0228\Questionnaire\Infrastructure\ReadModel\ResponseModel::answers()        
+         return type with generic class                                                      
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                               
+ ------ ------------------------------------------------------------------------------------ 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Listeners/LogResponseSubmission.php                                   
+ ------ ---------------------------------------------------------------------- 
+  15     Parameter $event of method                                            
+         Liangjin0228\Questionnaire\Listeners\LogResponseSubmission::handle()  
+         has invalid type                                                      
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted.  
+  21     Access to property $response on an unknown class                      
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted.  
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  24     Parameter #1 $channel of static method                                
+         Illuminate\Log\LogManager::channel() expects string|null, mixed       
+         given.                                                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------- 
+  Line   Listeners/SendResponseNotification.php                                          
+ ------ -------------------------------------------------------------------------------- 
+  24     Parameter $event of method                                                      
+         Liangjin0228\Questionnaire\Listeners\SendResponseNotification::handle()         
+         has invalid type                                                                
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted.            
+  30     Access to property $response on an unknown class                                
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted.            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols             
+  52     Method                                                                          
+         Liangjin0228\Questionnaire\Listeners\SendResponseNotification::getRecipients()  
+         has parameter $questionnaire with no type specified.                            
+ ------ -------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------- 
+  Line   Managers/QuestionTypeManager.php                                            
+ ------ ---------------------------------------------------------------------------- 
+  67     Method Liangjin0228\Questionnaire\Managers\QuestionTypeManager::get()       
+         should return                                                               
+         Liangjin0228\Questionnaire\Contracts\QuestionTypeInterface|null but         
+         returns mixed.                                                              
+  75     Method                                                                      
+         Liangjin0228\Questionnaire\Managers\QuestionTypeManager::getOrFail()        
+         should return                                                               
+         Liangjin0228\Questionnaire\Contracts\QuestionTypeInterface but              
+         returns mixed.                                                              
+  121    Method                                                                      
+         Liangjin0228\Questionnaire\Managers\QuestionTypeManager::hasCustomDriver()  
+         has no return type specified.                                               
+  121    Method                                                                      
+         Liangjin0228\Questionnaire\Managers\QuestionTypeManager::hasCustomDriver()  
+         has parameter $driver with no type specified.                               
+ ------ ---------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------- 
+  Line   Policies/QuestionnairePolicy.php                                            
+ ------ ---------------------------------------------------------------------------- 
+  18     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::viewAny()          
+         has parameter $user with no type specified.                                 
+  27     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::view() has         
+         parameter $user with no type specified.                                     
+  41     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::create() has       
+         parameter $user with no type specified.                                     
+  50     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::update() has       
+         parameter $user with no type specified.                                     
+  58     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::delete() has       
+         parameter $user with no type specified.                                     
+  66     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::publish()          
+         has parameter $user with no type specified.                                 
+  78     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::close() has        
+         parameter $user with no type specified.                                     
+  90     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::viewResponses()    
+         has parameter $user with no type specified.                                 
+  98     Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::exportResponses()  
+         has parameter $user with no type specified.                                 
+  106    Method                                                                      
+         Liangjin0228\Questionnaire\Policies\QuestionnairePolicy::isOwner()          
+         has parameter $user with no type specified.                                 
+ ------ ---------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------- 
+  Line   Policies/ResponsePolicy.php                                                    
+ ------ ------------------------------------------------------------------------------- 
+  17     Method Liangjin0228\Questionnaire\Policies\ResponsePolicy::view() has          
+         parameter $user with no type specified.                                        
+  20     Cannot access property $user_id on                                             
+         Illuminate\Database\Eloquent\Model|null.                                       
+  25     Access to an undefined property                                                
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::$respondent_id.    
+         💡 Learn more:                                                                 
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property       
+  26     Access to an undefined property                                                
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response::$respondent_type.  
+         💡 Learn more:                                                                 
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property       
+  36     Method Liangjin0228\Questionnaire\Policies\ResponsePolicy::delete()            
+         has parameter $user with no type specified.                                    
+  39     Cannot access property $user_id on                                             
+         Illuminate\Database\Eloquent\Model|null.                                       
+ ------ ------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------- 
+  Line   QuestionTypes/AbstractQuestionType.php  
+ ------ ---------------------------------------- 
+  79     Cannot cast mixed to string.            
+ ------ ---------------------------------------- 
+
+ ------ -------------------------------------------------------------- 
+  Line   QuestionTypes/CheckboxQuestionType.php                        
+ ------ -------------------------------------------------------------- 
+  103    Cannot cast mixed to string.                                  
+  107    Argument of an invalid type mixed supplied for foreach, only  
+         iterables are supported.                                      
+ ------ -------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   QuestionTypes/DateQuestionType.php                                    
+ ------ ---------------------------------------------------------------------- 
+  85     Parameter #1 $time of static method Carbon\Carbon::parse() expects    
+         Carbon\Month|Carbon\WeekDay|DateTimeInterface|float|int|string|null,  
+         mixed given.                                                          
+  89     Cannot cast mixed to string.                                          
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ------------------------------------- 
+  Line   QuestionTypes/RadioQuestionType.php  
+ ------ ------------------------------------- 
+  90     Cannot cast mixed to string.         
+ ------ ------------------------------------- 
+
+ ------ -------------------------------------- 
+  Line   QuestionTypes/SelectQuestionType.php  
+ ------ -------------------------------------- 
+  90     Cannot cast mixed to string.          
+ ------ -------------------------------------- 
+
+ ------ ------------------------------------ 
+  Line   QuestionTypes/TextQuestionType.php  
+ ------ ------------------------------------ 
+  86     Cannot cast mixed to string.        
+ ------ ------------------------------------ 
+
+ ------ ---------------------------------------- 
+  Line   QuestionTypes/TextareaQuestionType.php  
+ ------ ---------------------------------------- 
+  82     Cannot cast mixed to string.            
+ ------ ---------------------------------------- 
+
+ ------ ------------------------------------------------------------------------- 
+  Line   QuestionnaireServiceProvider.php                                         
+ ------ ------------------------------------------------------------------------- 
+  101    Class                                                                    
+         Liangjin0228\Questionnaire\EventSourcedQuestionnaireRepositoryInterface  
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  102    Class Liangjin0228\Questionnaire\EventSourcedQuestionnaireRepository     
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  105    Class                                                                    
+         Liangjin0228\Questionnaire\EventSourcedResponseRepositoryInterface       
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  106    Class Liangjin0228\Questionnaire\EventSourcedResponseRepository not      
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  113    Parameter #1 $abstract of method                                         
+         Illuminate\Contracts\Container\Container::make() expects string,         
+         mixed given.                                                             
+  120    Parameter #1 $abstract of method                                         
+         Illuminate\Contracts\Container\Container::make() expects string,         
+         mixed given.                                                             
+  125    Class Liangjin0228\Questionnaire\CreateQuestionnaireHandler not          
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  126    Class Liangjin0228\Questionnaire\UpdateQuestionnaireHandler not          
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  127    Class Liangjin0228\Questionnaire\PublishQuestionnaireHandler not         
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  128    Class Liangjin0228\Questionnaire\CloseQuestionnaireHandler not found.    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  129    Class Liangjin0228\Questionnaire\SubmitResponseHandler not found.        
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  132    Class Liangjin0228\Questionnaire\ListQuestionnairesHandler not found.    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  133    Class Liangjin0228\Questionnaire\GetQuestionnaireHandler not found.      
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  134    Class Liangjin0228\Questionnaire\GetStatisticsHandler not found.         
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  137    Class Liangjin0228\Questionnaire\QuestionnaireMapper not found.          
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  138    Class Liangjin0228\Questionnaire\QuestionMapper not found.               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  139    Class Liangjin0228\Questionnaire\ResponseMapper not found.               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  140    Class Liangjin0228\Questionnaire\AnswerMapper not found.                 
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  146    Parameter #1 $abstract of method                                         
+         Illuminate\Contracts\Container\Container::make() expects string,         
+         mixed given.                                                             
+  157    Parameter #1 $abstract of method                                         
+         Illuminate\Contracts\Container\Container::make() expects string,         
+         mixed given.                                                             
+  191    Argument of an invalid type mixed supplied for foreach, only             
+         iterables are supported.                                                 
+  205    Argument of an invalid type mixed supplied for foreach, only             
+         iterables are supported.                                                 
+  289    Cannot access offset 'questionnaire' on mixed.                           
+  291    Parameter #1 $class of static method                                     
+         Illuminate\Support\Facades\Gate::policy() expects string, mixed          
+         given.                                                                   
+  292    Parameter #2 $policy of static method                                    
+         Illuminate\Support\Facades\Gate::policy() expects string, mixed          
+         given.                                                                   
+  296    Cannot access offset 'response' on mixed.                                
+  298    Parameter #1 $class of static method                                     
+         Illuminate\Support\Facades\Gate::policy() expects string, mixed          
+         given.                                                                   
+  299    Parameter #2 $policy of static method                                    
+         Illuminate\Support\Facades\Gate::policy() expects string, mixed          
+         given.                                                                   
+  352    Cannot access offset 'events' on                                         
+         Illuminate\Contracts\Foundation\Application.                             
+  356    Class                                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted      
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  363    Class                                                                    
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted      
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  460    Class                                                                    
+         Liangjin0228\Questionnaire\EventSourcedQuestionnaireRepositoryInterface  
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  461    Class                                                                    
+         Liangjin0228\Questionnaire\EventSourcedResponseRepositoryInterface       
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  464    Class Liangjin0228\Questionnaire\CreateQuestionnaireHandler not          
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  465    Class Liangjin0228\Questionnaire\UpdateQuestionnaireHandler not          
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  466    Class Liangjin0228\Questionnaire\PublishQuestionnaireHandler not         
+         found.                                                                   
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  467    Class Liangjin0228\Questionnaire\CloseQuestionnaireHandler not found.    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  468    Class Liangjin0228\Questionnaire\SubmitResponseHandler not found.        
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  471    Class Liangjin0228\Questionnaire\ListQuestionnairesHandler not found.    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  472    Class Liangjin0228\Questionnaire\GetQuestionnaireHandler not found.      
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  473    Class Liangjin0228\Questionnaire\GetStatisticsHandler not found.         
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  476    Class Liangjin0228\Questionnaire\QuestionnaireMapper not found.          
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  477    Class Liangjin0228\Questionnaire\QuestionMapper not found.               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  478    Class Liangjin0228\Questionnaire\ResponseMapper not found.               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+  479    Class Liangjin0228\Questionnaire\AnswerMapper not found.                 
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+ ------ ------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Services/CreateQuestionnaireAction.php                                                
+ ------ -------------------------------------------------------------------------------------- 
+  27     Parameter #2 $userId of class                                                         
+         Liangjin0228\Questionnaire\Domain\Questionnaire\Events\QuestionnaireCreating          
+         constructor expects int|null, int|string|null given.                                  
+  46     Method                                                                                
+         Liangjin0228\Questionnaire\Services\CreateQuestionnaireAction::prepareData()          
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  89     Instanceof between                                                                    
+         Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType and                     
+         Liangjin0228\Questionnaire\Domain\Question\Enums\QuestionType will                    
+         always evaluate to true.                                                              
+         💡 Because the type is coming from a PHPDoc, you can turn off this                    
+            check by setting treatPhpDocTypesAsCertain: false in your                          
+            phpstan.neon.                                                                      
+  91     Else branch is unreachable because ternary operator condition is                      
+         always true.                                                                          
+         💡 Because the type is coming from a PHPDoc, you can turn off this                    
+            check by setting treatPhpDocTypesAsCertain: false in your                          
+            phpstan.neon.                                                                      
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Services/DefaultValidationStrategy.php                                    
+ ------ -------------------------------------------------------------------------- 
+  56     Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$required.    
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  63     Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.        
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  84     Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.        
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  86     Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$required.    
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  87     Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$content.     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  109    Access to an undefined property                                           
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$content.     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Services/SubmitResponseAction.php                                    
+ ------ --------------------------------------------------------------------- 
+  45     Method                                                               
+         Liangjin0228\Questionnaire\Services\SubmitResponseAction::execute()  
+         should return                                                        
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response but       
+         returns                                                              
+         Liangjin0228\Questionnaire\Domain\Response\Models\Response|null.     
+ ------ --------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------- 
+  Line   Submission/Pipes/CheckDuplicateSubmission.php                                   
+ ------ -------------------------------------------------------------------------------- 
+  18     Method                                                                          
+         Liangjin0228\Questionnaire\Submission\Pipes\CheckDuplicateSubmission::handle()  
+         has no return type specified.                                                   
+ ------ -------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------- 
+  Line   Submission/Pipes/EnsureQuestionnaireIsOpen.php                                   
+ ------ --------------------------------------------------------------------------------- 
+  15     Method                                                                           
+         Liangjin0228\Questionnaire\Submission\Pipes\EnsureQuestionnaireIsOpen::handle()  
+         has no return type specified.                                                    
+ ------ --------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------- 
+  Line   Submission/Pipes/FireResponseEvent.php                                   
+ ------ ------------------------------------------------------------------------- 
+  13     Method                                                                   
+         Liangjin0228\Questionnaire\Submission\Pipes\FireResponseEvent::handle()  
+         has no return type specified.                                            
+  23     Instantiated class                                                       
+         Liangjin0228\Questionnaire\Domain\Response\Events\ResponseSubmitted      
+         not found.                                                               
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols      
+ ------ ------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Submission/Pipes/SaveResponse.php                                                     
+ ------ -------------------------------------------------------------------------------------- 
+  22     Method                                                                                
+         Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse::handle()                    
+         has no return type specified.                                                         
+  53     Method                                                                                
+         Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse::transformAnswers()          
+         has parameter $answers with no value type specified in iterable type                  
+         array.                                                                                
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  53     Method                                                                                
+         Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse::transformAnswers()          
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  69     Access to an undefined property                                                       
+         Liangjin0228\Questionnaire\Domain\Question\Models\Question::$type.                    
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  84     Method                                                                                
+         Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse::getRespondentType()         
+         should return string|null but returns mixed.                                          
+  90     Method                                                                                
+         Liangjin0228\Questionnaire\Submission\Pipes\SaveResponse::getMetadata()               
+         return type has no value type specified in iterable type array.                       
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------ 
+  Line   Submission/Pipes/ValidateSubmission.php                                       
+ ------ ------------------------------------------------------------------------------ 
+  18     Method                                                                        
+         Liangjin0228\Questionnaire\Submission\Pipes\ValidateSubmission::handle()      
+         has no return type specified.                                                 
+  23     Parameter #2 $data of method                                                  
+         Liangjin0228\Questionnaire\Contracts\ValidationStrategyInterface::validate()  
+         expects array<string, mixed>, array<int|string, mixed> given.                 
+  25     Call to an undefined method                                                   
+         Illuminate\Contracts\Validation\Validator::getRules().                        
+ ------ ------------------------------------------------------------------------------ 
+
+ [ERROR] Found 428 errors                                                       
+
